@@ -17,17 +17,17 @@ import {
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Live Map", url: "/map", icon: Map },
-  { title: "AI Reports", url: "/reports", icon: FileText },
-  { title: "Hardware Health", url: "/hardware", icon: Cpu },
-  { title: "Telemetry", url: "/telemetry", icon: Activity },
-  { title: "Billing", url: "/billing", icon: CreditCard },
-  { title: "Developer", url: "/developer", icon: Settings },
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+  { title: "Live Map", url: "/dashboard/map", icon: Map },
+  { title: "AI Reports", url: "/dashboard/reports", icon: FileText },
+  { title: "Hardware Health", url: "/dashboard/hardware", icon: Cpu },
+  { title: "Telemetry", url: "/dashboard/telemetry", icon: Activity },
+  { title: "Billing", url: "/dashboard/billing", icon: CreditCard },
+  { title: "Developer", url: "/dashboard/developer", icon: Settings },
 ];
 
 const adminItems = [
-  { title: "User Management", url: "/admin/users", icon: Users },
+  { title: "User Management", url: "/dashboard/admin/users", icon: Users },
 ];
 
 export function AppSidebar() {
