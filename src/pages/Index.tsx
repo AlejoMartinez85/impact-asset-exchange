@@ -59,6 +59,8 @@ const Index = () => {
       </div>
 
       <LiveMap />
+
+      <AuditableESGTable />
     </div>
   );
 };
