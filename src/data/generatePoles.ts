@@ -41,7 +41,7 @@ export function generateMockPoles(totalCount: number = 783): ELISAUnit[] {
     const lat = bounds[0] + rand() * (bounds[1] - bounds[0]);
     const lng = bounds[2] + rand() * (bounds[3] - bounds[2]);
 
-    const isActive = rand() < 0.92;
+    const isActive = rand() < 0.95;
     const status = isActive ? "active" as const : "maintenance" as const;
     const batteryHealth = isActive
       ? Math.floor(75 + rand() * 25)
