@@ -1,4 +1,18 @@
-import { LayoutDashboard, Map, FileText, Cpu, Settings, Sun, CreditCard, Activity, Users, Shield, Cog, Building2 } from "lucide-react";
+import {
+  LayoutDashboard,
+  Map,
+  FileText,
+  Cpu,
+  Settings,
+  Sun,
+  CreditCard,
+  Activity,
+  Users,
+  Shield,
+  Cog,
+  Building2,
+  Sparkles,
+} from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
@@ -12,15 +26,22 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
-  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+  { title: "Live Telemetry", url: "/dashboard", icon: LayoutDashboard },
   { title: "Live Map", url: "/dashboard/map", icon: Map },
-  { title: "AI Reports", url: "/dashboard/reports", icon: FileText },
+  { title: "Real-Time Data", url: "/dashboard/telemetry", icon: Activity },
   { title: "Hardware Health", url: "/dashboard/hardware", icon: Cpu },
-  { title: "Telemetry", url: "/dashboard/telemetry", icon: Activity },
-  { title: "Billing", url: "/dashboard/billing", icon: CreditCard },
-  { title: "Developer", url: "/dashboard/developer", icon: Settings },
+];
+
+const insightItems = [
+  { title: "AI Certifications", url: "/dashboard/reports", icon: Sparkles },
+];
+
+const accountItems = [
+  { title: "Billing & Plan", url: "/dashboard/billing", icon: CreditCard },
+  { title: "Developer API", url: "/dashboard/developer", icon: Settings },
 ];
 
 const adminItems = [
@@ -29,51 +50,78 @@ const adminItems = [
   { title: "Sponsors", url: "/dashboard/admin/sponsors", icon: Building2 },
 ];
 
+const SidebarNavGroup = ({
+  label,
+  items,
+  collapsed,
+}: {
+  label?: string;
+  items: { title: string; url: string; icon: any }[];
+  collapsed: boolean;
+}) => (
+  <SidebarGroup>
+    {label && !collapsed && (
+      <SidebarGroupLabel className="text-[9px] text-sidebar-foreground/60 uppercase tracking-[0.15em] font-semibold mb-1">
+        {label}
+      </SidebarGroupLabel>
+    )}
+    <SidebarGroupContent>
+      <SidebarMenu>
+        {items.map((item) => (
+          <SidebarMenuItem key={item.title}>
+            <SidebarMenuButton asChild>
+              <NavLink
+                to={item.url}
+                end={item.url === "/dashboard"}
+                className="hover:bg-sidebar-accent/50 transition-all duration-150 rounded-md"
+                activeClassName="bg-sidebar-accent text-primary font-medium shadow-[inset_2px_0_0_hsl(var(--primary))]"
+              >
+                <item.icon className="mr-2.5 h-4 w-4 shrink-0 opacity-70" />
+                {!collapsed && <span className="text-[13px]">{item.title}</span>}
+              </NavLink>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        ))}
+      </SidebarMenu>
+    </SidebarGroupContent>
+  </SidebarGroup>
+);
+
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
+  const { profile } = useAuth();
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
-      <div className="p-4 flex items-center gap-3 border-b border-sidebar-border">
-        <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+      {/* ─── Brand ─── */}
+      <div className="px-4 py-4 flex items-center gap-3 border-b border-sidebar-border">
+        <div className="w-8 h-8 rounded-lg bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
           <Sun className="h-4 w-4 text-primary" />
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
-            <h1 className="text-sm font-bold text-sidebar-accent-foreground tracking-tight truncate">Litro de Luz</h1>
-            <p className="text-[10px] text-sidebar-foreground uppercase tracking-widest">Impact Exchange</p>
+            <h1 className="text-[13px] font-bold text-sidebar-accent-foreground tracking-tight truncate">
+              Litro de Luz
+            </h1>
+            <p className="text-[9px] text-sidebar-foreground/50 uppercase tracking-[0.2em] font-medium">
+              Impact Exchange
+            </p>
           </div>
         )}
       </div>
 
-      <SidebarContent className="pt-4">
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink
-                      to={item.url}
-                      end={item.url === "/dashboard"}
-                      className="hover:bg-sidebar-accent/50 transition-colors"
-                      activeClassName="bg-sidebar-accent text-primary font-medium"
-                    >
-                      <item.icon className="mr-2 h-4 w-4 shrink-0" />
-                      {!collapsed && <span>{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+      <SidebarContent className="pt-3 px-2">
+        <SidebarNavGroup label="Monitoring" items={navItems} collapsed={collapsed} />
+        <SidebarNavGroup label="Intelligence" items={insightItems} collapsed={collapsed} />
+        <SidebarNavGroup label="Account" items={accountItems} collapsed={collapsed} />
 
+        {/* Admin Section */}
         <SidebarGroup>
           {!collapsed && (
-            <SidebarGroupLabel className="text-[10px] text-sidebar-foreground uppercase tracking-widest flex items-center gap-1">
-              <Shield className="h-3 w-3" /> Admin
+            <SidebarGroupLabel className="text-[9px] text-sidebar-foreground/60 uppercase tracking-[0.15em] font-semibold mb-1 flex items-center gap-1.5">
+              <Shield className="h-3 w-3 text-primary/60" />
+              Admin
             </SidebarGroupLabel>
           )}
           <SidebarGroupContent>
@@ -83,11 +131,11 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <NavLink
                       to={item.url}
-                      className="hover:bg-sidebar-accent/50 transition-colors"
-                      activeClassName="bg-sidebar-accent text-primary font-medium"
+                      className="hover:bg-sidebar-accent/50 transition-all duration-150 rounded-md"
+                      activeClassName="bg-sidebar-accent text-primary font-medium shadow-[inset_2px_0_0_hsl(var(--primary))]"
                     >
-                      <item.icon className="mr-2 h-4 w-4 shrink-0" />
-                      {!collapsed && <span>{item.title}</span>}
+                      <item.icon className="mr-2.5 h-4 w-4 shrink-0 opacity-70" />
+                      {!collapsed && <span className="text-[13px]">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -97,11 +145,16 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border p-4">
+      {/* ─── Footer ─── */}
+      <SidebarFooter className="border-t border-sidebar-border px-4 py-3">
         {!collapsed && (
-          <div className="text-[10px] text-sidebar-foreground space-y-1">
-            <p className="font-medium text-sidebar-accent-foreground">Demo User</p>
-            <p>AB-InBev</p>
+          <div className="space-y-1">
+            <p className="text-[11px] font-medium text-sidebar-accent-foreground truncate">
+              {profile?.display_name || "Demo User"}
+            </p>
+            <p className="text-[10px] text-sidebar-foreground/50 truncate">
+              {profile?.sponsor_name || "Enterprise Tier"}
+            </p>
           </div>
         )}
       </SidebarFooter>
