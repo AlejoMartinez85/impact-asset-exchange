@@ -1,4 +1,4 @@
-import { LayoutDashboard, Map, FileText, Cpu, Settings, Sun, CreditCard } from "lucide-react";
+import { LayoutDashboard, Map, FileText, Cpu, Settings, Sun, CreditCard, Activity } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import {
@@ -18,6 +18,7 @@ const navItems = [
   { title: "Live Map", url: "/map", icon: Map },
   { title: "AI Reports", url: "/reports", icon: FileText },
   { title: "Hardware Health", url: "/hardware", icon: Cpu },
+  { title: "Telemetry", url: "/telemetry", icon: Activity },
   { title: "Billing", url: "/billing", icon: CreditCard },
   { title: "Developer", url: "/developer", icon: Settings },
 ];
