@@ -52,7 +52,7 @@ const ResetPasswordPage = () => {
       toast.error(error.message);
     } else {
       setSuccess(true);
-      setTimeout(() => navigate("/"), 2000);
+      setTimeout(() => navigate("/dashboard"), 2000);
     }
   };
 
