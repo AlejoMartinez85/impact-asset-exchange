@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import PaywallGate from "@/components/PaywallGate";
 import { FileText, Download, Loader2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { generateAIReport, sponsorInfo, kpiData } from "@/data/mockData";
