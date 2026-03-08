@@ -23,7 +23,6 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import AnimatedCounter from "@/components/AnimatedCounter";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const CLUSTER_OPTIONS = [
