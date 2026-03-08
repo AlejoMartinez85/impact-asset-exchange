@@ -23,7 +23,6 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import AnimatedCounter from "@/components/AnimatedCounter";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const CLUSTER_OPTIONS = [
@@ -64,42 +63,18 @@ const BillingPage = () => {
 
   const handleCheckout = async () => {
     setCheckoutLoading(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("create-cluster-checkout", {
-        body: { clusterQty: selectedClusterQty },
-      });
-
-      if (error) throw error;
-      if (data?.url) {
-        window.open(data.url, "_blank");
-      } else {
-        throw new Error("No checkout URL returned");
-      }
-    } catch (error) {
-      console.error("Checkout error:", error);
-      toast.error("Failed to start checkout. Please try again.");
-    } finally {
-      setCheckoutLoading(false);
-    }
+    toast.info("Demo Mode: Redirecting to Stripe Checkout...");
+    await new Promise((r) => setTimeout(r, 2000));
+    toast.success(`Demo Mode: ${selectedClusterQty} Cluster(s) checkout simulated successfully!`);
+    setCheckoutLoading(false);
   };
 
   const handleManageBilling = async () => {
     setPortalLoading(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("customer-portal");
-
-      if (error) throw error;
-      if (data?.url) {
-        window.open(data.url, "_blank");
-      } else {
-        throw new Error("No portal URL returned");
-      }
-    } catch (error) {
-      console.error("Portal error:", error);
-      toast.error("Failed to open billing portal. Please try again.");
-    } finally {
-      setPortalLoading(false);
-    }
+    toast.info("Demo Mode: Opening Stripe Billing Portal...");
+    await new Promise((r) => setTimeout(r, 2000));
+    toast.success("Demo Mode: Billing portal session simulated.");
+    setPortalLoading(false);
   };
 
   return (
