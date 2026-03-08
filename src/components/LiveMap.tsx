@@ -9,7 +9,8 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { generatedPoles } from "@/data/generatePoles";
 import type { ELISAUnit } from "@/data/mockData";
-import { Wifi, Battery, Sun, Zap, X, Radio, Activity } from "lucide-react";
+import { Wifi, Battery, Sun, Zap, X, Radio, Activity, Plus, Minus, RotateCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
