@@ -63,10 +63,26 @@ const BillingPage = () => {
 
   const handleCheckout = async () => {
     setCheckoutLoading(true);
-    toast.info("Demo Mode: Redirecting to Stripe Checkout...");
-    await new Promise((r) => setTimeout(r, 2000));
-    toast.success(`Demo Mode: ${selectedClusterQty} Cluster(s) checkout simulated successfully!`);
-    setCheckoutLoading(false);
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-cluster-checkout`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY },
+          body: JSON.stringify({ clusterQty: selectedClusterQty }),
+        }
+      );
+      const data = await res.json();
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        toast.error(data?.error || "Failed to create checkout session");
+      }
+    } catch (err) {
+      toast.error("Network error creating checkout session");
+    } finally {
+      setCheckoutLoading(false);
+    }
   };
 
   const handleManageBilling = async () => {
