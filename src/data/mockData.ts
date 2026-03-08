@@ -1,5 +1,5 @@
 export const sponsorInfo = {
-  name: "Global Beverage Co.",
+  name: "AB-InBev",
   tier: "Platinum ESG Partner",
   since: "2022",
   communities: 47,
@@ -14,25 +14,34 @@ export const kpiData = {
   totalBeneficiaries: 34_500,
 };
 
-export const emissionsTimeline = [
-  { month: "Jul '24", avoided: 120, cumulative: 1200 },
-  { month: "Aug '24", avoided: 135, cumulative: 1335 },
-  { month: "Sep '24", avoided: 142, cumulative: 1477 },
-  { month: "Oct '24", avoided: 128, cumulative: 1605 },
-  { month: "Nov '24", avoided: 155, cumulative: 1760 },
-  { month: "Dec '24", avoided: 148, cumulative: 1908 },
-  { month: "Jan '25", avoided: 160, cumulative: 2068 },
-  { month: "Feb '25", avoided: 172, cumulative: 2240 },
-  { month: "Mar '25", avoided: 165, cumulative: 2405 },
+export const sunlightAssetTimeline = [
+  { month: "Apr '25", kwhGenerated: 32400, co2Avoided: 13608, wifiConnections: 4200, lightHours: 6800 },
+  { month: "May '25", kwhGenerated: 35100, co2Avoided: 14742, wifiConnections: 4600, lightHours: 7100 },
+  { month: "Jun '25", kwhGenerated: 38200, co2Avoided: 16044, wifiConnections: 5100, lightHours: 7500 },
+  { month: "Jul '25", kwhGenerated: 41800, co2Avoided: 17556, wifiConnections: 5800, lightHours: 8200 },
+  { month: "Aug '25", kwhGenerated: 43500, co2Avoided: 18270, wifiConnections: 6200, lightHours: 8600 },
+  { month: "Sep '25", kwhGenerated: 40900, co2Avoided: 17178, wifiConnections: 5900, lightHours: 8100 },
+  { month: "Oct '25", kwhGenerated: 37600, co2Avoided: 15792, wifiConnections: 5400, lightHours: 7600 },
+  { month: "Nov '25", kwhGenerated: 34200, co2Avoided: 14364, wifiConnections: 4900, lightHours: 7000 },
+  { month: "Dec '25", kwhGenerated: 31800, co2Avoided: 13356, wifiConnections: 4500, lightHours: 6600 },
+  { month: "Jan '26", kwhGenerated: 33600, co2Avoided: 14112, wifiConnections: 4800, lightHours: 6900 },
+  { month: "Feb '26", kwhGenerated: 36200, co2Avoided: 15204, wifiConnections: 5300, lightHours: 7300 },
+  { month: "Mar '26", kwhGenerated: 39800, co2Avoided: 16716, wifiConnections: 5700, lightHours: 7900 },
 ];
 
+export const emissionsTimeline = sunlightAssetTimeline.map((d) => ({
+  month: d.month,
+  avoided: Math.round(d.co2Avoided / 1000),
+  cumulative: 0,
+}));
+
 export const sdgRadarData = [
-  { sdg: "SDG 4\nEducation", score: 78, fullMark: 100 },
-  { sdg: "SDG 7\nEnergy", score: 95, fullMark: 100 },
-  { sdg: "SDG 9\nInfrastructure", score: 82, fullMark: 100 },
-  { sdg: "SDG 10\nInequality", score: 70, fullMark: 100 },
-  { sdg: "SDG 11\nCommunities", score: 88, fullMark: 100 },
-  { sdg: "SDG 13\nClimate", score: 91, fullMark: 100 },
+  { sdg: "Quality Education", sdgNum: "SDG 4", score: 78, fullMark: 100 },
+  { sdg: "Affordable Energy", sdgNum: "SDG 7", score: 95, fullMark: 100 },
+  { sdg: "Infrastructure", sdgNum: "SDG 9", score: 82, fullMark: 100 },
+  { sdg: "Reduced Inequality", sdgNum: "SDG 10", score: 70, fullMark: 100 },
+  { sdg: "Sustainable Cities", sdgNum: "SDG 11", score: 88, fullMark: 100 },
+  { sdg: "Climate Action", sdgNum: "SDG 13", score: 91, fullMark: 100 },
 ];
 
 export interface ELISAUnit {

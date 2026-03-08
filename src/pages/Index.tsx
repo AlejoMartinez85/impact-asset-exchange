@@ -1,7 +1,8 @@
 import { DollarSign, Leaf, Zap, Clock, Users } from "lucide-react";
 import KPICard from "@/components/KPICard";
-import EmissionsChart from "@/components/EmissionsChart";
+import SunlightAssetChart from "@/components/SunlightAssetChart";
 import SDGRadarChart from "@/components/SDGRadarChart";
+import CommunityEcosystemChart from "@/components/CommunityEcosystemChart";
 import LiveMap from "@/components/LiveMap";
 import { kpiData, sponsorInfo } from "@/data/mockData";
 
@@ -23,12 +24,16 @@ const Index = () => {
         <KPICard title="Beneficiaries" value={`${(kpiData.totalBeneficiaries / 1000).toFixed(1)}K`} subtitle="Direct impact" icon={Users} trend="2,400 new" trendUp delay={0.2} />
       </div>
 
-      <LiveMap />
+      {/* Full-width Sunlight-to-Asset area chart */}
+      <SunlightAssetChart />
 
+      {/* Two-column: SDG Radar + Community Ecosystem */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <EmissionsChart />
         <SDGRadarChart />
+        <CommunityEcosystemChart />
       </div>
+
+      <LiveMap />
     </div>
   );
 };
