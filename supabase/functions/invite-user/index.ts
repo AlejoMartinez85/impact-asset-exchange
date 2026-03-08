@@ -50,7 +50,7 @@ serve(async (req) => {
       });
     }
 
-    const { email, display_name, sponsor_name, phone, role } = await req.json();
+    const { email, display_name, sponsor_name, sponsor_id, phone, role } = await req.json();
 
     if (!email || !role) {
       return new Response(JSON.stringify({ error: "email and role are required" }), {
