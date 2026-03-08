@@ -14,7 +14,92 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      elisa_poles: {
+        Row: {
+          community: string
+          country: string
+          created_at: string
+          hardware_secret: string
+          id: string
+          last_ping_at: string | null
+          latitude: number | null
+          longitude: number | null
+          serial_number: string
+          sponsor_name: string
+          status: Database["public"]["Enums"]["pole_status"]
+          updated_at: string
+        }
+        Insert: {
+          community: string
+          country: string
+          created_at?: string
+          hardware_secret: string
+          id?: string
+          last_ping_at?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          serial_number: string
+          sponsor_name: string
+          status?: Database["public"]["Enums"]["pole_status"]
+          updated_at?: string
+        }
+        Update: {
+          community?: string
+          country?: string
+          created_at?: string
+          hardware_secret?: string
+          id?: string
+          last_ping_at?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          serial_number?: string
+          sponsor_name?: string
+          status?: Database["public"]["Enums"]["pole_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      telemetry_logs: {
+        Row: {
+          co2_avoided_kg: number
+          id: string
+          kwh_generated: number
+          light_hours: number
+          pole_id: string
+          raw_payload: Json | null
+          received_at: string
+          wifi_connections: number
+        }
+        Insert: {
+          co2_avoided_kg: number
+          id?: string
+          kwh_generated: number
+          light_hours?: number
+          pole_id: string
+          raw_payload?: Json | null
+          received_at?: string
+          wifi_connections?: number
+        }
+        Update: {
+          co2_avoided_kg?: number
+          id?: string
+          kwh_generated?: number
+          light_hours?: number
+          pole_id?: string
+          raw_payload?: Json | null
+          received_at?: string
+          wifi_connections?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "telemetry_logs_pole_id_fkey"
+            columns: ["pole_id"]
+            isOneToOne: false
+            referencedRelation: "elisa_poles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +108,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      pole_status: "active" | "maintenance" | "offline" | "decommissioned"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +235,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      pole_status: ["active", "maintenance", "offline", "decommissioned"],
+    },
   },
 } as const
