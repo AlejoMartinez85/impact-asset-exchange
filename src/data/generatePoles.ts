@@ -68,4 +68,4 @@ export function generateMockPoles(totalCount: number = 783): ELISAUnit[] {
   return poles;
 }
 
-export const generatedPoles = generateMockPoles(783);
+export const generatedPoles = generateMockPoles(100);
