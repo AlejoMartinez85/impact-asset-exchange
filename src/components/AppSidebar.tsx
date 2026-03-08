@@ -1,4 +1,4 @@
-import { LayoutDashboard, Map, FileText, Cpu, Settings, Sun, CreditCard, Activity, Users, Shield, Cog } from "lucide-react";
+import { LayoutDashboard, Map, FileText, Cpu, Settings, Sun, CreditCard, Activity, Users, Shield, Cog, Building2 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
