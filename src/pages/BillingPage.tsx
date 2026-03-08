@@ -313,7 +313,7 @@ const BillingPage = () => {
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <p className="text-xs text-muted-foreground">
-                Then <strong className="text-foreground">${totalOpex.toLocaleString()}/year</strong> for continued ESG telemetry & AI certification
+                Then <strong className="text-foreground"><AnimatedCounter value={totalOpex} prefix="$" className="inline" />/year</strong> for continued ESG telemetry & AI certification
               </p>
               
               <Button
