@@ -43,18 +43,27 @@ import { Progress } from "@/components/ui/progress";
 import { hardwareHealth, elisaUnits } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
 
-// Mock provisioned poles for the admin table
-const provisionedPoles = [
-  { serial: "ELISA-PH-001", sponsor: "Global Beverage Co.", community: "Barangay Luz", country: "Philippines", status: "active" as const, lastPing: "2 min ago", secret: "sk_ph001_a7b3…" },
-  { serial: "ELISA-CO-012", sponsor: "Global Beverage Co.", community: "Villa Esperanza", country: "Colombia", status: "active" as const, lastPing: "5 min ago", secret: "sk_co012_f9e2…" },
-  { serial: "ELISA-KE-005", sponsor: "AB-InBev", community: "Kibera South", country: "Kenya", status: "maintenance" as const, lastPing: "3 hrs ago", secret: "sk_ke005_d4c1…" },
-  { serial: "ELISA-IN-022", sponsor: "Nestlé", community: "Jaipur Rural", country: "India", status: "active" as const, lastPing: "1 min ago", secret: "sk_in022_b8a6…" },
-  { serial: "ELISA-BR-008", sponsor: "Global Beverage Co.", community: "Rio Negro", country: "Brazil", status: "active" as const, lastPing: "8 min ago", secret: "sk_br008_e3f7…" },
-  { serial: "ELISA-NG-003", sponsor: "AB-InBev", community: "Epe District", country: "Nigeria", status: "active" as const, lastPing: "3 min ago", secret: "sk_ng003_c2d5…" },
-  { serial: "ELISA-MX-015", sponsor: "Nestlé", community: "San Pablo", country: "Mexico", status: "active" as const, lastPing: "4 min ago", secret: "sk_mx015_a1b9…" },
-  { serial: "ELISA-ID-009", sponsor: "Global Beverage Co.", community: "Ende Village", country: "Indonesia", status: "offline" as const, lastPing: "12 hrs ago", secret: "sk_id009_f6e8…" },
-  { serial: "ELISA-GH-002", sponsor: "AB-InBev", community: "Tamale North", country: "Ghana", status: "active" as const, lastPing: "1 min ago", secret: "sk_gh002_d7c3…" },
-  { serial: "ELISA-PE-011", sponsor: "Nestlé", community: "Ollantaytambo", country: "Peru", status: "active" as const, lastPing: "6 min ago", secret: "sk_pe011_b4a2…" },
+type ProvisionedPole = {
+  serial: string;
+  sponsor: string;
+  community: string;
+  country: string;
+  status: "active" | "maintenance" | "offline" | "decommissioned";
+  lastPing: string;
+  secret: string;
+};
+
+const initialPoles: ProvisionedPole[] = [
+  { serial: "ELISA-PH-001", sponsor: "Global Beverage Co.", community: "Barangay Luz", country: "Philippines", status: "active", lastPing: "2 min ago", secret: "sk_ph001_a7b3…" },
+  { serial: "ELISA-CO-012", sponsor: "Global Beverage Co.", community: "Villa Esperanza", country: "Colombia", status: "active", lastPing: "5 min ago", secret: "sk_co012_f9e2…" },
+  { serial: "ELISA-KE-005", sponsor: "AB-InBev", community: "Kibera South", country: "Kenya", status: "maintenance", lastPing: "3 hrs ago", secret: "sk_ke005_d4c1…" },
+  { serial: "ELISA-IN-022", sponsor: "Nestlé", community: "Jaipur Rural", country: "India", status: "active", lastPing: "1 min ago", secret: "sk_in022_b8a6…" },
+  { serial: "ELISA-BR-008", sponsor: "Global Beverage Co.", community: "Rio Negro", country: "Brazil", status: "active", lastPing: "8 min ago", secret: "sk_br008_e3f7…" },
+  { serial: "ELISA-NG-003", sponsor: "AB-InBev", community: "Epe District", country: "Nigeria", status: "active", lastPing: "3 min ago", secret: "sk_ng003_c2d5…" },
+  { serial: "ELISA-MX-015", sponsor: "Nestlé", community: "San Pablo", country: "Mexico", status: "active", lastPing: "4 min ago", secret: "sk_mx015_a1b9…" },
+  { serial: "ELISA-ID-009", sponsor: "Global Beverage Co.", community: "Ende Village", country: "Indonesia", status: "offline", lastPing: "12 hrs ago", secret: "sk_id009_f6e8…" },
+  { serial: "ELISA-GH-002", sponsor: "AB-InBev", community: "Tamale North", country: "Ghana", status: "active", lastPing: "1 min ago", secret: "sk_gh002_d7c3…" },
+  { serial: "ELISA-PE-011", sponsor: "Nestlé", community: "Ollantaytambo", country: "Peru", status: "active", lastPing: "6 min ago", secret: "sk_pe011_b4a2…" },
 ];
 
 const sponsors = ["Global Beverage Co.", "AB-InBev", "Nestlé", "Unilever", "Coca-Cola"];
