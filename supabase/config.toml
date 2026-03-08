@@ -1,1 +1,7 @@
 project_id = "bujpngyvzhdtzkwrcvbw"
+
+[functions.create-cluster-checkout]
+verify_jwt = false
+
+[functions.customer-portal]
+verify_jwt = false
