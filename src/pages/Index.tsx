@@ -5,6 +5,7 @@ import SunlightAssetChart from "@/components/SunlightAssetChart";
 import SDGRadarChart from "@/components/SDGRadarChart";
 import CommunityEcosystemChart from "@/components/CommunityEcosystemChart";
 import LiveMap from "@/components/LiveMap";
+import AuditableESGTable from "@/components/AuditableESGTable";
 import LiveIoTSimulator from "@/components/LiveIoTSimulator";
 import { kpiData, sponsorInfo } from "@/data/mockData";
 import { generatedPoles } from "@/data/generatePoles";
