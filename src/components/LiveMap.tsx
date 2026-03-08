@@ -197,7 +197,7 @@ const LiveMap = () => {
           className="w-full h-full"
           style={{ width: "100%", height: "100%" }}
         >
-          <ZoomableGroup onMoveEnd={handleZoomEnd} minZoom={1} maxZoom={16}>
+          <ZoomableGroup zoom={zoom} center={center} onMoveEnd={handleMoveEnd} minZoom={MIN_ZOOM} maxZoom={MAX_ZOOM}>
             <Geographies geography={GEO_URL}>
               {({ geographies }) =>
                 geographies.map((geo) => (
