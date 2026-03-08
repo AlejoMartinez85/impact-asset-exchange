@@ -121,12 +121,28 @@ const ESGReportDocument = () => {
           <KPIBlock label="Total Clean Energy Generated" value={`${kpiData.cleanEnergy.toLocaleString()} kWh`} sub="Cumulative solar output from active ELISA® fleet" />
           <KPIBlock label="Scope 3 CO₂ Avoided" value={`${kpiData.co2Avoided.toLocaleString()} Tons`} sub="Verified emissions displacement vs. diesel baseline" />
         </div>
-        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 text-sm text-emerald-900 leading-relaxed mb-2">
+        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 text-sm text-emerald-900 leading-relaxed mb-4">
           <strong>Carbon Offset Equivalent:</strong> The {kpiData.co2Avoided.toLocaleString()} tons of CO₂ avoided is equivalent to removing approximately <strong>{Math.round(kpiData.co2Avoided / 4.6).toLocaleString()} passenger vehicles</strong> from the road for one year, or preserving <strong>{Math.round(kpiData.co2Avoided * 16.5).toLocaleString()} trees</strong> worth of carbon sequestration.
         </div>
-        <p className="text-[11px] text-gray-500 italic">
-          Note: Each ELISA® unit carries a certified <strong>22.8-year operational lifespan</strong>, ensuring long-term environmental asset generation well beyond the reporting period.
-        </p>
+
+        {/* Monthly Trends Chart */}
+        <div className="border border-gray-200 rounded-lg p-4 mb-2">
+          <p className="text-[11px] font-bold text-gray-900 mb-3 uppercase tracking-widest">Monthly Environmental Output — kWh Generated vs CO₂ Avoided (Tons)</p>
+          <div style={{ width: "100%", height: 220 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={MONTHLY_ENV_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#6b7280" }} />
+                <YAxis yAxisId="kwh" tick={{ fontSize: 10, fill: "#6b7280" }} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
+                <YAxis yAxisId="co2" orientation="right" tick={{ fontSize: 10, fill: "#6b7280" }} unit="t" />
+                <Tooltip contentStyle={{ fontSize: 11 }} />
+                <Legend wrapperStyle={{ fontSize: 10 }} />
+                <Bar yAxisId="kwh" dataKey="kwh" name="kWh Generated" fill="#f59e0b" radius={[3, 3, 0, 0]} />
+                <Bar yAxisId="co2" dataKey="co2" name="CO₂ Avoided (t)" fill="#10b981" radius={[3, 3, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
 
         {/* §3 SOCIAL ECOSYSTEM */}
         <SectionTitle number="03" title="Social Ecosystem — The 'S' in ESG" />
