@@ -1,6 +1,18 @@
 import { Sun, Wifi, Lightbulb, Globe, Shield, Hash } from "lucide-react";
 import { sponsorInfo, kpiData, sdgRadarData } from "@/data/mockData";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
+const MONTHLY_SOCIAL_DATA = [
+  { month: "Jul", wifi: 4200, lighting: 3570 },
+  { month: "Aug", wifi: 4800, lighting: 4080 },
+  { month: "Sep", wifi: 4550, lighting: 3870 },
+  { month: "Oct", wifi: 5100, lighting: 4335 },
+  { month: "Nov", wifi: 5600, lighting: 4760 },
+  { month: "Dec", wifi: 5300, lighting: 4505 },
+  { month: "Jan", wifi: 3900, lighting: 3315 },
+  { month: "Feb", wifi: 4100, lighting: 3485 },
+  { month: "Mar", wifi: 4700, lighting: 3995 },
+];
 
 const MONTHLY_ENV_DATA = [
   { month: "Jul", kwh: 54200, co2: 210 },
@@ -151,9 +163,27 @@ const ESGReportDocument = () => {
           <KPIBlock label="WiFi Uptime" value={`${Math.round(kpiData.uptimeHours / 1000).toLocaleString()}K hrs`} sub="Cumulative free connectivity hours" />
           <KPIBlock label="Public Lighting" value={`${Math.round(kpiData.uptimeHours * 0.85 / 1000).toLocaleString()}K hrs`} sub="Cumulative safe-lighting hours" />
         </div>
-        <p className="text-sm text-gray-700 leading-relaxed">
+        <p className="text-sm text-gray-700 leading-relaxed mb-4">
           By providing free, decentralized internet and lighting infrastructure, the ELISA® network bridges the digital divide and fosters safe, connected communities. Each pole serves as a dual-purpose public utility—delivering <strong className="text-gray-900">solar-powered LED lighting</strong> for pedestrian safety and <strong className="text-gray-900">free WiFi connectivity</strong> for education, commerce, and healthcare access.
         </p>
+
+        {/* Social Trends Chart */}
+        <div className="border border-gray-200 rounded-lg p-4">
+          <p className="text-[11px] font-bold text-gray-900 mb-3 uppercase tracking-widest">Monthly Social Output — WiFi Uptime & Lighting Hours</p>
+          <div style={{ width: "100%", height: 220 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={MONTHLY_SOCIAL_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#6b7280" }} />
+                <YAxis tick={{ fontSize: 10, fill: "#6b7280" }} tickFormatter={(v) => `${(v / 1000).toFixed(1)}K`} />
+                <Tooltip contentStyle={{ fontSize: 11 }} formatter={(value: number) => `${value.toLocaleString()} hrs`} />
+                <Legend wrapperStyle={{ fontSize: 10 }} />
+                <Line type="monotone" dataKey="wifi" name="WiFi Uptime (hrs)" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="lighting" name="Lighting Hours" stroke="#f59e0b" strokeWidth={2} dot={{ r: 3 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
 
         {/* §4 UN SDG ALIGNMENT */}
         <SectionTitle number="04" title="UN Sustainable Development Goal Alignment Matrix" />
