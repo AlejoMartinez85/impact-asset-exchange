@@ -1,6 +1,15 @@
 import { Sun, Wifi, Lightbulb, Globe, Shield, Hash } from "lucide-react";
 import { sponsorInfo, kpiData, sdgRadarData } from "@/data/mockData";
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
+const SDG_DONUT_DATA = [
+  { name: "SDG 7 – Clean Energy", value: 28, color: "#FCC30B" },
+  { name: "SDG 13 – Climate Action", value: 22, color: "#3F7E44" },
+  { name: "SDG 9 – Infrastructure", value: 18, color: "#FD6925" },
+  { name: "SDG 11 – Sustainable Cities", value: 14, color: "#FD9D24" },
+  { name: "SDG 10 – Reduced Inequalities", value: 10, color: "#DD1367" },
+  { name: "SDG 4 – Quality Education", value: 8, color: "#C5192D" },
+];
 
 const MONTHLY_SOCIAL_DATA = [
   { month: "Jul", wifi: 4200, lighting: 3570 },
