@@ -11,6 +11,12 @@ const SDG_DONUT_DATA = [
   { name: "SDG 4 – Quality Education", value: 8, color: "#C5192D" },
 ];
 
+const GOVERNANCE_DATA = [
+  { category: "Data Transparency", telemetry: 92, audit: 88, compliance: 95 },
+  { category: "Asset Traceability", telemetry: 98, audit: 96, compliance: 100 },
+  { category: "Reporting Standards", telemetry: 85, audit: 90, compliance: 94 },
+];
+
 const MONTHLY_SOCIAL_DATA = [
   { month: "Jul", wifi: 4200, lighting: 3570 },
   { month: "Aug", wifi: 4800, lighting: 4080 },
