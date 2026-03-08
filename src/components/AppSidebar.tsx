@@ -18,6 +18,7 @@ const navItems = [
   { title: "Live Map", url: "/map", icon: Map },
   { title: "AI Reports", url: "/reports", icon: FileText },
   { title: "Hardware Health", url: "/hardware", icon: Cpu },
+  { title: "Billing", url: "/billing", icon: CreditCard },
   { title: "Developer", url: "/developer", icon: Settings },
 ];
 
