@@ -163,8 +163,9 @@ const LiveMap = () => {
   const clusters = useMemo(() => clusterPoles(poles, gridSize), [poles, gridSize]);
   const countries = useMemo(() => new Set(poles.map((u) => u.country)).size, [poles]);
 
-  const handleZoomEnd = useCallback((position: { zoom: number }) => {
+  const handleMoveEnd = useCallback((position: { coordinates: [number, number]; zoom: number }) => {
     setZoom(position.zoom);
+    setCenter(position.coordinates);
   }, []);
 
   return (
