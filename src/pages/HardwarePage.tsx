@@ -110,8 +110,20 @@ const HardwarePage = () => {
   const handleRegister = async () => {
     if (!newSerial || !newSponsor || !newCommunity || !newCountry) return;
     setRegistering(true);
-    // TODO: Replace with supabase insert to elisa_poles table
     await new Promise((r) => setTimeout(r, 1200));
+
+    const mockSecret = `sk_${newSerial.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 6)}_${Math.random().toString(36).slice(2, 6)}…`;
+    const newPole: ProvisionedPole = {
+      serial: newSerial,
+      sponsor: newSponsor,
+      community: newCommunity,
+      country: newCountry,
+      status: "active",
+      lastPing: "Just now",
+      secret: mockSecret,
+    };
+
+    setPoles((prev) => [newPole, ...prev]);
     toast({
       title: "Pole Registered",
       description: `${newSerial} linked to ${newSponsor} in ${newCommunity}, ${newCountry}.`,
