@@ -25,12 +25,15 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route
             path="/dashboard/*"
             element={
+              <ProtectedRoute>
               <AppLayout>
                 <Routes>
                   <Route path="/" element={<Index />} />
