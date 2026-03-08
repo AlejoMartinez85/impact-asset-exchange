@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import AnimatedCounter from "@/components/AnimatedCounter";
 
 const CLUSTER_OPTIONS = [
   { qty: 1, discount: 0, label: "1 Cluster" },
