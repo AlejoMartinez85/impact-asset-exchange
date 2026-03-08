@@ -50,7 +50,7 @@ serve(async (req) => {
       });
     }
 
-    const { email, display_name, sponsor_name, phone, role } = await req.json();
+    const { email, display_name, sponsor_name, sponsor_id, phone, role } = await req.json();
 
     if (!email || !role) {
       return new Response(JSON.stringify({ error: "email and role are required" }), {
@@ -87,6 +87,7 @@ serve(async (req) => {
     await supabaseAdmin.from("profiles").update({
       display_name: display_name || email.split("@")[0],
       sponsor_name: sponsor_name || null,
+      sponsor_id: sponsor_id || null,
       phone: phone || null,
     }).eq("id", userId);
 

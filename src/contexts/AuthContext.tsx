@@ -9,6 +9,7 @@ interface Profile {
   display_name: string | null;
   avatar_url: string | null;
   sponsor_name: string | null;
+  sponsor_id: string | null;
   phone: string | null;
 }
 
@@ -19,6 +20,7 @@ interface AuthContextValue {
   roles: AppRole[];
   isSuperAdmin: boolean;
   isSponsor: boolean;
+  sponsorId: string | null;
   loading: boolean;
   signOut: () => Promise<void>;
 }
@@ -99,6 +101,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         roles,
         isSuperAdmin: roles.includes("super_admin"),
         isSponsor: roles.includes("sponsor"),
+        sponsorId: profile?.sponsor_id ?? null,
         loading,
         signOut,
       }}
