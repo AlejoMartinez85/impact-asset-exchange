@@ -296,6 +296,36 @@ const LiveMap = () => {
           totalCount={poles.length}
         />
 
+        {/* ─── Zoom Controls ─── */}
+        <div className="absolute bottom-4 right-4 z-20 flex flex-col gap-1.5">
+          <Button
+            variant="secondary"
+            size="icon"
+            className="h-8 w-8 bg-card/90 backdrop-blur-xl border border-border hover:bg-secondary hover:border-primary/30 shadow-lg transition-all"
+            onClick={handleZoomIn}
+            disabled={zoom >= MAX_ZOOM}
+          >
+            <Plus className="h-3.5 w-3.5" />
+          </Button>
+          <Button
+            variant="secondary"
+            size="icon"
+            className="h-8 w-8 bg-card/90 backdrop-blur-xl border border-border hover:bg-secondary hover:border-primary/30 shadow-lg transition-all"
+            onClick={handleZoomOut}
+            disabled={zoom <= MIN_ZOOM}
+          >
+            <Minus className="h-3.5 w-3.5" />
+          </Button>
+          <Button
+            variant="secondary"
+            size="icon"
+            className="h-8 w-8 bg-card/90 backdrop-blur-xl border border-border hover:bg-secondary hover:border-primary/30 shadow-lg transition-all mt-1"
+            onClick={handleReset}
+          >
+            <RotateCcw className="h-3 w-3" />
+          </Button>
+        </div>
+
         <AnimatePresence>
           {selected && <DetailPanel unit={selected} onClose={() => setSelected(null)} />}
         </AnimatePresence>
