@@ -184,7 +184,6 @@ const ESGReportDocument = () => {
             </ResponsiveContainer>
           </div>
         </div>
-        </p>
 
         {/* §4 UN SDG ALIGNMENT */}
         <SectionTitle number="04" title="UN Sustainable Development Goal Alignment Matrix" />
