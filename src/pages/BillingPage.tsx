@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   CreditCard,
@@ -40,6 +41,21 @@ const BillingPage = () => {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
   const [selectedClusterQty, setSelectedClusterQty] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const success = searchParams.get("success");
+    const canceled = searchParams.get("canceled");
+    const clusters = searchParams.get("clusters");
+
+    if (success === "true") {
+      toast.success(`🎉 Payment successful! ${clusters || 1} Cluster(s) deployment initiated.`, { duration: 8000 });
+      setSearchParams({}, { replace: true });
+    } else if (canceled === "true") {
+      toast.info("Checkout was canceled. No charges were made.", { duration: 6000 });
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const selectedOption = CLUSTER_OPTIONS.find((o) => o.qty === selectedClusterQty) || CLUSTER_OPTIONS[0];
   const discountMultiplier = 1 - selectedOption.discount / 100;
