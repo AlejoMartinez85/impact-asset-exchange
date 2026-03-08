@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sun, ArrowRight, Zap, Wifi, Globe, BarChart3, Shield, Users, ChevronRight, X } from "lucide-react";
-import heroImage from "@/assets/hero-grid.jpg";
 
 const stats = [
   { value: "7,000+", label: "ELISAs Installed" },
