@@ -1,5 +1,6 @@
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sun, ArrowRight, Zap, Wifi, Globe, BarChart3, Shield, Users, ChevronRight, X } from "lucide-react";
 
