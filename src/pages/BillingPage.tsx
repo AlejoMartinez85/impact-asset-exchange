@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import AnimatedCounter from "@/components/AnimatedCounter";
 
 const CLUSTER_OPTIONS = [
   { qty: 1, discount: 0, label: "1 Cluster" },
@@ -281,30 +282,38 @@ const BillingPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
               <div className="bg-card rounded-lg p-4 border border-border">
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Deployment (CapEx)</p>
-                <p className="text-xl font-bold text-foreground">${totalCapex.toLocaleString()}</p>
+                <p className="text-xl font-bold text-foreground">
+                  <AnimatedCounter value={totalCapex} prefix="$" />
+                </p>
                 {selectedOption.discount > 0 && (
                   <p className="text-[10px] text-primary">-{selectedOption.discount}% volume discount</p>
                 )}
               </div>
               <div className="bg-card rounded-lg p-4 border border-border">
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Year 1 SaaS (OpEx)</p>
-                <p className="text-xl font-bold text-foreground">${totalOpex.toLocaleString()}</p>
+                <p className="text-xl font-bold text-foreground">
+                  <AnimatedCounter value={totalOpex} prefix="$" />
+                </p>
                 {selectedOption.discount > 0 && (
                   <p className="text-[10px] text-primary">-{selectedOption.discount}% volume discount</p>
                 )}
               </div>
               <div className="bg-primary/10 rounded-lg p-4 border border-primary/30">
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Total Initial Investment</p>
-                <p className="text-xl font-bold text-foreground">${totalInitial.toLocaleString()}</p>
+                <p className="text-xl font-bold text-foreground">
+                  <AnimatedCounter value={totalInitial} prefix="$" />
+                </p>
                 {savings > 0 && (
-                  <p className="text-[10px] text-primary font-medium">You save ${savings.toLocaleString()}</p>
+                  <p className="text-[10px] text-primary font-medium">
+                    You save <AnimatedCounter value={savings} prefix="$" className="inline" />
+                  </p>
                 )}
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <p className="text-xs text-muted-foreground">
-                Then <strong className="text-foreground">${totalOpex.toLocaleString()}/year</strong> for continued ESG telemetry & AI certification
+                Then <strong className="text-foreground"><AnimatedCounter value={totalOpex} prefix="$" className="inline" />/year</strong> for continued ESG telemetry & AI certification
               </p>
               
               <Button
