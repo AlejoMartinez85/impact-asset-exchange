@@ -5,11 +5,31 @@ import { Button } from "@/components/ui/button";
 import { Sun, ArrowRight, Zap, Wifi, Globe, BarChart3, Shield, Users, ChevronRight, X } from "lucide-react";
 
 const stats = [
-  { value: "7,000+", label: "ELISAs Installed" },
-  { value: "35", label: "Countries" },
-  { value: "550,728+", label: "Beneficiaries" },
-  { value: "$12M+", label: "ESG Value Generated" },
+  { value: 7000, prefix: "", suffix: "+", label: "ELISAs Installed" },
+  { value: 35, prefix: "", suffix: "", label: "Countries" },
+  { value: 550728, prefix: "", suffix: "+", label: "Beneficiaries" },
+  { value: 12, prefix: "$", suffix: "M+", label: "ESG Value Generated" },
 ];
+
+function AnimatedCounter({ value, prefix = "", suffix = "", duration = 2 }: { value: number; prefix?: string; suffix?: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (!inView) return;
+    const start = performance.now();
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / (duration * 1000), 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      setCount(Math.floor(eased * value));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [inView, value, duration]);
+
+  return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
+}
 
 const sponsors = ["AB-InBev", "Nestlé", "Google", "PepsiCo", "Unilever", "Coca-Cola"];
 
