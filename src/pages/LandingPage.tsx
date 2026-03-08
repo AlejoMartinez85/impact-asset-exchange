@@ -1,14 +1,35 @@
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sun, ArrowRight, Zap, Wifi, Globe, BarChart3, Shield, Users, ChevronRight, X } from "lucide-react";
 
 const stats = [
-  { value: "7,000+", label: "ELISAs Installed" },
-  { value: "35", label: "Countries" },
-  { value: "550,728+", label: "Beneficiaries" },
-  { value: "$12M+", label: "ESG Value Generated" },
+  { value: 7000, prefix: "", suffix: "+", label: "ELISAs Installed" },
+  { value: 35, prefix: "", suffix: "", label: "Countries" },
+  { value: 550728, prefix: "", suffix: "+", label: "Beneficiaries" },
+  { value: 12, prefix: "$", suffix: "M+", label: "ESG Value Generated" },
 ];
+
+function AnimatedCounter({ value, prefix = "", suffix = "", duration = 2 }: { value: number; prefix?: string; suffix?: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (!inView) return;
+    const start = performance.now();
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / (duration * 1000), 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      setCount(Math.floor(eased * value));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [inView, value, duration]);
+
+  return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
+}
 
 const sponsors = ["AB-InBev", "Nestlé", "Google", "PepsiCo", "Unilever", "Coca-Cola"];
 
@@ -145,7 +166,9 @@ const LandingPage = () => {
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
               <motion.div key={stat.label} variants={fadeUp} custom={i} className="text-center">
-                <div className="text-3xl sm:text-4xl font-extrabold text-foreground font-mono">{stat.value}</div>
+                <div className="text-3xl sm:text-4xl font-extrabold text-foreground font-mono">
+                  <AnimatedCounter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} duration={2.2} />
+                </div>
                 <div className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{stat.label}</div>
               </motion.div>
             ))}
