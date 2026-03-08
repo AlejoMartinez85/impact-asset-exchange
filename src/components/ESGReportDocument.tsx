@@ -11,6 +11,12 @@ const SDG_DONUT_DATA = [
   { name: "SDG 4 – Quality Education", value: 8, color: "#C5192D" },
 ];
 
+const GOVERNANCE_DATA = [
+  { category: "Data Transparency", telemetry: 92, audit: 88, compliance: 95 },
+  { category: "Asset Traceability", telemetry: 98, audit: 96, compliance: 100 },
+  { category: "Reporting Standards", telemetry: 85, audit: 90, compliance: 94 },
+];
+
 const MONTHLY_SOCIAL_DATA = [
   { month: "Jul", wifi: 4200, lighting: 3570 },
   { month: "Aug", wifi: 4800, lighting: 4080 },
@@ -241,8 +247,31 @@ const ESGReportDocument = () => {
           </div>
         </div>
 
-        {/* §5 AUDIT LEDGER */}
-        <SectionTitle number="05" title="Audit Ledger — Asset Traceability" />
+        {/* §5 GOVERNANCE */}
+        <SectionTitle number="05" title="Governance & Transparency — The 'G' in ESG" />
+        <p className="text-sm text-gray-700 leading-relaxed mb-4">
+          ELISA® infrastructure adheres to GRI 305, SASB, and TCFD disclosure frameworks. All telemetry data is cryptographically hashed and stored on tamper-evident ledgers, ensuring full auditability for corporate compliance teams.
+        </p>
+        <div className="border border-gray-200 rounded-lg p-4 mb-4">
+          <p className="text-[11px] font-bold text-gray-900 mb-3 uppercase tracking-widest">Governance Compliance Scores (%)</p>
+          <div style={{ width: "100%", height: 160 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={GOVERNANCE_DATA} layout="vertical" margin={{ top: 5, right: 10, left: 80, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" horizontal={false} />
+                <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10, fill: "#6b7280" }} unit="%" />
+                <YAxis dataKey="category" type="category" tick={{ fontSize: 10, fill: "#6b7280" }} width={75} />
+                <Tooltip contentStyle={{ fontSize: 11 }} formatter={(value: number) => `${value}%`} />
+                <Legend wrapperStyle={{ fontSize: 10 }} />
+                <Bar dataKey="telemetry" name="Live Telemetry" stackId="a" fill="#3b82f6" />
+                <Bar dataKey="audit" name="Audit Trail" stackId="a" fill="#10b981" />
+                <Bar dataKey="compliance" name="Framework Compliance" stackId="a" fill="#8b5cf6" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* §6 AUDIT LEDGER */}
+        <SectionTitle number="06" title="Audit Ledger — Asset Traceability" />
         <p className="text-[11px] text-gray-500 mb-3">
           Sample of active ELISA® serial numbers with GPS coordinates and individual uptime, proving data is grounded in physical, auditable assets.
         </p>
