@@ -142,9 +142,9 @@ const HardwarePage = () => {
     setTimeout(() => setCopiedSecret(null), 2000);
   };
 
-  const activeCount = provisionedPoles.filter((p) => p.status === "active").length;
-  const maintenanceCount = provisionedPoles.filter((p) => p.status === "maintenance").length;
-  const offlineCount = provisionedPoles.filter((p) => p.status === "offline").length;
+  const activeCount = poles.filter((p) => p.status === "active").length;
+  const maintenanceCount = poles.filter((p) => p.status === "maintenance").length;
+  const offlineCount = poles.filter((p) => p.status === "offline").length;
 
   return (
     <div className="space-y-6">
