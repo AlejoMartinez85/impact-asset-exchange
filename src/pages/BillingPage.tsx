@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useSubscription } from "@/contexts/SubscriptionContext";
+// Subscription context removed for demo mode
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
@@ -52,7 +52,8 @@ const tiers = [
 ];
 
 const BillingPage = () => {
-  const { plan, toggleMockStatus } = useSubscription();
+  const plan = { name: "Platinum ESG Partner", status: "active" as const, annualTotal: 84_000, activePolesCount: 100, renewalDate: "2027-01-15" };
+  const toggleMockStatus = () => {};
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
 
   const handleCheckout = async (tierName: string) => {
