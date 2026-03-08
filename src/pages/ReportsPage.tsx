@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Download, Loader2, Sparkles, AlertCircle, Calendar, Brain } from "lucide-react";
+import { FileText, Download, Loader2, Sparkles, AlertCircle, Calendar, Brain, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { sponsorInfo, kpiData } from "@/data/mockData";
 import { generatedPoles } from "@/data/generatePoles";
 import PaywallGate from "@/components/PaywallGate";
+import ESGReportDocument from "@/components/ESGReportDocument";
 import { useToast } from "@/hooks/use-toast";
 
 const FUNCTION_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-esg-report`;
@@ -33,11 +34,11 @@ const ReportsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [timeframe, setTimeframe] = useState("Q1 2026");
   const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
+  const [showPreview, setShowPreview] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const reportRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  // Cycle loading messages
   useEffect(() => {
     if (!loading) return;
     setLoadingMsgIdx(0);
@@ -138,7 +139,8 @@ const ReportsPage = () => {
   };
 
   const handleDownloadPDF = () => {
-    if (!reportRef.current) return;
+    const docEl = document.getElementById("esg-report-document");
+    if (!docEl) return;
     const printWindow = window.open("", "_blank");
     if (!printWindow) {
       toast({ title: "Popup blocked", description: "Please allow popups to download PDF.", variant: "destructive" });
@@ -148,21 +150,17 @@ const ReportsPage = () => {
       <!DOCTYPE html>
       <html><head><title>ESG Report – ${sponsorInfo.name} – ${timeframe}</title>
       <style>
-        body { font-family: 'Segoe UI', system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #1a1a2e; line-height: 1.7; }
-        h1 { font-size: 22px; border-bottom: 2px solid #10b981; padding-bottom: 8px; margin-top: 32px; }
-        h2 { font-size: 18px; color: #065f46; margin-top: 28px; }
-        h3 { font-size: 14px; color: #047857; margin-top: 20px; }
-        p, li { font-size: 13px; }
-        ul { padding-left: 20px; }
-        hr { border: none; border-top: 1px solid #d1d5db; margin: 24px 0; }
-        strong { color: #064e3b; }
-        @media print { body { margin: 20px; } }
-      </style></head><body>
-      ${reportRef.current.innerHTML}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Georgia', 'Times New Roman', serif; max-width: 900px; margin: 0 auto; color: #111827; }
+        @media print { body { margin: 0; } @page { margin: 20mm; } }
+      </style>
+      <script src="https://cdn.tailwindcss.com"><\/script>
+      </head><body>
+      ${docEl.outerHTML}
       </body></html>
     `);
     printWindow.document.close();
-    setTimeout(() => { printWindow.print(); }, 400);
+    setTimeout(() => { printWindow.print(); }, 600);
   };
 
   const renderMarkdown = (text: string) => {
@@ -191,7 +189,7 @@ const ReportsPage = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 max-w-5xl">
       <div>
         <h2 className="text-lg font-semibold text-foreground">AI ESG Reporting Hub</h2>
         <p className="text-xs text-muted-foreground mt-0.5">
@@ -254,6 +252,16 @@ const ReportsPage = () => {
               )}
             </Button>
 
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-border text-muted-foreground hover:text-foreground"
+              onClick={() => setShowPreview(!showPreview)}
+            >
+              <Eye className="mr-2 h-4 w-4" />
+              {showPreview ? "Hide" : "Preview"} Report Template
+            </Button>
+
             {loading && (
               <Button variant="outline" size="sm" className="text-xs" onClick={() => abortRef.current?.abort()}>
                 Cancel
@@ -310,7 +318,7 @@ const ReportsPage = () => {
           )}
         </AnimatePresence>
 
-        {/* ─── Report Output ─── */}
+        {/* ─── AI Streamed Report Output ─── */}
         {report && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -341,6 +349,30 @@ const ReportsPage = () => {
             </div>
           </motion.div>
         )}
+
+        {/* ─── Static Report Preview (PDF Template) ─── */}
+        <AnimatePresence>
+          {showPreview && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold text-foreground">📄 Report Template Preview</h3>
+                <Button
+                  onClick={handleDownloadPDF}
+                  size="sm"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  <Download className="mr-1.5 h-3.5 w-3.5" />
+                  Download PDF
+                </Button>
+              </div>
+              <ESGReportDocument />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </PaywallGate>
     </div>
   );
