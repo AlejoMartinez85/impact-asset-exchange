@@ -20,6 +20,7 @@ interface AuthContextValue {
   roles: AppRole[];
   isSuperAdmin: boolean;
   isSponsor: boolean;
+  sponsorId: string | null;
   loading: boolean;
   signOut: () => Promise<void>;
 }
