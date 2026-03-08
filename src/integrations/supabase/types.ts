@@ -25,6 +25,7 @@ export type Database = {
           latitude: number | null
           longitude: number | null
           serial_number: string
+          sponsor_id: string | null
           sponsor_name: string
           status: Database["public"]["Enums"]["pole_status"]
           updated_at: string
@@ -39,6 +40,7 @@ export type Database = {
           latitude?: number | null
           longitude?: number | null
           serial_number: string
+          sponsor_id?: string | null
           sponsor_name: string
           status?: Database["public"]["Enums"]["pole_status"]
           updated_at?: string
@@ -53,11 +55,20 @@ export type Database = {
           latitude?: number | null
           longitude?: number | null
           serial_number?: string
+          sponsor_id?: string | null
           sponsor_name?: string
           status?: Database["public"]["Enums"]["pole_status"]
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "elisa_poles_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -66,6 +77,7 @@ export type Database = {
           display_name: string | null
           id: string
           phone: string | null
+          sponsor_id: string | null
           sponsor_name: string | null
           updated_at: string
         }
@@ -75,6 +87,7 @@ export type Database = {
           display_name?: string | null
           id: string
           phone?: string | null
+          sponsor_id?: string | null
           sponsor_name?: string | null
           updated_at?: string
         }
@@ -84,7 +97,40 @@ export type Database = {
           display_name?: string | null
           id?: string
           phone?: string | null
+          sponsor_id?: string | null
           sponsor_name?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sponsors: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          subscription_status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          subscription_status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          subscription_status?: string
           updated_at?: string
         }
         Relationships: []
@@ -153,6 +199,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_my_sponsor_id: { Args: { _user_id: string }; Returns: string }
       get_my_sponsor_name: { Args: { _user_id: string }; Returns: string }
       has_role: {
         Args: {
