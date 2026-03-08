@@ -60,30 +60,34 @@ export interface ELISAUnit {
 }
 
 export const elisaUnits: ELISAUnit[] = [
-  { id: "ELISA-PH-001", name: "Barangay Solar Hub", lat: 14.5, lng: 121.0, status: "active", country: "Philippines", community: "Barangay Luz", wifiUsers: 42, batteryHealth: 94, lightStatus: "on", kwhProduced: 2840, uptime: 99.2 },
-  { id: "ELISA-CO-012", name: "Villa Esperanza Pole", lat: 4.6, lng: -74.1, status: "active", country: "Colombia", community: "Villa Esperanza", wifiUsers: 28, batteryHealth: 87, lightStatus: "on", kwhProduced: 1920, uptime: 97.8 },
-  { id: "ELISA-KE-005", name: "Kibera Light Tower", lat: -1.3, lng: 36.8, status: "maintenance", country: "Kenya", community: "Kibera South", wifiUsers: 0, batteryHealth: 45, lightStatus: "dim", kwhProduced: 3100, uptime: 82.1 },
-  { id: "ELISA-IN-022", name: "Rajasthan Solar Post", lat: 26.9, lng: 75.8, status: "active", country: "India", community: "Jaipur Rural", wifiUsers: 56, batteryHealth: 91, lightStatus: "on", kwhProduced: 4200, uptime: 98.5 },
-  { id: "ELISA-BR-008", name: "Amazônia Beacon", lat: -3.1, lng: -60.0, status: "active", country: "Brazil", community: "Rio Negro", wifiUsers: 19, batteryHealth: 88, lightStatus: "on", kwhProduced: 1580, uptime: 96.3 },
-  { id: "ELISA-NG-003", name: "Lagos Outskirt Node", lat: 6.5, lng: 3.4, status: "active", country: "Nigeria", community: "Epe District", wifiUsers: 35, batteryHealth: 92, lightStatus: "on", kwhProduced: 2650, uptime: 97.1 },
-  { id: "ELISA-MX-015", name: "Oaxaca Community Pole", lat: 17.1, lng: -96.7, status: "active", country: "Mexico", community: "San Pablo", wifiUsers: 31, batteryHealth: 89, lightStatus: "on", kwhProduced: 2100, uptime: 98.0 },
-  { id: "ELISA-ID-009", name: "Flores Island Light", lat: -8.5, lng: 121.4, status: "maintenance", country: "Indonesia", community: "Ende Village", wifiUsers: 0, batteryHealth: 38, lightStatus: "off", kwhProduced: 1800, uptime: 75.4 },
-  { id: "ELISA-GH-002", name: "Tamale Solar Station", lat: 9.4, lng: -0.8, status: "active", country: "Ghana", community: "Tamale North", wifiUsers: 22, batteryHealth: 96, lightStatus: "on", kwhProduced: 3400, uptime: 99.5 },
-  { id: "ELISA-PE-011", name: "Cusco Highland Unit", lat: -13.5, lng: -72.0, status: "active", country: "Peru", community: "Ollantaytambo", wifiUsers: 15, batteryHealth: 85, lightStatus: "on", kwhProduced: 1250, uptime: 95.8 },
+  { id: "ELISA-COL-089", name: "Buenaventura Solar Hub", lat: 3.88, lng: -77.02, status: "active", country: "Colombia", community: "Buenaventura", wifiUsers: 42, batteryHealth: 94, lightStatus: "on", kwhProduced: 2840, uptime: 99.2 },
+  { id: "ELISA-COL-112", name: "Quibdó Light Tower", lat: 5.69, lng: -76.66, status: "active", country: "Colombia", community: "Quibdó", wifiUsers: 28, batteryHealth: 87, lightStatus: "on", kwhProduced: 1920, uptime: 97.8 },
+  { id: "ELISA-COL-045", name: "Tumaco Beacon", lat: 1.80, lng: -78.76, status: "maintenance", country: "Colombia", community: "Tumaco", wifiUsers: 0, batteryHealth: 45, lightStatus: "dim", kwhProduced: 3100, uptime: 82.1 },
+  { id: "ELISA-COL-078", name: "Leticia Amazon Post", lat: -4.21, lng: -69.94, status: "active", country: "Colombia", community: "Leticia", wifiUsers: 19, batteryHealth: 91, lightStatus: "on", kwhProduced: 1580, uptime: 98.5 },
+  { id: "ELISA-COL-156", name: "San Andrés Node", lat: 12.58, lng: -81.70, status: "active", country: "Colombia", community: "San Andrés", wifiUsers: 35, batteryHealth: 92, lightStatus: "on", kwhProduced: 2650, uptime: 97.1 },
+  { id: "ELISA-COL-201", name: "Mitú Rural Pole", lat: 1.25, lng: -70.23, status: "active", country: "Colombia", community: "Mitú", wifiUsers: 15, batteryHealth: 88, lightStatus: "on", kwhProduced: 1250, uptime: 95.8 },
+
+  { id: "ELISA-MEX-034", name: "Oaxaca Community Pole", lat: 17.07, lng: -96.72, status: "active", country: "Mexico", community: "San Pablo", wifiUsers: 31, batteryHealth: 89, lightStatus: "on", kwhProduced: 2100, uptime: 98.0 },
+  { id: "ELISA-MEX-067", name: "Chiapas Solar Station", lat: 16.75, lng: -93.12, status: "active", country: "Mexico", community: "Tuxtla Gutiérrez", wifiUsers: 38, batteryHealth: 93, lightStatus: "on", kwhProduced: 2780, uptime: 99.1 },
+  { id: "ELISA-MEX-091", name: "Guerrero Light Post", lat: 17.55, lng: -99.50, status: "maintenance", country: "Mexico", community: "Acapulco Rural", wifiUsers: 5, batteryHealth: 52, lightStatus: "dim", kwhProduced: 1650, uptime: 85.3 },
+  { id: "ELISA-MEX-118", name: "Tabasco Beacon", lat: 17.99, lng: -92.93, status: "active", country: "Mexico", community: "Villahermosa", wifiUsers: 22, batteryHealth: 90, lightStatus: "on", kwhProduced: 1890, uptime: 96.7 },
+  { id: "ELISA-MEX-142", name: "Yucatán Hub", lat: 20.97, lng: -89.59, status: "active", country: "Mexico", community: "Mérida Rural", wifiUsers: 44, batteryHealth: 96, lightStatus: "on", kwhProduced: 3200, uptime: 99.5 },
+
+  { id: "ELISA-PER-023", name: "Cusco Highland Unit", lat: -13.53, lng: -71.97, status: "active", country: "Peru", community: "Ollantaytambo", wifiUsers: 15, batteryHealth: 85, lightStatus: "on", kwhProduced: 1250, uptime: 95.8 },
+  { id: "ELISA-PER-056", name: "Iquitos River Post", lat: -3.75, lng: -73.25, status: "active", country: "Peru", community: "Iquitos", wifiUsers: 26, batteryHealth: 82, lightStatus: "on", kwhProduced: 2340, uptime: 94.2 },
+  { id: "ELISA-PER-088", name: "Puno Lake Station", lat: -15.84, lng: -70.02, status: "active", country: "Peru", community: "Puno", wifiUsers: 18, batteryHealth: 91, lightStatus: "on", kwhProduced: 1780, uptime: 97.3 },
+  { id: "ELISA-PER-101", name: "Ayacucho Solar Pole", lat: -13.16, lng: -74.22, status: "maintenance", country: "Peru", community: "Ayacucho", wifiUsers: 3, batteryHealth: 38, lightStatus: "off", kwhProduced: 1800, uptime: 75.4 },
+  { id: "ELISA-PER-134", name: "Madre de Dios Hub", lat: -12.59, lng: -69.19, status: "active", country: "Peru", community: "Puerto Maldonado", wifiUsers: 21, batteryHealth: 87, lightStatus: "on", kwhProduced: 2050, uptime: 96.9 },
 ];
 
-export const hardwareHealth = [
-  { id: "ELISA-PH-001", battery: 94, solar: 98, wifi: 100, light: 100, lastPing: "2 min ago" },
-  { id: "ELISA-CO-012", battery: 87, solar: 92, wifi: 95, light: 100, lastPing: "5 min ago" },
-  { id: "ELISA-KE-005", battery: 45, solar: 78, wifi: 0, light: 60, lastPing: "3 hrs ago" },
-  { id: "ELISA-IN-022", battery: 91, solar: 96, wifi: 98, light: 100, lastPing: "1 min ago" },
-  { id: "ELISA-BR-008", battery: 88, solar: 90, wifi: 85, light: 100, lastPing: "8 min ago" },
-  { id: "ELISA-NG-003", battery: 92, solar: 94, wifi: 97, light: 100, lastPing: "3 min ago" },
-  { id: "ELISA-MX-015", battery: 89, solar: 93, wifi: 96, light: 100, lastPing: "4 min ago" },
-  { id: "ELISA-ID-009", battery: 38, solar: 65, wifi: 0, light: 0, lastPing: "12 hrs ago" },
-  { id: "ELISA-GH-002", battery: 96, solar: 99, wifi: 100, light: 100, lastPing: "1 min ago" },
-  { id: "ELISA-PE-011", battery: 85, solar: 88, wifi: 82, light: 100, lastPing: "6 min ago" },
-];
+export const hardwareHealth = elisaUnits.map((u) => ({
+  id: u.id,
+  battery: u.batteryHealth,
+  solar: Math.min(100, u.batteryHealth + Math.floor(Math.random() * 8)),
+  wifi: u.status === "active" ? 90 + Math.floor(Math.random() * 10) : 0,
+  light: u.lightStatus === "on" ? 100 : u.lightStatus === "dim" ? 60 : 0,
+  lastPing: u.status === "active" ? `${Math.floor(Math.random() * 10) + 1} min ago` : "3+ hrs ago",
+}));
 
 export const generateAIReport = (sponsor: typeof sponsorInfo, kpis: typeof kpiData): string => {
   return `# ESG Impact Report — ${sponsor.name}
