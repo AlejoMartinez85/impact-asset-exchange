@@ -14,6 +14,7 @@ import DeveloperPage from "./pages/DeveloperPage";
 import BillingPage from "./pages/BillingPage";
 import TelemetryPage from "./pages/TelemetryPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
+import SuccessPage from "./pages/SuccessPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/success" element={<SuccessPage />} />
           <Route
             path="/dashboard/*"
             element={
