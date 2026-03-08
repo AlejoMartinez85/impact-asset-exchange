@@ -96,6 +96,7 @@ const HardwarePage = () => {
   const [newCountry, setNewCountry] = useState("");
   const [registering, setRegistering] = useState(false);
   const [copiedSecret, setCopiedSecret] = useState<string | null>(null);
+  const [poles, setPoles] = useState<ProvisionedPole[]>(initialPoles);
   const [activeTab, setActiveTab] = useState<"provisioning" | "health">("provisioning");
   const { toast } = useToast();
 
