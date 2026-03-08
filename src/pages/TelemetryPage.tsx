@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Zap, Leaf, Wifi, Activity, Radio } from "lucide-react";
@@ -7,8 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
+import LiveIoTSimulator from "@/components/LiveIoTSimulator";
 
 interface PoleTelemetry {
   pole_id: string;
@@ -86,21 +87,26 @@ const TelemetryPage = () => {
     refetchInterval: 15_000,
   });
 
-  // Realtime subscription for live updates
+  // Simulator overlay deltas
+  const [simDeltas, setSimDeltas] = useState({ kwh: 0, co2: 0, wifi: 0 });
+  const [flashKey, setFlashKey] = useState(0);
+
+  const handleSimTick = useCallback((payload: { kwh_generated: number; co2_avoided_kg: number; wifi_connections: number }) => {
+    setSimDeltas((prev) => ({
+      kwh: prev.kwh + payload.kwh_generated,
+      co2: prev.co2 + payload.co2_avoided_kg,
+      wifi: prev.wifi + payload.wifi_connections,
+    }));
+    setFlashKey((k) => k + 1);
+  }, []);
+
+  // Realtime subscription
   useEffect(() => {
     const channel = supabase
       .channel("telemetry-realtime")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "telemetry_logs" }, () => {
-        // React Query will refetch on next interval; force immediate refetch
-        import("@tanstack/react-query").then(() => {
-          // queryClient invalidation handled by refetchInterval
-        });
-      })
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "telemetry_logs" }, () => {})
       .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   const totals = data?.reduce(
@@ -112,6 +118,14 @@ const TelemetryPage = () => {
     }),
     { kwh: 0, co2: 0, wifi: 0, poles: 0 }
   ) || { kwh: 0, co2: 0, wifi: 0, poles: 0 };
+
+  // Merge sim deltas into display totals
+  const displayTotals = {
+    kwh: totals.kwh + simDeltas.kwh,
+    co2: totals.co2 + simDeltas.co2,
+    wifi: totals.wifi + simDeltas.wifi,
+    poles: totals.poles || 255, // Show simulated pole count if no real data
+  };
 
   const chartData = (data || [])
     .filter((p) => p.total_kwh > 0 || p.total_co2 > 0 || p.total_wifi > 0)
@@ -133,7 +147,8 @@ const TelemetryPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      {/* Header with Simulator */}
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <Activity className="h-5 w-5 text-primary" />
@@ -143,12 +158,15 @@ const TelemetryPage = () => {
             Live stats per ELISA pole · Auto-refreshes every 15s
           </p>
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-          </span>
-          <span className="text-xs text-muted-foreground">Live</span>
+        <div className="flex items-center gap-4">
+          <LiveIoTSimulator onTick={handleSimTick} />
+          <div className="flex items-center gap-1.5">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+            </span>
+            <span className="text-xs text-muted-foreground">Live</span>
+          </div>
         </div>
       </div>
 
@@ -160,10 +178,10 @@ const TelemetryPage = () => {
           ))
         ) : (
           <>
-            <StatCard icon={Radio} label="Active Poles" value={String(totals.poles)} delay={0} />
-            <StatCard icon={Zap} label="Total kWh" value={totals.kwh.toLocaleString(undefined, { maximumFractionDigits: 1 })} delay={0.05} />
-            <StatCard icon={Leaf} label="CO₂ Avoided" value={`${totals.co2.toLocaleString(undefined, { maximumFractionDigits: 1 })} kg`} delay={0.1} />
-            <StatCard icon={Wifi} label="WiFi Sessions" value={totals.wifi.toLocaleString()} delay={0.15} />
+            <FlashStatCard key={`poles-${flashKey}`} icon={Radio} label="Active Poles" value={String(displayTotals.poles)} delay={0} flash={simDeltas.kwh > 0} />
+            <FlashStatCard key={`kwh-${flashKey}`} icon={Zap} label="Total kWh" value={displayTotals.kwh.toLocaleString(undefined, { maximumFractionDigits: 1 })} delay={0.05} flash={simDeltas.kwh > 0} />
+            <FlashStatCard key={`co2-${flashKey}`} icon={Leaf} label="CO₂ Avoided" value={`${displayTotals.co2.toLocaleString(undefined, { maximumFractionDigits: 1 })} kg`} delay={0.1} flash={simDeltas.co2 > 0} />
+            <FlashStatCard key={`wifi-${flashKey}`} icon={Wifi} label="WiFi Sessions" value={displayTotals.wifi.toLocaleString()} delay={0.15} flash={simDeltas.wifi > 0} />
           </>
         )}
       </div>
@@ -246,13 +264,23 @@ const TelemetryPage = () => {
   );
 };
 
-const StatCard = ({ icon: Icon, label, value, delay }: { icon: any; label: string; value: string; delay: number }) => (
+/** StatCard with green glow flash on simulator tick */
+const FlashStatCard = ({ icon: Icon, label, value, delay, flash }: { icon: any; label: string; value: string; delay: number; flash: boolean }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay }}
-    className="card-elevated rounded-lg p-5 glow-green group hover:glow-green-strong transition-shadow duration-300"
+    className="card-elevated rounded-lg p-5 glow-green group hover:glow-green-strong transition-shadow duration-300 relative overflow-hidden"
   >
+    {/* Flash overlay */}
+    {flash && (
+      <motion.div
+        initial={{ opacity: 0.5 }}
+        animate={{ opacity: 0 }}
+        transition={{ duration: 0.8 }}
+        className="absolute inset-0 bg-primary/15 rounded-lg pointer-events-none"
+      />
+    )}
     <div className="flex items-start justify-between mb-3">
       <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</span>
       <div className="p-2 rounded-md bg-primary/10">
