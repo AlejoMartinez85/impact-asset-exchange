@@ -1,5 +1,18 @@
 import { Sun, Wifi, Lightbulb, Globe, Shield, Hash } from "lucide-react";
 import { sponsorInfo, kpiData, sdgRadarData } from "@/data/mockData";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
+const MONTHLY_ENV_DATA = [
+  { month: "Jul", kwh: 54200, co2: 210 },
+  { month: "Aug", kwh: 61800, co2: 238 },
+  { month: "Sep", kwh: 58400, co2: 225 },
+  { month: "Oct", kwh: 67100, co2: 259 },
+  { month: "Nov", kwh: 72500, co2: 280 },
+  { month: "Dec", kwh: 69300, co2: 267 },
+  { month: "Jan", kwh: 48900, co2: 189 },
+  { month: "Feb", kwh: 52700, co2: 203 },
+  { month: "Mar", kwh: 60320, co2: 232 },
+];
 import { generatedPoles } from "@/data/generatePoles";
 
 const REPORT_DATE = "March 8, 2026";
