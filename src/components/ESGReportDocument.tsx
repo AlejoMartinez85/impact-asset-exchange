@@ -1,6 +1,18 @@
 import { Sun, Wifi, Lightbulb, Globe, Shield, Hash } from "lucide-react";
 import { sponsorInfo, kpiData, sdgRadarData } from "@/data/mockData";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
+const MONTHLY_SOCIAL_DATA = [
+  { month: "Jul", wifi: 4200, lighting: 3570 },
+  { month: "Aug", wifi: 4800, lighting: 4080 },
+  { month: "Sep", wifi: 4550, lighting: 3870 },
+  { month: "Oct", wifi: 5100, lighting: 4335 },
+  { month: "Nov", wifi: 5600, lighting: 4760 },
+  { month: "Dec", wifi: 5300, lighting: 4505 },
+  { month: "Jan", wifi: 3900, lighting: 3315 },
+  { month: "Feb", wifi: 4100, lighting: 3485 },
+  { month: "Mar", wifi: 4700, lighting: 3995 },
+];
 
 const MONTHLY_ENV_DATA = [
   { month: "Jul", kwh: 54200, co2: 210 },
