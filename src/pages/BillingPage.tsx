@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useSubscription } from "@/contexts/SubscriptionContext";
+// Subscription context removed for demo mode
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
