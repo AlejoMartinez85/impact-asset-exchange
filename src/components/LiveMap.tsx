@@ -9,7 +9,8 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { generatedPoles } from "@/data/generatePoles";
 import type { ELISAUnit } from "@/data/mockData";
-import { Wifi, Battery, Sun, Zap, X, Radio, Activity } from "lucide-react";
+import { Wifi, Battery, Sun, Zap, X, Radio, Activity, Plus, Minus, RotateCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -125,9 +126,24 @@ const DetailPanel = ({ unit, onClose }: { unit: ELISAUnit; onClose: () => void }
 );
 
 // ─── Main Component ───
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 16;
+
 const LiveMap = () => {
   const [selected, setSelected] = useState<ELISAUnit | null>(null);
   const [zoom, setZoom] = useState(1);
+  const [center, setCenter] = useState<[number, number]>([-20, 5]);
+
+  const handleZoomIn = useCallback(() => {
+    setZoom((z) => Math.min(MAX_ZOOM, z * 1.6));
+  }, []);
+  const handleZoomOut = useCallback(() => {
+    setZoom((z) => Math.max(MIN_ZOOM, z / 1.6));
+  }, []);
+  const handleReset = useCallback(() => {
+    setZoom(1);
+    setCenter([-20, 5]);
+  }, []);
 
   const poles = generatedPoles;
 
@@ -147,8 +163,9 @@ const LiveMap = () => {
   const clusters = useMemo(() => clusterPoles(poles, gridSize), [poles, gridSize]);
   const countries = useMemo(() => new Set(poles.map((u) => u.country)).size, [poles]);
 
-  const handleZoomEnd = useCallback((position: { zoom: number }) => {
+  const handleMoveEnd = useCallback((position: { coordinates: [number, number]; zoom: number }) => {
     setZoom(position.zoom);
+    setCenter(position.coordinates);
   }, []);
 
   return (
@@ -180,7 +197,7 @@ const LiveMap = () => {
           className="w-full h-full"
           style={{ width: "100%", height: "100%" }}
         >
-          <ZoomableGroup onMoveEnd={handleZoomEnd} minZoom={1} maxZoom={16}>
+          <ZoomableGroup zoom={zoom} center={center} onMoveEnd={handleMoveEnd} minZoom={MIN_ZOOM} maxZoom={MAX_ZOOM}>
             <Geographies geography={GEO_URL}>
               {({ geographies }) =>
                 geographies.map((geo) => (
@@ -278,6 +295,36 @@ const LiveMap = () => {
           totalWifi={totalWifi}
           totalCount={poles.length}
         />
+
+        {/* ─── Zoom Controls ─── */}
+        <div className="absolute bottom-4 right-4 z-20 flex flex-col gap-1.5">
+          <Button
+            variant="secondary"
+            size="icon"
+            className="h-8 w-8 bg-card/90 backdrop-blur-xl border border-border hover:bg-secondary hover:border-primary/30 shadow-lg transition-all"
+            onClick={handleZoomIn}
+            disabled={zoom >= MAX_ZOOM}
+          >
+            <Plus className="h-3.5 w-3.5" />
+          </Button>
+          <Button
+            variant="secondary"
+            size="icon"
+            className="h-8 w-8 bg-card/90 backdrop-blur-xl border border-border hover:bg-secondary hover:border-primary/30 shadow-lg transition-all"
+            onClick={handleZoomOut}
+            disabled={zoom <= MIN_ZOOM}
+          >
+            <Minus className="h-3.5 w-3.5" />
+          </Button>
+          <Button
+            variant="secondary"
+            size="icon"
+            className="h-8 w-8 bg-card/90 backdrop-blur-xl border border-border hover:bg-secondary hover:border-primary/30 shadow-lg transition-all mt-1"
+            onClick={handleReset}
+          >
+            <RotateCcw className="h-3 w-3" />
+          </Button>
+        </div>
 
         <AnimatePresence>
           {selected && <DetailPanel unit={selected} onClose={() => setSelected(null)} />}
