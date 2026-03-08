@@ -9,6 +9,7 @@ interface Profile {
   display_name: string | null;
   avatar_url: string | null;
   sponsor_name: string | null;
+  sponsor_id: string | null;
   phone: string | null;
 }
 
