@@ -245,21 +245,67 @@ const BillingPage = () => {
         </motion.div>
       </div>
 
-      {/* Checkout Summary & CTA */}
+      {/* Cluster Quantity Selector & Checkout */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
         <Card className="border-border bg-secondary/30">
           <CardContent className="pt-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Total Initial Investment</p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold text-foreground">$19,995</span>
-                  <span className="text-sm text-muted-foreground">(Deployment + Year 1 SaaS)</span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Then <strong className="text-foreground">$4,995/year</strong> for continued ESG telemetry & AI certification
-                </p>
+            {/* Quantity Selector */}
+            <div className="mb-6">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">Select Cluster Quantity</p>
+              <div className="flex flex-wrap gap-3">
+                {CLUSTER_OPTIONS.map((option) => (
+                  <button
+                    key={option.qty}
+                    onClick={() => setSelectedClusterQty(option.qty)}
+                    className={`relative px-5 py-3 rounded-lg border-2 transition-all ${
+                      selectedClusterQty === option.qty
+                        ? "border-primary bg-primary/10 text-foreground"
+                        : "border-border bg-card text-muted-foreground hover:border-primary/50"
+                    }`}
+                  >
+                    <p className="text-sm font-semibold">{option.label}</p>
+                    <p className="text-[10px] text-muted-foreground">{option.qty * 50} poles</p>
+                    {option.discount > 0 && (
+                      <Badge className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[9px] px-1.5">
+                        -{option.discount}%
+                      </Badge>
+                    )}
+                  </button>
+                ))}
               </div>
+            </div>
+
+            <Separator className="mb-6 bg-border/50" />
+
+            {/* Pricing Breakdown */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+              <div className="bg-card rounded-lg p-4 border border-border">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Deployment (CapEx)</p>
+                <p className="text-xl font-bold text-foreground">${totalCapex.toLocaleString()}</p>
+                {selectedOption.discount > 0 && (
+                  <p className="text-[10px] text-primary">-{selectedOption.discount}% volume discount</p>
+                )}
+              </div>
+              <div className="bg-card rounded-lg p-4 border border-border">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Year 1 SaaS (OpEx)</p>
+                <p className="text-xl font-bold text-foreground">${totalOpex.toLocaleString()}</p>
+                {selectedOption.discount > 0 && (
+                  <p className="text-[10px] text-primary">-{selectedOption.discount}% volume discount</p>
+                )}
+              </div>
+              <div className="bg-primary/10 rounded-lg p-4 border border-primary/30">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Total Initial Investment</p>
+                <p className="text-xl font-bold text-foreground">${totalInitial.toLocaleString()}</p>
+                {savings > 0 && (
+                  <p className="text-[10px] text-primary font-medium">You save ${savings.toLocaleString()}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <p className="text-xs text-muted-foreground">
+                Then <strong className="text-foreground">${totalOpex.toLocaleString()}/year</strong> for continued ESG telemetry & AI certification
+              </p>
               
               <Button
                 size="lg"
@@ -272,7 +318,7 @@ const BillingPage = () => {
                 ) : (
                   <>
                     <Lock className="h-4 w-4" />
-                    Deploy Cluster & Subscribe with Stripe
+                    Deploy {selectedClusterQty} Cluster{selectedClusterQty > 1 ? "s" : ""} with Stripe
                     <ArrowUpRight className="h-4 w-4" />
                   </>
                 )}
