@@ -304,7 +304,7 @@ const HardwarePage = () => {
                 <div>
                   <CardTitle className="text-sm">ELISA Pole Registry</CardTitle>
                   <CardDescription className="text-xs">
-                    {provisionedPoles.length} units provisioned across {new Set(provisionedPoles.map((p) => p.country)).size} countries
+                    {poles.length} units provisioned across {new Set(poles.map((p) => p.country)).size} countries
                   </CardDescription>
                 </div>
                 <div className="relative w-64">
