@@ -1,4 +1,4 @@
-import { LayoutDashboard, Map, FileText, Cpu, Settings, Sun } from "lucide-react";
+import { LayoutDashboard, Map, FileText, Cpu, Settings, Sun, CreditCard } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import {
