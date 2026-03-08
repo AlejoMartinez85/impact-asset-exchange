@@ -129,6 +129,11 @@ const LoginPage = () => {
                   {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                   Sign In
                 </Button>
+                <div className="text-right">
+                  <a href="/forgot-password" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+                    Forgot password?
+                  </a>
+                </div>
               </form>
             </TabsContent>
 
