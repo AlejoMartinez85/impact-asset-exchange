@@ -132,8 +132,18 @@ const BillingPage = () => {
                     <p className="text-xs text-muted-foreground">Active since {currentPlan.yearStarted}</p>
                   </div>
                 </div>
-                <Button variant="outline" size="sm" onClick={handleManageBilling} className="gap-2 text-xs">
-                  <ExternalLink className="h-3.5 w-3.5" />
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleManageBilling} 
+                  disabled={portalLoading}
+                  className="gap-2 text-xs"
+                >
+                  {portalLoading ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  )}
                   Manage Billing Portal (Stripe)
                 </Button>
               </div>
