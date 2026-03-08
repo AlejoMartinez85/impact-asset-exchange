@@ -43,6 +43,7 @@ import { Progress } from "@/components/ui/progress";
 import { hardwareHealth, elisaUnits } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
 
+
 type ProvisionedPole = {
   serial: string;
   sponsor: string;
