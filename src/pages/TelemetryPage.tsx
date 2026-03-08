@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Zap, Leaf, Wifi, Activity, Radio } from "lucide-react";
@@ -87,16 +87,20 @@ const TelemetryPage = () => {
     refetchInterval: 15_000,
   });
 
-  // Simulator overlay deltas
-  const [simDeltas, setSimDeltas] = useState({ kwh: 0, co2: 0, wifi: 0 });
+  // Simulator overlay deltas — use refs to avoid stale closures in interval
+  const [simDeltas, setSimDeltas] = useState({ kwh: 0, co2: 0, wifi: 0, activePoles: 100 });
   const [flashKey, setFlashKey] = useState(0);
+  const simInitialized = useRef(false);
 
   const handleSimTick = useCallback((payload: { kwh_generated: number; co2_avoided_kg: number; wifi_connections: number }) => {
+    // On first tick, set active poles base; subsequent ticks fluctuate 98-100
     setSimDeltas((prev) => ({
       kwh: prev.kwh + payload.kwh_generated,
       co2: prev.co2 + payload.co2_avoided_kg,
       wifi: prev.wifi + payload.wifi_connections,
+      activePoles: 98 + Math.floor(Math.random() * 3), // 98, 99, or 100
     }));
+    if (!simInitialized.current) simInitialized.current = true;
     setFlashKey((k) => k + 1);
   }, []);
 
@@ -119,12 +123,12 @@ const TelemetryPage = () => {
     { kwh: 0, co2: 0, wifi: 0, poles: 0 }
   ) || { kwh: 0, co2: 0, wifi: 0, poles: 0 };
 
-  // Merge sim deltas into display totals
+  // Merge sim deltas: use sim active poles count when simulator has ticked, otherwise use DB count or 100 default
   const displayTotals = {
     kwh: totals.kwh + simDeltas.kwh,
     co2: totals.co2 + simDeltas.co2,
     wifi: totals.wifi + simDeltas.wifi,
-    poles: totals.poles || 255, // Show simulated pole count if no real data
+    poles: simInitialized.current ? simDeltas.activePoles : (totals.poles || 100),
   };
 
   const chartData = (data || [])
