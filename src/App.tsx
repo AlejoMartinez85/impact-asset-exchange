@@ -45,6 +45,7 @@ const App = () => (
                   <Route path="/billing" element={<BillingPage />} />
                   <Route path="/admin/users" element={<AdminUsersPage />} />
                   <Route path="/admin/ops" element={<AdminOpsPage />} />
+                  <Route path="/admin/sponsors" element={<SponsorManagementPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </AppLayout>
