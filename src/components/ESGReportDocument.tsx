@@ -240,6 +240,12 @@ const ESGReportDocument = () => {
             </div>
           </div>
         </div>
+
+        {/* §5 AUDIT LEDGER */}
+        <SectionTitle number="05" title="Audit Ledger — Asset Traceability" />
+        <p className="text-[11px] text-gray-500 mb-3">
+          Sample of active ELISA® serial numbers with GPS coordinates and individual uptime, proving data is grounded in physical, auditable assets.
+        </p>
         <div className="overflow-hidden rounded-lg border border-gray-200">
           <table className="w-full text-[10px]" style={{ fontFamily: "'Courier New', monospace" }}>
             <thead>
