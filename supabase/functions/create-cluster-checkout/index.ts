@@ -55,7 +55,7 @@ serve(async (req) => {
       ],
       mode: "subscription",
       discounts: couponId ? [{ coupon: couponId }] : undefined,
-      success_url: `${origin}/dashboard/billing?success=true&clusters=${quantity}`,
+      success_url: `${origin}/success?clusters=${quantity}`,
       cancel_url: `${origin}/dashboard/billing?canceled=true`,
       metadata: {
         cluster_quantity: String(quantity),
