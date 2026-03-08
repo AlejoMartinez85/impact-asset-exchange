@@ -11,6 +11,7 @@ import ReportsPage from "./pages/ReportsPage";
 import HardwarePage from "./pages/HardwarePage";
 import DeveloperPage from "./pages/DeveloperPage";
 import BillingPage from "./pages/BillingPage";
+import TelemetryPage from "./pages/TelemetryPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
