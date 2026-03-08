@@ -1,6 +1,15 @@
 import { Sun, Wifi, Lightbulb, Globe, Shield, Hash } from "lucide-react";
 import { sponsorInfo, kpiData, sdgRadarData } from "@/data/mockData";
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
+const SDG_DONUT_DATA = [
+  { name: "SDG 7 – Clean Energy", value: 28, color: "#FCC30B" },
+  { name: "SDG 13 – Climate Action", value: 22, color: "#3F7E44" },
+  { name: "SDG 9 – Infrastructure", value: 18, color: "#FD6925" },
+  { name: "SDG 11 – Sustainable Cities", value: 14, color: "#FD9D24" },
+  { name: "SDG 10 – Reduced Inequalities", value: 10, color: "#DD1367" },
+  { name: "SDG 4 – Quality Education", value: 8, color: "#C5192D" },
+];
 
 const MONTHLY_SOCIAL_DATA = [
   { month: "Jul", wifi: 4200, lighting: 3570 },
@@ -201,7 +210,35 @@ const ESGReportDocument = () => {
                 <p className="text-[10px] text-gray-600 leading-snug">{sdg.desc}</p>
               </div>
             </div>
-          ))}
+           ))}
+        </div>
+
+        {/* SDG Donut Chart */}
+        <div className="border border-gray-200 rounded-lg p-4 mb-4">
+          <p className="text-[11px] font-bold text-gray-900 mb-3 uppercase tracking-widest">Relative SDG Contribution Weight (%)</p>
+          <div className="flex items-center gap-6">
+            <div style={{ width: 200, height: 200 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={SDG_DONUT_DATA} cx="50%" cy="50%" innerRadius={50} outerRadius={85} dataKey="value" paddingAngle={2} strokeWidth={0}>
+                    {SDG_DONUT_DATA.map((entry, i) => (
+                      <Cell key={i} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip contentStyle={{ fontSize: 11 }} formatter={(value: number) => `${value}%`} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="grid gap-1.5 text-[10px]">
+              {SDG_DONUT_DATA.map((entry, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ backgroundColor: entry.color }} />
+                  <span className="text-gray-700">{entry.name}</span>
+                  <span className="font-bold text-gray-900 ml-auto">{entry.value}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* §5 AUDIT LEDGER */}
