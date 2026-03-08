@@ -126,9 +126,24 @@ const DetailPanel = ({ unit, onClose }: { unit: ELISAUnit; onClose: () => void }
 );
 
 // ─── Main Component ───
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 16;
+
 const LiveMap = () => {
   const [selected, setSelected] = useState<ELISAUnit | null>(null);
   const [zoom, setZoom] = useState(1);
+  const [center, setCenter] = useState<[number, number]>([-20, 5]);
+
+  const handleZoomIn = useCallback(() => {
+    setZoom((z) => Math.min(MAX_ZOOM, z * 1.6));
+  }, []);
+  const handleZoomOut = useCallback(() => {
+    setZoom((z) => Math.max(MIN_ZOOM, z / 1.6));
+  }, []);
+  const handleReset = useCallback(() => {
+    setZoom(1);
+    setCenter([-20, 5]);
+  }, []);
 
   const poles = generatedPoles;
 
