@@ -52,7 +52,8 @@ const tiers = [
 ];
 
 const BillingPage = () => {
-  const { plan, toggleMockStatus } = useSubscription();
+  const plan = "active" as const;
+  const toggleMockStatus = () => {};
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
 
   const handleCheckout = async (tierName: string) => {
