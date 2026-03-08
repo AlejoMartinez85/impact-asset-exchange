@@ -100,7 +100,7 @@ const HardwarePage = () => {
   const [activeTab, setActiveTab] = useState<"provisioning" | "health">("provisioning");
   const { toast } = useToast();
 
-  const filtered = provisionedPoles.filter(
+  const filtered = poles.filter(
     (p) =>
       p.serial.toLowerCase().includes(search.toLowerCase()) ||
       p.sponsor.toLowerCase().includes(search.toLowerCase()) ||
