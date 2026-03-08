@@ -23,9 +23,27 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 
+const CLUSTER_OPTIONS = [
+  { qty: 1, discount: 0, label: "1 Cluster" },
+  { qty: 2, discount: 5, label: "2 Clusters" },
+  { qty: 3, discount: 10, label: "3 Clusters" },
+  { qty: 5, discount: 15, label: "5 Clusters" },
+];
+
+const BASE_CAPEX = 15000;
+const BASE_OPEX = 4995;
+
 const BillingPage = () => {
   const [isActive, setIsActive] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [selectedClusterQty, setSelectedClusterQty] = useState(1);
+
+  const selectedOption = CLUSTER_OPTIONS.find((o) => o.qty === selectedClusterQty) || CLUSTER_OPTIONS[0];
+  const discountMultiplier = 1 - selectedOption.discount / 100;
+  const totalCapex = BASE_CAPEX * selectedClusterQty * discountMultiplier;
+  const totalOpex = BASE_OPEX * selectedClusterQty * discountMultiplier;
+  const totalInitial = totalCapex + totalOpex;
+  const savings = (BASE_CAPEX + BASE_OPEX) * selectedClusterQty - totalInitial;
 
   const currentPlan = {
     status: isActive ? "active" : "inactive",
@@ -42,10 +60,9 @@ const BillingPage = () => {
 
   const handleCheckout = async () => {
     setCheckoutLoading(true);
-    // TODO: Replace with Stripe Checkout session via edge function
     await new Promise((r) => setTimeout(r, 1500));
     setCheckoutLoading(false);
-    alert("In production, this redirects to Stripe Checkout for $19,995 (Deployment + Year 1 SaaS).");
+    alert(`In production, this redirects to Stripe Checkout for $${totalInitial.toLocaleString()} (${selectedClusterQty} cluster(s) + Year 1 SaaS).`);
   };
 
   const handleManageBilling = () => {
