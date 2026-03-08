@@ -54,58 +54,95 @@ const LandingPage = () => {
       </nav>
 
       {/* ─── HERO ─── */}
-      <section className="relative pt-16 min-h-screen flex items-center">
-        <div className="absolute inset-0">
-          <img src={heroImage} alt="Global solar infrastructure network" className="w-full h-full object-cover opacity-30" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
-        </div>
+      <section className="relative pt-16 min-h-screen flex items-center overflow-hidden">
+        {/* Multi-layered background */}
+        <div className="absolute inset-0 bg-background" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,hsl(38_80%_50%/0.06),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_30%_60%,hsl(142_72%_48%/0.05),transparent_60%)]" />
+        {/* Subtle grid overlay */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "linear-gradient(hsl(0 0% 100% / 0.1) 1px, transparent 1px), linear-gradient(90deg, hsl(0 0% 100% / 0.1) 1px, transparent 1px)", backgroundSize: "64px 64px" }} />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 lg:py-32">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl mx-auto text-center lg:text-left lg:mx-0">
+            {/* Kicker */}
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
-              <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-primary bg-primary/10 border border-primary/20 rounded-full px-3 py-1 mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                Live ESG Infrastructure
+              <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[hsl(42,90%,60%)] bg-[hsl(42,90%,60%)]/10 border border-[hsl(42,90%,60%)]/20 rounded-full px-4 py-1.5 mb-8 shadow-[0_0_20px_hsl(42_90%_60%/0.08)]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[hsl(42,90%,60%)] animate-pulse" />
+                The Self-Funding Solar Revolution
               </span>
             </motion.div>
 
+            {/* H1 */}
             <motion.h1
               initial="hidden" animate="visible" variants={fadeUp} custom={1}
-              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight mb-6"
+              className="text-4xl sm:text-5xl lg:text-[3.75rem] xl:text-7xl font-extrabold leading-[1.05] tracking-tight mb-7"
             >
-              Turn Sunlight into a{" "}
-              <span className="text-gradient-primary">Verified Financial Asset.</span>
+              Sunlight as a{" "}
+              <span className="text-gradient-gold">Financial Asset.</span>
             </motion.h1>
 
+            {/* Sub-headline */}
             <motion.p
               initial="hidden" animate="visible" variants={fadeUp} custom={2}
-              className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-10 leading-relaxed"
+              className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-10 leading-[1.8] mx-auto lg:mx-0"
             >
-              We don't just audit ESG metrics. We build the physical infrastructure
-              turning sustainability into tangible human progress.
+              While others sell solar panels, we trade sunlight on an impact exchange.
+              We turn last-mile electrification into measurable ESG impact—enabling your brand to capture
+              verified Scope 3 CO₂ reductions and real-time community outcomes where the grid doesn't reach.
             </motion.p>
 
+            {/* CTAs */}
             <motion.div
               initial="hidden" animate="visible" variants={fadeUp} custom={3}
-              className="flex flex-wrap gap-4"
+              className="flex flex-wrap gap-4 justify-center lg:justify-start"
             >
-              <Button size="lg" className="gap-2 text-sm px-8" onClick={() => navigate("/dashboard")}>
+              <Button
+                size="lg"
+                className="gap-2 text-sm px-8 font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all"
+                onClick={() => navigate("/dashboard")}
+              >
                 Enter Impact Exchange <ArrowRight className="h-4 w-4" />
               </Button>
-              <Button size="lg" variant="outline" className="gap-2 text-sm px-8 border-border" onClick={() => document.getElementById("exchange")?.scrollIntoView({ behavior: "smooth" })}>
-                Explore the Ecosystem <ChevronRight className="h-4 w-4" />
+              <Button
+                size="lg"
+                variant="outline"
+                className="gap-2 text-sm px-8 border-border hover:border-primary/40 hover:bg-primary/5 transition-all"
+                onClick={() => navigate("/dashboard")}
+              >
+                <BarChart3 className="h-4 w-4" /> View ESG Live Telemetry
               </Button>
+            </motion.div>
+
+            {/* Inline trust bar */}
+            <motion.div
+              initial="hidden" animate="visible" variants={fadeUp} custom={4}
+              className="mt-14 pt-8 border-t border-border/30"
+            >
+              <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-5">
+                Trusted by global leaders to illuminate the last mile
+              </p>
+              <div className="flex flex-wrap items-center gap-6 md:gap-10 justify-center lg:justify-start">
+                {sponsors.map((name) => (
+                  <span key={name} className="text-sm font-semibold text-muted-foreground/30 hover:text-muted-foreground/60 transition-colors tracking-wide select-none">
+                    {name}
+                  </span>
+                ))}
+                <span className="text-[10px] font-mono text-primary/60 border border-primary/20 rounded-full px-3 py-1 bg-primary/5">
+                  7,000+ ELISA Assets Deployed
+                </span>
+              </div>
             </motion.div>
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
+        {/* Ambient glows */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-primary/8 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-[hsl(42,90%,60%)]/5 blur-[120px] rounded-full pointer-events-none" />
       </section>
 
       {/* ─── TRACTION BAR ─── */}
       <section id="impact" className="relative border-y border-border/50 bg-card/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-6 py-14">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
               <motion.div key={stat.label} variants={fadeUp} custom={i} className="text-center">

@@ -87,6 +87,12 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  .text-gradient-gold {
+    background: linear-gradient(135deg, hsl(42 90% 60%), hsl(142 72% 48%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
   .dot-active {
     background: hsl(var(--glow-primary));
     box-shadow: 0 0 8px hsl(var(--glow-primary) / 0.6);
