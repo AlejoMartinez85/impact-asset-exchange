@@ -52,7 +52,7 @@ const tiers = [
 ];
 
 const BillingPage = () => {
-  const plan = "active" as const;
+  const plan = { name: "Platinum ESG Partner", status: "active" as const, annualTotal: 84_000, activePolesCount: 100, renewalDate: "2027-01-15" };
   const toggleMockStatus = () => {};
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
 
