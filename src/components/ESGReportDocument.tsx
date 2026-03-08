@@ -210,14 +210,36 @@ const ESGReportDocument = () => {
                 <p className="text-[10px] text-gray-600 leading-snug">{sdg.desc}</p>
               </div>
             </div>
-          ))}
+           ))}
         </div>
 
-        {/* §5 AUDIT LEDGER */}
-        <SectionTitle number="05" title="Audit Ledger — Asset Traceability" />
-        <p className="text-[11px] text-gray-500 mb-3">
-          Sample of active ELISA® serial numbers with GPS coordinates and individual uptime, proving data is grounded in physical, auditable assets.
-        </p>
+        {/* SDG Donut Chart */}
+        <div className="border border-gray-200 rounded-lg p-4 mb-4">
+          <p className="text-[11px] font-bold text-gray-900 mb-3 uppercase tracking-widest">Relative SDG Contribution Weight (%)</p>
+          <div className="flex items-center gap-6">
+            <div style={{ width: 200, height: 200 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={SDG_DONUT_DATA} cx="50%" cy="50%" innerRadius={50} outerRadius={85} dataKey="value" paddingAngle={2} strokeWidth={0}>
+                    {SDG_DONUT_DATA.map((entry, i) => (
+                      <Cell key={i} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip contentStyle={{ fontSize: 11 }} formatter={(value: number) => `${value}%`} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="grid gap-1.5 text-[10px]">
+              {SDG_DONUT_DATA.map((entry, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ backgroundColor: entry.color }} />
+                  <span className="text-gray-700">{entry.name}</span>
+                  <span className="font-bold text-gray-900 ml-auto">{entry.value}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
         <div className="overflow-hidden rounded-lg border border-gray-200">
           <table className="w-full text-[10px]" style={{ fontFamily: "'Courier New', monospace" }}>
             <thead>
