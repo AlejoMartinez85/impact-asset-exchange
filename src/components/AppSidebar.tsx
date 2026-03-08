@@ -1,4 +1,4 @@
-import { LayoutDashboard, Map, FileText, Cpu, Settings, Sun, CreditCard, Activity, Users, Shield } from "lucide-react";
+import { LayoutDashboard, Map, FileText, Cpu, Settings, Sun, CreditCard, Activity, Users, Shield, Cog } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
@@ -25,6 +25,7 @@ const navItems = [
 
 const adminItems = [
   { title: "User Management", url: "/dashboard/admin/users", icon: Users },
+  { title: "Operations", url: "/dashboard/admin/ops", icon: Cog },
 ];
 
 export function AppSidebar() {

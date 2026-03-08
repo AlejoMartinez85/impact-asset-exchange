@@ -15,6 +15,7 @@ import BillingPage from "./pages/BillingPage";
 import TelemetryPage from "./pages/TelemetryPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import SuccessPage from "./pages/SuccessPage";
+import AdminOpsPage from "./pages/AdminOpsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => (
                   <Route path="/developer" element={<DeveloperPage />} />
                   <Route path="/billing" element={<BillingPage />} />
                   <Route path="/admin/users" element={<AdminUsersPage />} />
+                  <Route path="/admin/ops" element={<AdminOpsPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </AppLayout>
