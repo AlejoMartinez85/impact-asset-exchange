@@ -276,6 +276,66 @@ const BillingPage = () => {
               </div>
             </div>
 
+            {/* Cost-Per-Pole Comparison Table */}
+            <div className="mb-6 overflow-x-auto">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">Cost-Per-Pole Breakdown</p>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="text-left py-2 px-3 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Clusters</th>
+                    <th className="text-center py-2 px-3 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Poles</th>
+                    <th className="text-center py-2 px-3 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Discount</th>
+                    <th className="text-right py-2 px-3 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">CapEx/Pole</th>
+                    <th className="text-right py-2 px-3 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">OpEx/Pole/Yr</th>
+                    <th className="text-right py-2 px-3 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Total/Pole</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {CLUSTER_OPTIONS.map((option) => {
+                    const poles = option.qty * 50;
+                    const discountMult = 1 - option.discount / 100;
+                    const capexPerPole = (BASE_CAPEX * discountMult) / 50;
+                    const opexPerPole = (BASE_OPEX * discountMult) / 50;
+                    const totalPerPole = capexPerPole + opexPerPole;
+                    const isSelected = selectedClusterQty === option.qty;
+                    
+                    return (
+                      <tr 
+                        key={option.qty} 
+                        className={`border-b border-border/50 transition-colors cursor-pointer hover:bg-secondary/50 ${isSelected ? "bg-primary/10" : ""}`}
+                        onClick={() => setSelectedClusterQty(option.qty)}
+                      >
+                        <td className="py-3 px-3 font-medium text-foreground">
+                          {option.label}
+                          {isSelected && <span className="ml-2 text-primary text-[10px]">✓</span>}
+                        </td>
+                        <td className="py-3 px-3 text-center text-muted-foreground">{poles}</td>
+                        <td className="py-3 px-3 text-center">
+                          {option.discount > 0 ? (
+                            <Badge className="bg-primary/15 text-primary border-primary/20 text-[10px]">
+                              -{option.discount}%
+                            </Badge>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
+                        </td>
+                        <td className="py-3 px-3 text-right font-mono text-foreground">${capexPerPole.toFixed(0)}</td>
+                        <td className="py-3 px-3 text-right font-mono text-foreground">${opexPerPole.toFixed(0)}</td>
+                        <td className="py-3 px-3 text-right font-mono font-semibold text-foreground">
+                          ${totalPerPole.toFixed(0)}
+                          {option.discount > 0 && (
+                            <span className="text-[10px] text-primary ml-1">
+                              (save ${((BASE_CAPEX + BASE_OPEX) / 50 - totalPerPole).toFixed(0)})
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
             <Separator className="mb-6 bg-border/50" />
 
             {/* Pricing Breakdown */}
