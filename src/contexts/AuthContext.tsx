@@ -101,6 +101,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         roles,
         isSuperAdmin: roles.includes("super_admin"),
         isSponsor: roles.includes("sponsor"),
+        sponsorId: profile?.sponsor_id ?? null,
         loading,
         signOut,
       }}
