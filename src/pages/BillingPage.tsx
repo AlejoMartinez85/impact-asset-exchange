@@ -23,6 +23,8 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import AnimatedCounter from "@/components/AnimatedCounter";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const CLUSTER_OPTIONS = [
   { qty: 1, discount: 0, label: "1 Cluster" },
@@ -37,6 +39,7 @@ const BASE_OPEX = 4995;
 const BillingPage = () => {
   const [isActive, setIsActive] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [portalLoading, setPortalLoading] = useState(false);
   const [selectedClusterQty, setSelectedClusterQty] = useState(1);
 
   const selectedOption = CLUSTER_OPTIONS.find((o) => o.qty === selectedClusterQty) || CLUSTER_OPTIONS[0];
@@ -61,13 +64,42 @@ const BillingPage = () => {
 
   const handleCheckout = async () => {
     setCheckoutLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    setCheckoutLoading(false);
-    alert(`In production, this redirects to Stripe Checkout for $${totalInitial.toLocaleString()} (${selectedClusterQty} cluster(s) + Year 1 SaaS).`);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-cluster-checkout", {
+        body: { clusterQty: selectedClusterQty },
+      });
+
+      if (error) throw error;
+      if (data?.url) {
+        window.open(data.url, "_blank");
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      toast.error("Failed to start checkout. Please try again.");
+    } finally {
+      setCheckoutLoading(false);
+    }
   };
 
-  const handleManageBilling = () => {
-    alert("In production, this redirects to the Stripe Customer Portal for invoices and plan management.");
+  const handleManageBilling = async () => {
+    setPortalLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("customer-portal");
+
+      if (error) throw error;
+      if (data?.url) {
+        window.open(data.url, "_blank");
+      } else {
+        throw new Error("No portal URL returned");
+      }
+    } catch (error) {
+      console.error("Portal error:", error);
+      toast.error("Failed to open billing portal. Please try again.");
+    } finally {
+      setPortalLoading(false);
+    }
   };
 
   return (
