@@ -25,6 +25,7 @@ const navItems = [
 
 const adminItems = [
   { title: "User Management", url: "/dashboard/admin/users", icon: Users },
+  { title: "Operations", url: "/dashboard/admin/ops", icon: Cog },
 ];
 
 export function AppSidebar() {
