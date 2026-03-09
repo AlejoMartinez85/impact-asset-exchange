@@ -113,7 +113,7 @@ const SponsorManagementPage = () => {
       toast({ title: "Sponsor Created", description: `${data.name} has been added to the directory.` });
       queryClient.invalidateQueries({ queryKey: ["sponsor-management"] });
       setAddOpen(false);
-      setForm({ name: "", industry: "", contact_email: "", plan: "corporate_50" });
+      setForm({ name: "", industry: "", contact_email: "", plan: "corporate_50", esg_focus: "" });
     },
     onError: (err: Error) => {
       toast({ title: "Error", description: err.message, variant: "destructive" });
