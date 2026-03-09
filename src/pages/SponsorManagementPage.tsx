@@ -350,6 +350,19 @@ const SponsorManagementPage = () => {
                 </SelectContent>
               </Select>
             </div>
+            <div className="space-y-1.5">
+              <Label className="text-[11px] text-muted-foreground font-medium">Primary ESG Focus</Label>
+              <Select value={form.esg_focus} onValueChange={(v) => setForm((f) => ({ ...f, esg_focus: v }))}>
+                <SelectTrigger className="h-9 text-xs border-border">
+                  <SelectValue placeholder="Select ESG focus…" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="carbon_climate" className="text-xs">Carbon & Climate Action</SelectItem>
+                  <SelectItem value="digital_inclusion" className="text-xs">Digital Inclusion & Education</SelectItem>
+                  <SelectItem value="community_safety" className="text-xs">Community Safety & Economy</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <DialogFooter className="pt-2">
               <Button type="button" variant="outline" onClick={() => setAddOpen(false)} className="text-xs h-9">
                 Cancel
