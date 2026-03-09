@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
+        serif: ['DM Serif Display', 'Georgia', 'serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
@@ -62,6 +63,15 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         "surface-elevated": "hsl(var(--surface-elevated))",
+        ods: {
+          blue: "hsl(var(--ods-blue))",
+          teal: "hsl(var(--ods-teal))",
+          green: "hsl(var(--ods-green))",
+          orange: "hsl(var(--ods-orange))",
+          yellow: "hsl(var(--ods-yellow))",
+          red: "hsl(var(--ods-red))",
+          violet: "hsl(var(--ods-violet))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

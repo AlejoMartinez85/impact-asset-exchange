@@ -4,7 +4,6 @@ import {
   FileText,
   Cpu,
   Settings,
-  Sun,
   CreditCard,
   Activity,
   Users,
@@ -27,6 +26,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
+import logoClassic from "@/assets/logo-classic.png";
 
 const navItems = [
   { title: "Live Telemetry", url: "/dashboard", icon: LayoutDashboard },
@@ -74,7 +74,7 @@ const SidebarNavGroup = ({
                 to={item.url}
                 end={item.url === "/dashboard"}
                 className="hover:bg-sidebar-accent/50 transition-all duration-150 rounded-md"
-                activeClassName="bg-sidebar-accent text-primary font-medium shadow-[inset_2px_0_0_hsl(var(--primary))]"
+                activeClassName="bg-primary/10 text-primary font-medium shadow-[inset_2px_0_0_hsl(var(--primary))]"
               >
                 <item.icon className="mr-2.5 h-4 w-4 shrink-0 opacity-70" />
                 {!collapsed && <span className="text-[13px]">{item.title}</span>}
@@ -93,18 +93,20 @@ export function AppSidebar() {
   const { profile } = useAuth();
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
       {/* ─── Brand ─── */}
       <div className="px-4 py-4 flex items-center gap-3 border-b border-sidebar-border">
-        <div className="w-8 h-8 rounded-lg bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
-          <Sun className="h-4 w-4 text-primary" />
-        </div>
+        <img
+          src={logoClassic}
+          alt="Litro de Luz"
+          className="w-9 h-9 rounded-lg object-contain shrink-0"
+        />
         {!collapsed && (
           <div className="overflow-hidden">
-            <h1 className="text-[13px] font-bold text-sidebar-accent-foreground tracking-tight truncate">
+            <h1 className="text-[13px] font-bold text-foreground tracking-tight truncate font-sans">
               Litro de Luz
             </h1>
-            <p className="text-[9px] text-sidebar-foreground/50 uppercase tracking-[0.2em] font-medium">
+            <p className="text-[9px] text-muted-foreground uppercase tracking-[0.2em] font-medium font-sans">
               Impact Exchange
             </p>
           </div>
@@ -119,7 +121,7 @@ export function AppSidebar() {
         {/* Admin Section */}
         <SidebarGroup>
           {!collapsed && (
-            <SidebarGroupLabel className="text-[9px] text-sidebar-foreground/60 uppercase tracking-[0.15em] font-semibold mb-1 flex items-center gap-1.5">
+            <SidebarGroupLabel className="text-[9px] text-sidebar-foreground/60 uppercase tracking-[0.15em] font-semibold mb-1 flex items-center gap-1.5 font-sans">
               <Shield className="h-3 w-3 text-primary/60" />
               Admin
             </SidebarGroupLabel>
@@ -132,7 +134,7 @@ export function AppSidebar() {
                     <NavLink
                       to={item.url}
                       className="hover:bg-sidebar-accent/50 transition-all duration-150 rounded-md"
-                      activeClassName="bg-sidebar-accent text-primary font-medium shadow-[inset_2px_0_0_hsl(var(--primary))]"
+                      activeClassName="bg-primary/10 text-primary font-medium shadow-[inset_2px_0_0_hsl(var(--primary))]"
                     >
                       <item.icon className="mr-2.5 h-4 w-4 shrink-0 opacity-70" />
                       {!collapsed && <span className="text-[13px]">{item.title}</span>}
@@ -149,10 +151,10 @@ export function AppSidebar() {
       <SidebarFooter className="border-t border-sidebar-border px-4 py-3">
         {!collapsed && (
           <div className="space-y-1">
-            <p className="text-[11px] font-medium text-sidebar-accent-foreground truncate">
+            <p className="text-[11px] font-medium text-foreground truncate font-sans">
               {profile?.display_name || "Demo User"}
             </p>
-            <p className="text-[10px] text-sidebar-foreground/50 truncate">
+            <p className="text-[10px] text-muted-foreground truncate font-sans">
               {profile?.sponsor_name || "Enterprise Tier"}
             </p>
           </div>

@@ -9,28 +9,29 @@ const FOCUS_ICONS: Record<ESGFocus, typeof Flame[]> = {
   community_safety: [Moon, Lightbulb, Heart],
 };
 
+/* ODS-inspired gradient backgrounds for light mode */
 const FOCUS_COLORS: Record<ESGFocus, string[]> = {
   carbon_climate: [
-    "from-emerald-500/20 to-emerald-900/10 border-emerald-500/20",
-    "from-teal-500/20 to-teal-900/10 border-teal-500/20",
-    "from-cyan-500/20 to-cyan-900/10 border-cyan-500/20",
+    "from-[hsl(152,60%,95%)] to-[hsl(178,65%,93%)] border-[hsl(152,60%,80%)]",
+    "from-[hsl(178,65%,95%)] to-[hsl(205,85%,93%)] border-[hsl(178,65%,80%)]",
+    "from-[hsl(205,85%,95%)] to-[hsl(152,60%,93%)] border-[hsl(205,85%,80%)]",
   ],
   digital_inclusion: [
-    "from-blue-500/20 to-blue-900/10 border-blue-500/20",
-    "from-violet-500/20 to-violet-900/10 border-violet-500/20",
-    "from-indigo-500/20 to-indigo-900/10 border-indigo-500/20",
+    "from-[hsl(205,85%,95%)] to-[hsl(178,65%,93%)] border-[hsl(205,85%,80%)]",
+    "from-[hsl(270,60%,95%)] to-[hsl(205,85%,93%)] border-[hsl(270,60%,80%)]",
+    "from-[hsl(230,60%,95%)] to-[hsl(270,60%,93%)] border-[hsl(230,60%,80%)]",
   ],
   community_safety: [
-    "from-amber-500/20 to-amber-900/10 border-amber-500/20",
-    "from-orange-500/20 to-orange-900/10 border-orange-500/20",
-    "from-yellow-500/20 to-yellow-900/10 border-yellow-500/20",
+    "from-[hsl(28,85%,95%)] to-[hsl(42,90%,93%)] border-[hsl(28,85%,80%)]",
+    "from-[hsl(42,90%,95%)] to-[hsl(28,85%,93%)] border-[hsl(42,90%,80%)]",
+    "from-[hsl(4,80%,95%)] to-[hsl(28,85%,93%)] border-[hsl(4,80%,80%)]",
   ],
 };
 
 const ICON_COLORS: Record<ESGFocus, string[]> = {
-  carbon_climate: ["text-emerald-400", "text-teal-400", "text-cyan-400"],
-  digital_inclusion: ["text-blue-400", "text-violet-400", "text-indigo-400"],
-  community_safety: ["text-amber-400", "text-orange-400", "text-yellow-400"],
+  carbon_climate: ["text-ods-green", "text-ods-teal", "text-primary"],
+  digital_inclusion: ["text-primary", "text-ods-violet", "text-[hsl(230,60%,55%)]"],
+  community_safety: ["text-ods-orange", "text-ods-yellow", "text-ods-red"],
 };
 
 interface DynamicESGKPICardsProps {
@@ -57,15 +58,12 @@ const DynamicESGKPICards = ({ focus, kpis }: DynamicESGKPICardsProps) => {
               transition={{ duration: 0.4, delay: i * 0.08 }}
               className={`relative overflow-hidden rounded-xl border bg-gradient-to-br ${colors[i]} p-6`}
             >
-              {/* Background glow */}
-              <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-primary/5 blur-3xl" />
-
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground font-sans">
                     {kpi.title}
                   </span>
-                  <div className="p-2.5 rounded-lg bg-secondary/60 border border-border/50">
+                  <div className="p-2.5 rounded-lg bg-card/80 border border-border/50">
                     <Icon className={`h-5 w-5 ${iconColors[i]}`} />
                   </div>
                 </div>
@@ -75,8 +73,8 @@ const DynamicESGKPICards = ({ focus, kpis }: DynamicESGKPICardsProps) => {
                 </div>
 
                 <div className="flex items-center justify-between mt-3">
-                  <span className="text-xs text-muted-foreground">{kpi.subtitle}</span>
-                  <span className={`text-xs font-semibold ${kpi.trendUp ? "text-primary" : "text-destructive"}`}>
+                  <span className="text-xs text-muted-foreground font-sans">{kpi.subtitle}</span>
+                  <span className={`text-xs font-semibold font-sans ${kpi.trendUp ? "text-ods-teal" : "text-destructive"}`}>
                     {kpi.trendUp ? "↑" : "↓"} {kpi.trend}
                   </span>
                 </div>

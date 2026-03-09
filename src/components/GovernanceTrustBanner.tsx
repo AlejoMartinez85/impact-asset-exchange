@@ -7,7 +7,7 @@ const GovernanceTrustBanner = () => {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className="relative overflow-hidden rounded-xl border border-border bg-gradient-to-r from-secondary/80 via-card to-secondary/80 p-6"
+      className="relative overflow-hidden rounded-xl border border-border bg-gradient-to-r from-[hsl(205,40%,96%)] via-card to-[hsl(178,30%,96%)] p-6"
     >
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -29,15 +29,15 @@ const GovernanceTrustBanner = () => {
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-sm font-semibold text-foreground tracking-tight">
+            <h3 className="text-sm font-semibold text-foreground tracking-tight font-sans">
               Data Integrity & Governance
             </h3>
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-ods-teal bg-[hsl(178,65%,42%)]/10 px-2 py-0.5 rounded-full border border-[hsl(178,65%,42%)]/20 font-sans">
               <CheckCircle2 className="h-2.5 w-2.5" />
               100% IoT Verified
             </span>
           </div>
-          <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
+          <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl font-sans">
             All telemetry data is generated directly by ELISA® edge-hardware nodes via immutable protocols.
             Zero manual data entry. Audit-ready for GRI, SASB, and TCFD compliance.
           </p>

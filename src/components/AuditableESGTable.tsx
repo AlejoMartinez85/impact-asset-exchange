@@ -43,7 +43,6 @@ const AuditableESGTable = () => {
   const totalPages = Math.ceil(filtered.length / ROWS_PER_PAGE);
   const paged = filtered.slice(page * ROWS_PER_PAGE, (page + 1) * ROWS_PER_PAGE);
 
-  // Reset page when search changes
   const handleSearch = (val: string) => {
     setSearch(val);
     setPage(0);
@@ -51,13 +50,12 @@ const AuditableESGTable = () => {
 
   return (
     <div className="card-elevated rounded-xl border border-border overflow-hidden">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-5">
         <div className="flex items-center gap-2">
           <Radio className="h-4 w-4 text-primary" />
           <div>
-            <h3 className="text-sm font-semibold text-foreground tracking-tight">Auditable ESG Ledger</h3>
-            <p className="text-[11px] text-muted-foreground">
+            <h3 className="text-sm font-semibold text-foreground tracking-tight font-sans">Auditable ESG Ledger</h3>
+            <p className="text-[11px] text-muted-foreground font-sans">
               {filtered.length} ELISA poles · Granular hardware-level telemetry
             </p>
           </div>
@@ -83,24 +81,23 @@ const AuditableESGTable = () => {
         </div>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="border-border hover:bg-transparent">
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Serial Number</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Location</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Status</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right">Clean Energy</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right">WiFi Users</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right">Battery</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right">Uptime</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground font-sans">Serial Number</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground font-sans">Location</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground font-sans">Status</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">Clean Energy</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">WiFi Users</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">Battery</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">Uptime</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paged.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-xs text-muted-foreground py-8">
+                <TableCell colSpan={7} className="text-center text-xs text-muted-foreground py-8 font-sans">
                   No poles match your search.
                 </TableCell>
               </TableRow>
@@ -108,17 +105,17 @@ const AuditableESGTable = () => {
               paged.map((pole, i) => (
                 <TableRow
                   key={pole.id}
-                  className={`border-border transition-colors ${i % 2 === 0 ? "bg-transparent" : "bg-secondary/20"}`}
+                  className={`border-border transition-colors ${i % 2 === 0 ? "bg-transparent" : "bg-secondary/30"}`}
                 >
                   <TableCell className="font-mono text-xs text-foreground">{pole.id}</TableCell>
-                  <TableCell className="text-xs text-muted-foreground">{pole.country}</TableCell>
+                  <TableCell className="text-xs text-muted-foreground font-sans">{pole.country}</TableCell>
                   <TableCell>
                     <Badge
                       variant="outline"
-                      className={`text-[10px] capitalize ${
+                      className={`text-[10px] capitalize font-sans ${
                         pole.status === "active"
-                          ? "bg-primary/15 text-primary border-primary/30"
-                          : "bg-[hsl(38,92%,55%)]/15 text-[hsl(38,92%,55%)] border-[hsl(38,92%,55%)]/30"
+                          ? "bg-ods-teal/10 text-ods-teal border-ods-teal/30"
+                          : "bg-ods-orange/10 text-ods-orange border-ods-orange/30"
                       }`}
                     >
                       {pole.status === "active" ? "Online" : "Maintenance"}
@@ -127,7 +124,7 @@ const AuditableESGTable = () => {
                   <TableCell className="text-right font-mono text-xs text-foreground">{(pole.kwhProduced / 1000).toFixed(2)} kWh</TableCell>
                   <TableCell className="text-right font-mono text-xs text-foreground">{pole.wifiUsers}</TableCell>
                   <TableCell className="text-right font-mono text-xs">
-                    <span className={pole.batteryHealth > 70 ? "text-primary" : "text-destructive"}>{pole.batteryHealth}%</span>
+                    <span className={pole.batteryHealth > 70 ? "text-ods-teal" : "text-destructive"}>{pole.batteryHealth}%</span>
                   </TableCell>
                   <TableCell className="text-right font-mono text-xs text-foreground">{pole.uptime}%</TableCell>
                 </TableRow>
@@ -137,19 +134,12 @@ const AuditableESGTable = () => {
         </Table>
       </div>
 
-      {/* Pagination */}
       <div className="flex items-center justify-between px-5 py-3 border-t border-border">
-        <span className="text-[11px] text-muted-foreground">
+        <span className="text-[11px] text-muted-foreground font-sans">
           Showing {page * ROWS_PER_PAGE + 1}–{Math.min((page + 1) * ROWS_PER_PAGE, filtered.length)} of {filtered.length}
         </span>
         <div className="flex items-center gap-1.5">
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-7 w-7 border-border"
-            disabled={page === 0}
-            onClick={() => setPage((p) => p - 1)}
-          >
+          <Button variant="outline" size="icon" className="h-7 w-7 border-border" disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
             <ChevronLeft className="h-3.5 w-3.5" />
           </Button>
           {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
@@ -160,20 +150,14 @@ const AuditableESGTable = () => {
                 key={pageNum}
                 variant={pageNum === page ? "default" : "outline"}
                 size="icon"
-                className={`h-7 w-7 text-[11px] font-mono ${pageNum === page ? "bg-primary text-primary-foreground" : "border-border"}`}
+                className={`h-7 w-7 text-[11px] font-mono ${pageNum === page ? "" : "border-border"}`}
                 onClick={() => setPage(pageNum)}
               >
                 {pageNum + 1}
               </Button>
             );
           })}
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-7 w-7 border-border"
-            disabled={page >= totalPages - 1}
-            onClick={() => setPage((p) => p + 1)}
-          >
+          <Button variant="outline" size="icon" className="h-7 w-7 border-border" disabled={page >= totalPages - 1} onClick={() => setPage((p) => p + 1)}>
             <ChevronRight className="h-3.5 w-3.5" />
           </Button>
         </div>

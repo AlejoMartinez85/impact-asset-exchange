@@ -10,10 +10,10 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
   if (!active || !payload?.length) return null;
   const d = payload[0];
   return (
-    <div className="rounded-lg border border-border bg-card/95 backdrop-blur-xl p-3 shadow-lg shadow-primary/10 text-xs space-y-1">
+    <div className="rounded-lg border border-border bg-card/95 backdrop-blur-xl p-3 shadow-lg text-xs space-y-1">
       <p className="font-semibold text-foreground">{d.payload.sdgNum}: {d.payload.sdg}</p>
       <div className="flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full" style={{ background: "hsl(190, 90%, 50%)" }} />
+        <span className="w-2 h-2 rounded-full bg-primary" />
         <span className="text-muted-foreground">Impact Score:</span>
         <span className="font-mono font-bold text-foreground">{d.value}/100</span>
       </div>
@@ -36,8 +36,8 @@ const SDGRadarChartComponent = () => {
     <div className="card-elevated rounded-xl p-6">
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="text-sm font-semibold text-foreground tracking-tight">UN SDG Alignment</h3>
-          <p className="text-[11px] text-muted-foreground mt-0.5">Impact scoring against target Sustainable Development Goals</p>
+          <h3 className="text-sm font-semibold text-foreground tracking-tight font-sans">UN SDG Alignment</h3>
+          <p className="text-[11px] text-muted-foreground mt-0.5 font-sans">Impact scoring against target Sustainable Development Goals</p>
         </div>
         <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" onClick={downloadCSV} title="Download CSV">
           <Download className="h-4 w-4" />
@@ -45,26 +45,26 @@ const SDGRadarChartComponent = () => {
       </div>
       <ResponsiveContainer width="100%" height={320}>
         <RadarChart data={sdgRadarData} cx="50%" cy="50%" outerRadius="72%">
-          <PolarGrid stroke="hsl(220, 14%, 18%)" strokeDasharray="3 3" />
+          <PolarGrid stroke="hsl(210, 20%, 88%)" strokeDasharray="3 3" />
           <PolarAngleAxis
             dataKey="sdg"
-            tick={{ fill: "hsl(215, 14%, 55%)", fontSize: 10, fontWeight: 500 }}
+            tick={{ fill: "hsl(215, 14%, 52%)", fontSize: 10, fontWeight: 500 }}
           />
           <PolarRadiusAxis
             angle={30}
             domain={[0, 100]}
-            tick={{ fill: "hsl(215, 14%, 35%)", fontSize: 9 }}
+            tick={{ fill: "hsl(215, 14%, 70%)", fontSize: 9 }}
             axisLine={false}
           />
           <Tooltip content={<CustomTooltip />} />
           <Radar
             name="Impact Score"
             dataKey="score"
-            stroke="hsl(190, 90%, 50%)"
-            fill="hsl(190, 90%, 50%)"
-            fillOpacity={0.18}
+            stroke="hsl(205, 85%, 42%)"
+            fill="hsl(205, 85%, 42%)"
+            fillOpacity={0.15}
             strokeWidth={2}
-            dot={{ r: 3.5, fill: "hsl(190, 90%, 50%)", stroke: "hsl(220, 20%, 7%)", strokeWidth: 1.5 }}
+            dot={{ r: 3.5, fill: "hsl(205, 85%, 42%)", stroke: "#fff", strokeWidth: 1.5 }}
           />
         </RadarChart>
       </ResponsiveContainer>

@@ -79,7 +79,7 @@ const LiveIoTSimulator = ({ onTick }: LiveIoTSimulatorProps) => {
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
           <Switch checked={enabled} onCheckedChange={handleToggle} />
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider font-sans">
             Live Demo Mode
           </span>
         </div>
@@ -118,17 +118,17 @@ const LiveIoTSimulator = ({ onTick }: LiveIoTSimulatorProps) => {
                 <span className="text-primary/60">({logs.length} events)</span>
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <div className="mt-2 rounded-md border border-border bg-[hsl(220,20%,4%)] font-mono text-[11px] max-h-48 overflow-y-auto p-3 space-y-1">
+                <div className="mt-2 rounded-md border border-border bg-[hsl(215,25%,17%)] font-mono text-[11px] max-h-48 overflow-y-auto p-3 space-y-1">
                   {logs.length === 0 && (
-                    <span className="text-muted-foreground">Waiting for telemetry…</span>
+                    <span className="text-[hsl(215,14%,60%)]">Waiting for telemetry…</span>
                   )}
                   {logs.map((log, i) => (
                     <div key={i} className="leading-relaxed">
-                      <span className="text-muted-foreground">[{new Date(log.timestamp).toLocaleTimeString()}]</span>{" "}
-                      <span className="text-primary">IN</span>{" "}
-                      <span className="text-[hsl(200,80%,55%)]">{log.serial_number}</span>{" "}
-                      <span className="text-muted-foreground">→</span>{" "}
-                      <span className="text-foreground">
+                      <span className="text-[hsl(215,14%,60%)]">[{new Date(log.timestamp).toLocaleTimeString()}]</span>{" "}
+                      <span className="text-[hsl(205,85%,60%)]">IN</span>{" "}
+                      <span className="text-[hsl(178,65%,55%)]">{log.serial_number}</span>{" "}
+                      <span className="text-[hsl(215,14%,60%)]">→</span>{" "}
+                      <span className="text-[hsl(0,0%,90%)]">
                         {`{ kWh: ${log.kwh_generated}, wifi: ${log.wifi_connections}, CO₂: ${log.co2_avoided_kg}kg }`}
                       </span>
                     </div>
