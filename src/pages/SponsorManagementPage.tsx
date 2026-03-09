@@ -85,6 +85,7 @@ const SponsorManagementPage = () => {
     industry: "",
     contact_email: "",
     plan: "corporate_50",
+    esg_focus: "",
   });
 
   // Fetch sponsors from DB
@@ -112,7 +113,7 @@ const SponsorManagementPage = () => {
       toast({ title: "Sponsor Created", description: `${data.name} has been added to the directory.` });
       queryClient.invalidateQueries({ queryKey: ["sponsor-management"] });
       setAddOpen(false);
-      setForm({ name: "", industry: "", contact_email: "", plan: "corporate_50" });
+      setForm({ name: "", industry: "", contact_email: "", plan: "corporate_50", esg_focus: "" });
     },
     onError: (err: Error) => {
       toast({ title: "Error", description: err.message, variant: "destructive" });
@@ -346,6 +347,19 @@ const SponsorManagementPage = () => {
                   <SelectItem value="corporate_50" className="text-xs">Corporate Impact Cluster — 50 Poles ($4,995/yr)</SelectItem>
                   <SelectItem value="corporate_100" className="text-xs">Enterprise Impact Cluster — 100 Poles ($8,995/yr)</SelectItem>
                   <SelectItem value="corporate_custom" className="text-xs">Custom Deployment — Contact Sales</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-[11px] text-muted-foreground font-medium">Primary ESG Focus</Label>
+              <Select value={form.esg_focus} onValueChange={(v) => setForm((f) => ({ ...f, esg_focus: v }))}>
+                <SelectTrigger className="h-9 text-xs border-border">
+                  <SelectValue placeholder="Select ESG focus…" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="carbon_climate" className="text-xs">Carbon & Climate Action</SelectItem>
+                  <SelectItem value="digital_inclusion" className="text-xs">Digital Inclusion & Education</SelectItem>
+                  <SelectItem value="community_safety" className="text-xs">Community Safety & Economy</SelectItem>
                 </SelectContent>
               </Select>
             </div>
