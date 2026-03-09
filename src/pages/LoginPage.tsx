@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { Leaf, Mail, Lock, Loader2 } from "lucide-react";
+import { Mail, Lock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import logoClassic from "@/assets/logo-classic.png";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +20,6 @@ const LoginPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect if already authenticated
   useEffect(() => {
     if (user) navigate("/dashboard", { replace: true });
   }, [user, navigate]);
@@ -61,19 +61,18 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md border-border bg-card">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-[hsl(205,40%,96%)] to-[hsl(178,25%,94%)] p-4">
+      <Card className="w-full max-w-md border-border bg-card shadow-lg">
         <CardHeader className="text-center space-y-3">
-          <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Leaf className="h-6 w-6 text-primary" />
+          <div className="mx-auto w-16 h-16 rounded-xl flex items-center justify-center">
+            <img src={logoClassic} alt="Litro de Luz" className="w-14 h-14 object-contain" />
           </div>
-          <CardTitle className="text-xl font-bold text-foreground">Impact Exchange</CardTitle>
-          <CardDescription className="text-muted-foreground text-sm">
+          <CardTitle className="text-xl font-bold text-foreground font-serif">Impact Exchange</CardTitle>
+          <CardDescription className="text-muted-foreground text-sm font-sans">
             Sign in to your Litro de Luz dashboard
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
-          {/* Google */}
           <Button
             variant="outline"
             className="w-full border-border text-foreground hover:bg-secondary"
@@ -91,11 +90,10 @@ const LoginPage = () => {
 
           <div className="flex items-center gap-3">
             <Separator className="flex-1" />
-            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">or</span>
+            <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-sans">or</span>
             <Separator className="flex-1" />
           </div>
 
-          {/* Email methods */}
           <Tabs defaultValue="password" className="w-full">
             <TabsList className="w-full bg-secondary">
               <TabsTrigger value="password" className="flex-1 text-xs">Password</TabsTrigger>
@@ -134,7 +132,7 @@ const LoginPage = () => {
                     />
                   </div>
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full bg-gradient-to-r from-primary to-[hsl(178,65%,42%)] hover:from-primary/90 hover:to-[hsl(178,65%,42%)]/90 text-primary-foreground" disabled={loading}>
                   {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                   Sign In
                 </Button>
@@ -161,14 +159,14 @@ const LoginPage = () => {
                   />
                 </div>
               </div>
-              <Button onClick={handleMagicLink} className="w-full" disabled={loading}>
+              <Button onClick={handleMagicLink} className="w-full bg-gradient-to-r from-primary to-[hsl(178,65%,42%)] hover:from-primary/90 hover:to-[hsl(178,65%,42%)]/90 text-primary-foreground" disabled={loading}>
                 {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 Send Magic Link
               </Button>
             </TabsContent>
           </Tabs>
 
-          <p className="text-[10px] text-center text-muted-foreground">
+          <p className="text-[10px] text-center text-muted-foreground font-sans">
             Access is invite-only. Contact your administrator for credentials.
           </p>
         </CardContent>

@@ -53,49 +53,44 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         <AppSidebar />
 
         <div className="flex-1 flex flex-col min-w-0">
-          {/* ─── Premium Header ─── */}
-          <header className="h-14 flex items-center justify-between border-b border-border px-4 bg-card/60 backdrop-blur-md shrink-0 z-10">
-            {/* Left: Trigger + Breadcrumb */}
+          {/* ─── Header ─── */}
+          <header className="h-14 flex items-center justify-between border-b border-border px-4 bg-card/80 backdrop-blur-md shrink-0 z-10">
             <div className="flex items-center gap-3">
               <SidebarTrigger className="text-muted-foreground hover:text-foreground transition-colors" />
               <div className="h-4 w-px bg-border" />
-              <nav className="flex items-center gap-1.5 text-xs">
+              <nav className="flex items-center gap-1.5 text-xs font-sans">
                 <span className="text-muted-foreground">{meta.section}</span>
                 <ChevronRight className="h-3 w-3 text-muted-foreground/50" />
                 <span className="text-foreground font-medium">{meta.title}</span>
               </nav>
             </div>
 
-            {/* Right: Status + Profile */}
             <div className="flex items-center gap-3">
-              {/* Cluster Status Badge */}
               <Badge
                 variant="outline"
-                className="hidden sm:flex items-center gap-1.5 h-7 px-2.5 text-[10px] font-medium border-primary/20 bg-primary/5 text-primary tracking-wide"
+                className="hidden sm:flex items-center gap-1.5 h-7 px-2.5 text-[10px] font-medium border-ods-teal/20 bg-ods-teal/5 text-ods-teal tracking-wide font-sans"
               >
-                <Circle className="h-1.5 w-1.5 fill-primary text-primary animate-pulse" />
+                <Circle className="h-1.5 w-1.5 fill-current animate-pulse" />
                 Cluster Status: Online
               </Badge>
 
-              {/* Tenant indicator */}
-              <div className="hidden md:flex items-center gap-1.5 text-[11px] text-muted-foreground px-2.5 py-1 rounded-md bg-secondary/40 border border-border/50">
+              <div className="hidden md:flex items-center gap-1.5 text-[11px] text-muted-foreground px-2.5 py-1 rounded-md bg-secondary/40 border border-border/50 font-sans">
                 <span className="font-medium text-foreground">{sponsorName}</span>
               </div>
 
               <div className="h-4 w-px bg-border" />
 
-              {/* Profile Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-2 rounded-lg px-1.5 py-1 hover:bg-secondary/60 transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring">
                     <Avatar className="h-7 w-7 border border-border">
-                      <AvatarFallback className="bg-primary/15 text-primary text-[10px] font-bold">
+                      <AvatarFallback className="bg-primary/10 text-primary text-[10px] font-bold font-sans">
                         {initials}
                       </AvatarFallback>
                     </Avatar>
                     <div className="hidden lg:block text-left">
-                      <p className="text-[11px] font-medium text-foreground leading-none">{displayName}</p>
-                      <p className="text-[10px] text-muted-foreground leading-none mt-0.5">
+                      <p className="text-[11px] font-medium text-foreground leading-none font-sans">{displayName}</p>
+                      <p className="text-[10px] text-muted-foreground leading-none mt-0.5 font-sans">
                         {isSuperAdmin ? "Super Admin" : "Sponsor"}
                       </p>
                     </div>
@@ -103,18 +98,18 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-52">
                   <div className="px-2 py-2 border-b border-border mb-1">
-                    <p className="text-xs font-medium text-foreground">{displayName}</p>
-                    <p className="text-[10px] text-muted-foreground">{sponsorName}</p>
+                    <p className="text-xs font-medium text-foreground font-sans">{displayName}</p>
+                    <p className="text-[10px] text-muted-foreground font-sans">{sponsorName}</p>
                   </div>
                   <DropdownMenuItem
-                    className="text-xs gap-2 cursor-pointer"
+                    className="text-xs gap-2 cursor-pointer font-sans"
                     onClick={() => toast({ title: "Company Settings", description: "Settings panel coming soon." })}
                   >
                     <Settings className="h-3.5 w-3.5" />
                     Company Settings
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    className="text-xs gap-2 cursor-pointer"
+                    className="text-xs gap-2 cursor-pointer font-sans"
                     onClick={() => toast({ title: "API Keys", description: "Manage keys on the Developer page." })}
                   >
                     <Key className="h-3.5 w-3.5" />
@@ -122,7 +117,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="text-xs gap-2 cursor-pointer text-destructive focus:text-destructive"
+                    className="text-xs gap-2 cursor-pointer text-destructive focus:text-destructive font-sans"
                     onClick={handleLogout}
                   >
                     <LogOut className="h-3.5 w-3.5" />
@@ -133,8 +128,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
           </header>
 
-          {/* ─── Main Content ─── */}
-          <main className="flex-1 overflow-auto p-6">
+          <main className="flex-1 overflow-auto p-6 bg-background">
             {children}
           </main>
         </div>
