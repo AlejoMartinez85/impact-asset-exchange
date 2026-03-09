@@ -85,6 +85,7 @@ const SponsorManagementPage = () => {
     industry: "",
     contact_email: "",
     plan: "corporate_50",
+    esg_focus: "",
   });
 
   // Fetch sponsors from DB
