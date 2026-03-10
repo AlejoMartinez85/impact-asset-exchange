@@ -235,6 +235,22 @@ const ReportsPage = () => {
               </Select>
             </div>
 
+            <div className="flex items-center gap-2">
+              <Focus className="h-3.5 w-3.5 text-muted-foreground" />
+              <Select value={esgFocus} onValueChange={(v) => setEsgFocus(v as ESGFocus)}>
+                <SelectTrigger className="w-56 h-9 text-xs bg-secondary/50 border-border">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {ESG_FOCUS_OPTIONS.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value} className="text-xs">
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <Button
               onClick={handleGenerate}
               disabled={loading}
