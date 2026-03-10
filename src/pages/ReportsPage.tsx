@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Download, Loader2, Sparkles, AlertCircle, Calendar, Brain, Eye } from "lucide-react";
+import { FileText, Download, Loader2, Sparkles, AlertCircle, Calendar, Brain, Eye, Focus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,6 +9,7 @@ import { generatedPoles } from "@/data/generatePoles";
 import PaywallGate from "@/components/PaywallGate";
 import ESGReportDocument from "@/components/ESGReportDocument";
 import { useToast } from "@/hooks/use-toast";
+import { ESGFocus, ESG_FOCUS_OPTIONS } from "@/data/esgFocusData";
 
 const FUNCTION_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-esg-report`;
 
