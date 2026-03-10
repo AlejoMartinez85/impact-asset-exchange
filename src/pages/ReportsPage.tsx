@@ -34,6 +34,7 @@ const ReportsPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [timeframe, setTimeframe] = useState("Q1 2026");
+  const [esgFocus, setEsgFocus] = useState<ESGFocus>("carbon_climate");
   const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
