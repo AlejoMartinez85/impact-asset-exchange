@@ -387,7 +387,7 @@ const ReportsPage = () => {
                   Download PDF
                 </Button>
               </div>
-              <ESGReportDocument />
+              <ESGReportDocument esgFocus={esgFocus} reportingPeriod={timeframe} />
             </motion.div>
           )}
         </AnimatePresence>
