@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Download, Loader2, Sparkles, AlertCircle, Calendar, Brain, Eye } from "lucide-react";
+import { FileText, Download, Loader2, Sparkles, AlertCircle, Calendar, Brain, Eye, Focus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,6 +9,7 @@ import { generatedPoles } from "@/data/generatePoles";
 import PaywallGate from "@/components/PaywallGate";
 import ESGReportDocument from "@/components/ESGReportDocument";
 import { useToast } from "@/hooks/use-toast";
+import { ESGFocus, ESG_FOCUS_OPTIONS } from "@/data/esgFocusData";
 
 const FUNCTION_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-esg-report`;
 
@@ -33,6 +34,7 @@ const ReportsPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [timeframe, setTimeframe] = useState("Q1 2026");
+  const [esgFocus, setEsgFocus] = useState<ESGFocus>("carbon_climate");
   const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
@@ -233,6 +235,22 @@ const ReportsPage = () => {
               </Select>
             </div>
 
+            <div className="flex items-center gap-2">
+              <Focus className="h-3.5 w-3.5 text-muted-foreground" />
+              <Select value={esgFocus} onValueChange={(v) => setEsgFocus(v as ESGFocus)}>
+                <SelectTrigger className="w-56 h-9 text-xs bg-secondary/50 border-border">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {ESG_FOCUS_OPTIONS.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value} className="text-xs">
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <Button
               onClick={handleGenerate}
               disabled={loading}
@@ -369,7 +387,7 @@ const ReportsPage = () => {
                   Download PDF
                 </Button>
               </div>
-              <ESGReportDocument />
+              <ESGReportDocument esgFocus={esgFocus} reportingPeriod={timeframe} />
             </motion.div>
           )}
         </AnimatePresence>
