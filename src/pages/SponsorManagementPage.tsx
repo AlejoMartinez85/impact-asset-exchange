@@ -344,9 +344,9 @@ const SponsorManagementPage = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="corporate_50" className="text-xs">Corporate Impact Cluster — 50 Poles ($4,995/yr)</SelectItem>
-                  <SelectItem value="corporate_100" className="text-xs">Enterprise Impact Cluster — 100 Poles ($8,995/yr)</SelectItem>
-                  <SelectItem value="corporate_custom" className="text-xs">Custom Deployment — Contact Sales</SelectItem>
+                  <SelectItem value="corporate_50" className="text-xs">Corporate Impact Cluster (50 Poles) — $19,995</SelectItem>
+                  <SelectItem value="corporate_100" className="text-xs">Corporate Impact Cluster (100 Poles) — $39,990</SelectItem>
+                  <SelectItem value="enterprise_saas" className="text-xs">Enterprise SaaS Only — $4,995/yr</SelectItem>
                 </SelectContent>
               </Select>
             </div>
