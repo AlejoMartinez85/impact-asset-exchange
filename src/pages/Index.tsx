@@ -89,10 +89,10 @@ const Index = () => {
 
       {/* Operational KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <KPICard title="Active Poles" value={String(activePoles)} subtitle="ELISA units online" icon={Zap} trend="99.1% uptime" trendUp delay={0} />
-        <KPICard title="CO₂ Avoided" value={`${totalCo2.toLocaleString(undefined, { maximumFractionDigits: 1 })}t`} subtitle="Scope 3 reduction" icon={Leaf} trend="15.2%" trendUp delay={0.05} />
-        <KPICard title="Uptime Hours" value={`${(kpiData.uptimeHours / 1000).toFixed(0)}K`} subtitle="Light & connectivity" icon={Clock} trend="99.1%" trendUp delay={0.1} />
-        <KPICard title="Beneficiaries" value={`${(totalWifi / 1000).toFixed(1)}K`} subtitle="Direct impact" icon={Users} trend="2,400 new" trendUp delay={0.15} />
+        <KPICard title="Active Poles" value={String(activePoles)} subtitle="ELISA units online" icon={Zap} trend="99.1% uptime" trendUp delay={0} auditStandard="GRI 302 | CDP" />
+        <KPICard title="CO₂ Avoided" value={`${totalCo2.toLocaleString(undefined, { maximumFractionDigits: 1 })}t`} subtitle="Scope 3 reduction" icon={Leaf} trend="15.2%" trendUp delay={0.05} auditStandard="GHG Protocol" />
+        <KPICard title="Uptime Hours" value={`${(kpiData.uptimeHours / 1000).toFixed(0)}K`} subtitle="Light & connectivity" icon={Clock} trend="99.1%" trendUp delay={0.1} auditStandard="SASB TC-TL" />
+        <KPICard title="Beneficiaries" value={`${(totalWifi / 1000).toFixed(1)}K`} subtitle="Direct impact" icon={Users} trend="2,400 new" trendUp delay={0.15} auditStandard="GRI 413" />
       </div>
 
       <SunlightAssetChart />
