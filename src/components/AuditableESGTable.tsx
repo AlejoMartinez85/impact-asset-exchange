@@ -11,13 +11,36 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Download, Search, ChevronLeft, ChevronRight, Radio } from "lucide-react";
 
 const ROWS_PER_PAGE = 10;
 
+/** Audit standard mapping based on pole metrics */
+const AUDIT_STANDARDS: { tag: string; tooltip: string }[] = [
+  { tag: "GRI 302", tooltip: "Compliant with Global Reporting Initiative standard for Energy generation." },
+  { tag: "GRI 203", tooltip: "Compliant with GRI 203: Indirect Economic Impacts — community infrastructure investment." },
+  { tag: "GRI 306", tooltip: "Compliant with GRI 306: Waste management and e-waste circularity metrics." },
+  { tag: "GHG Protocol", tooltip: "Verified under Greenhouse Gas Protocol — Scope 3 emissions avoidance methodology." },
+  { tag: "SASB TC-TL", tooltip: "Aligned with SASB Telecommunications standard for digital inclusion & data access." },
+  { tag: "GRI 413", tooltip: "Compliant with GRI 413: Local Communities — direct beneficiary impact measurement." },
+  { tag: "UN SDG 7", tooltip: "Mapped to UN Sustainable Development Goal 7: Affordable and Clean Energy." },
+  { tag: "UN SDG 9", tooltip: "Mapped to UN Sustainable Development Goal 9: Industry, Innovation and Infrastructure." },
+  { tag: "CDP Climate", tooltip: "Aligned with CDP Climate Change questionnaire metrics for corporate disclosure." },
+];
+
+function getAuditStandard(index: number) {
+  return AUDIT_STANDARDS[index % AUDIT_STANDARDS.length];
+}
+
 const downloadCSV = (data: typeof generatedPoles) => {
-  const headers = ["Serial Number", "Country", "Community", "Status", "kWh Produced", "WiFi Users", "Battery %", "Uptime %"];
-  const rows = data.map((p) => [p.id, p.country, p.community, p.status, p.kwhProduced, p.wifiUsers, p.batteryHealth, p.uptime]);
+  const headers = ["Serial Number", "Country", "Community", "Status", "kWh Produced", "WiFi Users", "Battery %", "Uptime %", "Audit Standard"];
+  const rows = data.map((p, i) => [p.id, p.country, p.community, p.status, p.kwhProduced, p.wifiUsers, p.batteryHealth, p.uptime, getAuditStandard(i).tag]);
   const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
   const blob = new Blob([csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
@@ -43,126 +66,153 @@ const AuditableESGTable = () => {
   const totalPages = Math.ceil(filtered.length / ROWS_PER_PAGE);
   const paged = filtered.slice(page * ROWS_PER_PAGE, (page + 1) * ROWS_PER_PAGE);
 
+  // We need original indices for audit standard mapping
+  const pagedWithIndex = useMemo(() => {
+    const startIdx = page * ROWS_PER_PAGE;
+    return paged.map((pole, i) => ({ pole, originalIndex: startIdx + i }));
+  }, [paged, page]);
+
   const handleSearch = (val: string) => {
     setSearch(val);
     setPage(0);
   };
 
   return (
-    <div className="card-elevated rounded-xl border border-border overflow-hidden">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-5">
-        <div className="flex items-center gap-2">
-          <Radio className="h-4 w-4 text-primary" />
-          <div>
-            <h3 className="text-sm font-semibold text-foreground tracking-tight font-sans">Auditable ESG Ledger</h3>
-            <p className="text-[11px] text-muted-foreground font-sans">
-              {filtered.length} ELISA poles · Granular hardware-level telemetry
-            </p>
+    <TooltipProvider delayDuration={200}>
+      <div className="card-elevated rounded-xl border border-border overflow-hidden">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-5">
+          <div className="flex items-center gap-2">
+            <Radio className="h-4 w-4 text-primary" />
+            <div>
+              <h3 className="text-sm font-semibold text-foreground tracking-tight font-sans">Auditable ESG Ledger</h3>
+              <p className="text-[11px] text-muted-foreground font-sans">
+                {filtered.length} ELISA poles · Granular hardware-level telemetry
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-initial">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+              <Input
+                placeholder="Search serial, country…"
+                value={search}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="pl-8 h-8 text-xs w-full sm:w-56 bg-secondary/50 border-border"
+              />
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs border-border text-muted-foreground hover:text-foreground hover:border-primary/40 shrink-0"
+              onClick={() => downloadCSV(filtered)}
+            >
+              <Download className="mr-1.5 h-3 w-3" /> Export CSV
+            </Button>
           </div>
         </div>
-        <div className="flex items-center gap-2 w-full sm:w-auto">
-          <div className="relative flex-1 sm:flex-initial">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-            <Input
-              placeholder="Search serial, country…"
-              value={search}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="pl-8 h-8 text-xs w-full sm:w-56 bg-secondary/50 border-border"
-            />
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-xs border-border text-muted-foreground hover:text-foreground hover:border-primary/40 shrink-0"
-            onClick={() => downloadCSV(filtered)}
-          >
-            <Download className="mr-1.5 h-3 w-3" /> Export CSV
-          </Button>
-        </div>
-      </div>
 
-      <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow className="border-border hover:bg-transparent">
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground font-sans">Serial Number</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground font-sans">Location</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground font-sans">Status</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">Clean Energy</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">WiFi Users</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">Battery</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">Uptime</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {paged.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center text-xs text-muted-foreground py-8 font-sans">
-                  No poles match your search.
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-border hover:bg-transparent">
+                <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground font-sans">Serial Number</TableHead>
+                <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground font-sans">Location</TableHead>
+                <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground font-sans">Status</TableHead>
+                <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">Clean Energy</TableHead>
+                <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">WiFi Users</TableHead>
+                <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">Battery</TableHead>
+                <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground text-right font-sans">Uptime</TableHead>
+                <TableHead className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground font-sans">Audit Standard</TableHead>
               </TableRow>
-            ) : (
-              paged.map((pole, i) => (
-                <TableRow
-                  key={pole.id}
-                  className={`border-border transition-colors ${i % 2 === 0 ? "bg-transparent" : "bg-secondary/30"}`}
-                >
-                  <TableCell className="font-mono text-xs text-foreground">{pole.id}</TableCell>
-                  <TableCell className="text-xs text-muted-foreground font-sans">{pole.country}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant="outline"
-                      className={`text-[10px] capitalize font-sans ${
-                        pole.status === "active"
-                          ? "bg-ods-teal/10 text-ods-teal border-ods-teal/30"
-                          : "bg-ods-orange/10 text-ods-orange border-ods-orange/30"
-                      }`}
-                    >
-                      {pole.status === "active" ? "Online" : "Maintenance"}
-                    </Badge>
+            </TableHeader>
+            <TableBody>
+              {pagedWithIndex.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={8} className="text-center text-xs text-muted-foreground py-8 font-sans">
+                    No poles match your search.
                   </TableCell>
-                  <TableCell className="text-right font-mono text-xs text-foreground">{(pole.kwhProduced / 1000).toFixed(2)} kWh</TableCell>
-                  <TableCell className="text-right font-mono text-xs text-foreground">{pole.wifiUsers}</TableCell>
-                  <TableCell className="text-right font-mono text-xs">
-                    <span className={pole.batteryHealth > 70 ? "text-ods-teal" : "text-destructive"}>{pole.batteryHealth}%</span>
-                  </TableCell>
-                  <TableCell className="text-right font-mono text-xs text-foreground">{pole.uptime}%</TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
+              ) : (
+                pagedWithIndex.map(({ pole, originalIndex }, i) => {
+                  const standard = getAuditStandard(originalIndex);
+                  return (
+                    <TableRow
+                      key={pole.id}
+                      className={`border-border transition-colors ${i % 2 === 0 ? "bg-transparent" : "bg-secondary/30"}`}
+                    >
+                      <TableCell className="font-mono text-xs text-foreground">{pole.id}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground font-sans">{pole.country}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="outline"
+                          className={`text-[10px] capitalize font-sans ${
+                            pole.status === "active"
+                              ? "bg-ods-teal/10 text-ods-teal border-ods-teal/30"
+                              : "bg-ods-orange/10 text-ods-orange border-ods-orange/30"
+                          }`}
+                        >
+                          {pole.status === "active" ? "Online" : "Maintenance"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right font-mono text-xs text-foreground">{(pole.kwhProduced / 1000).toFixed(2)} kWh</TableCell>
+                      <TableCell className="text-right font-mono text-xs text-foreground">{pole.wifiUsers}</TableCell>
+                      <TableCell className="text-right font-mono text-xs">
+                        <span className={pole.batteryHealth > 70 ? "text-ods-teal" : "text-destructive"}>{pole.batteryHealth}%</span>
+                      </TableCell>
+                      <TableCell className="text-right font-mono text-xs text-foreground">{pole.uptime}%</TableCell>
+                      <TableCell>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Badge
+                              variant="outline"
+                              className="text-[9px] font-semibold tracking-wide bg-primary/5 text-primary/80 border-primary/20 font-sans cursor-help whitespace-nowrap"
+                            >
+                              {standard.tag}
+                            </Badge>
+                          </TooltipTrigger>
+                          <TooltipContent side="left" className="max-w-[240px] text-xs">
+                            {standard.tooltip}
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              )}
+            </TableBody>
+          </Table>
+        </div>
 
-      <div className="flex items-center justify-between px-5 py-3 border-t border-border">
-        <span className="text-[11px] text-muted-foreground font-sans">
-          Showing {page * ROWS_PER_PAGE + 1}–{Math.min((page + 1) * ROWS_PER_PAGE, filtered.length)} of {filtered.length}
-        </span>
-        <div className="flex items-center gap-1.5">
-          <Button variant="outline" size="icon" className="h-7 w-7 border-border" disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
-            <ChevronLeft className="h-3.5 w-3.5" />
-          </Button>
-          {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-            const start = Math.max(0, Math.min(page - 2, totalPages - 5));
-            const pageNum = start + i;
-            return (
-              <Button
-                key={pageNum}
-                variant={pageNum === page ? "default" : "outline"}
-                size="icon"
-                className={`h-7 w-7 text-[11px] font-mono ${pageNum === page ? "" : "border-border"}`}
-                onClick={() => setPage(pageNum)}
-              >
-                {pageNum + 1}
-              </Button>
-            );
-          })}
-          <Button variant="outline" size="icon" className="h-7 w-7 border-border" disabled={page >= totalPages - 1} onClick={() => setPage((p) => p + 1)}>
-            <ChevronRight className="h-3.5 w-3.5" />
-          </Button>
+        <div className="flex items-center justify-between px-5 py-3 border-t border-border">
+          <span className="text-[11px] text-muted-foreground font-sans">
+            Showing {page * ROWS_PER_PAGE + 1}–{Math.min((page + 1) * ROWS_PER_PAGE, filtered.length)} of {filtered.length}
+          </span>
+          <div className="flex items-center gap-1.5">
+            <Button variant="outline" size="icon" className="h-7 w-7 border-border" disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
+              <ChevronLeft className="h-3.5 w-3.5" />
+            </Button>
+            {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+              const start = Math.max(0, Math.min(page - 2, totalPages - 5));
+              const pageNum = start + i;
+              return (
+                <Button
+                  key={pageNum}
+                  variant={pageNum === page ? "default" : "outline"}
+                  size="icon"
+                  className={`h-7 w-7 text-[11px] font-mono ${pageNum === page ? "" : "border-border"}`}
+                  onClick={() => setPage(pageNum)}
+                >
+                  {pageNum + 1}
+                </Button>
+              );
+            })}
+            <Button variant="outline" size="icon" className="h-7 w-7 border-border" disabled={page >= totalPages - 1} onClick={() => setPage((p) => p + 1)}>
+              <ChevronRight className="h-3.5 w-3.5" />
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 };
 

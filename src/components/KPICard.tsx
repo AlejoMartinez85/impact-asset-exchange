@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface KPICardProps {
   title: string;
@@ -9,9 +10,10 @@ interface KPICardProps {
   trend?: string;
   trendUp?: boolean;
   delay?: number;
+  auditStandard?: string;
 }
 
-const KPICard = ({ title, value, subtitle, icon: Icon, trend, trendUp, delay = 0 }: KPICardProps) => {
+const KPICard = ({ title, value, subtitle, icon: Icon, trend, trendUp, delay = 0, auditStandard }: KPICardProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -26,6 +28,11 @@ const KPICard = ({ title, value, subtitle, icon: Icon, trend, trendUp, delay = 0
         </div>
       </div>
       <div className="text-2xl font-bold text-foreground font-mono tracking-tight">{value}</div>
+      {auditStandard && (
+        <Badge variant="outline" className="mt-1.5 text-[9px] font-semibold tracking-wide bg-primary/5 text-primary/80 border-primary/20 font-sans">
+          {auditStandard}
+        </Badge>
+      )}
       <div className="flex items-center justify-between mt-2">
         <span className="text-xs text-muted-foreground font-sans">{subtitle}</span>
         {trend && (
