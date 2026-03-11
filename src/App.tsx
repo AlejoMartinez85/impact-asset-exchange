@@ -8,6 +8,7 @@ import AppLayout from "@/components/AppLayout";
 import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
 import Index from "./pages/Index";
+import SponsorDashboardMain from "./pages/SponsorDashboardMain";
 import MapPage from "./pages/MapPage";
 import ReportsPage from "./pages/ReportsPage";
 import HardwarePage from "./pages/HardwarePage";
