@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, Wifi, Globe, BarChart3, Shield, Users, ChevronRight, X } from "lucide-react";
+import { ArrowRight, Zap, Wifi, Globe, BarChart3, Shield, Users, ChevronRight, X, Cpu, MapPin, ShieldCheck, FileText } from "lucide-react";
 import logoHorizontal from "@/assets/logo-horizontal.png";
 
 const stats = [
