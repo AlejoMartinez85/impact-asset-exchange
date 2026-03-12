@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Flame, Droplets, Recycle, Wifi, HardDrive, Users, Moon, Lightbulb, Heart } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { ESGFocus, FocusKPI } from "@/data/esgFocusData";
 import AnimatedCounter from "./AnimatedCounter";
 
