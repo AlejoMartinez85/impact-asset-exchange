@@ -145,6 +145,65 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* ─── COMPETITIVE ADVANTAGE ─── */}
+      <section className="py-24 border-t border-border/30">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 font-serif">
+              The Litro de Luz Advantage: <span className="text-gradient-primary">Physical Impact, Digital Proof.</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-sm font-sans">
+              Bridging the gap between grassroots field execution and enterprise-grade ESG compliance.
+            </p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto">
+            {[
+              {
+                icon: Cpu,
+                title: "Proprietary Edge-IoT & Satellite Infrastructure",
+                text: "We deploy military-grade (IP67) solar poles equipped with proprietary MPPT microcontrollers and Starlink connectivity. Autonomous data-mining nodes capable of surviving the world's harshest environments.",
+                color: "text-primary",
+              },
+              {
+                icon: MapPin,
+                title: "Unmatched Last-Mile Deployment Capabilities",
+                text: "Our operational DNA allows us to physically deploy and maintain infrastructure in the most isolated, off-grid regions of your global supply chain, bridging the physical-to-digital gap.",
+                color: "text-[hsl(var(--ods-teal))]",
+              },
+              {
+                icon: ShieldCheck,
+                title: "Community Trust & Social License to Operate",
+                text: "Our proven grassroots methodology ensures zero vandalism and 100% community adoption. By co-creating solutions, we secure the physical assets and guarantee long-term social impact.",
+                color: "text-[hsl(var(--ods-green))]",
+              },
+              {
+                icon: FileText,
+                title: "Immutable ESG Data & Zero Greenwashing",
+                text: "Our Impact Exchange platform provides real-time, AI-audited ESG metrics aligned with CSRD, GRI, and GHG standards, eliminating reliance on manual reporting.",
+                color: "text-[hsl(var(--ods-orange))]",
+              },
+            ].map((card, i) => (
+              <motion.div
+                key={card.title}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i}
+                className="card-elevated rounded-xl p-7 group hover:glow-blue hover:-translate-y-1 hover:border-primary/30 transition-all duration-300 cursor-default"
+              >
+                <div className="p-3 rounded-lg bg-primary/10 w-fit mb-5 group-hover:bg-primary/15 transition-colors">
+                  <card.icon className={`h-5 w-5 ${card.color}`} />
+                </div>
+                <h3 className="text-sm font-bold text-foreground mb-3 leading-snug font-serif">{card.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed font-sans">{card.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ─── TRACTION BAR ─── */}
       <section id="impact" className="relative border-y border-border/50 bg-ods-gradient">
         <div className="max-w-7xl mx-auto px-6 py-14">
