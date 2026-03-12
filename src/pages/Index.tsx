@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from "react";
-import { Zap, Leaf, Clock, Users } from "lucide-react";
+import { Zap, Leaf, Clock, Users, Shield } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import KPICard from "@/components/KPICard";
 import DynamicESGKPICards from "@/components/DynamicESGKPICards";
 import GovernanceTrustBanner from "@/components/GovernanceTrustBanner";
@@ -55,11 +56,16 @@ const Index = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
-        <div>
-          <h2 className="text-lg font-semibold text-foreground">Impact Dashboard</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Real-time ESG metrics for {sponsorInfo.communities} communities across {sponsorInfo.countries} countries
-          </p>
+        <div className="flex items-center gap-3">
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">Impact Dashboard</h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Real-time ESG metrics for {sponsorInfo.communities} communities across {sponsorInfo.countries} countries
+            </p>
+          </div>
+          <Badge variant="outline" className="hidden sm:flex items-center gap-1.5 h-6 text-[9px] font-semibold tracking-wider border-[hsl(var(--ods-green))]/30 bg-[hsl(var(--ods-green))]/5 text-[hsl(var(--ods-green))] font-sans">
+            <Shield className="h-3 w-3" /> CSRD Compliant Data Ready
+          </Badge>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">

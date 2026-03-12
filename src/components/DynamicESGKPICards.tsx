@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Flame, Droplets, Recycle, Wifi, HardDrive, Users, Moon, Lightbulb, Heart } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { ESGFocus, FocusKPI } from "@/data/esgFocusData";
 import AnimatedCounter from "./AnimatedCounter";
 
@@ -32,6 +33,12 @@ const ICON_COLORS: Record<ESGFocus, string[]> = {
   carbon_climate: ["text-ods-green", "text-ods-teal", "text-primary"],
   digital_inclusion: ["text-primary", "text-ods-violet", "text-[hsl(230,60%,55%)]"],
   community_safety: ["text-ods-orange", "text-ods-yellow", "text-ods-red"],
+};
+
+const EU_TAXONOMY_BADGES: Record<ESGFocus, (string | null)[]> = {
+  carbon_climate: ["EU Taxonomy: Climate Mitigation", "GHG Protocol Scope 3", "GRI 306"],
+  digital_inclusion: ["SASB TC-TL", "EU Taxonomy: Transition", "GRI 413"],
+  community_safety: ["GRI 416", "EU Taxonomy: Social", "GRI 203"],
 };
 
 interface DynamicESGKPICardsProps {
@@ -78,6 +85,11 @@ const DynamicESGKPICards = ({ focus, kpis }: DynamicESGKPICardsProps) => {
                     {kpi.trendUp ? "↑" : "↓"} {kpi.trend}
                   </span>
                 </div>
+                {EU_TAXONOMY_BADGES[focus]?.[i] && (
+                  <Badge variant="outline" className="mt-3 w-fit text-[9px] font-medium tracking-wide border-primary/20 bg-primary/5 text-primary font-sans">
+                    {EU_TAXONOMY_BADGES[focus][i]}
+                  </Badge>
+                )}
               </div>
             </motion.div>
           );

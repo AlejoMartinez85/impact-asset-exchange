@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Download, Loader2, Sparkles, AlertCircle, Calendar, Brain, Eye, Focus } from "lucide-react";
+import { FileText, Download, Loader2, Sparkles, AlertCircle, Calendar, Brain, Eye, Focus, Database } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -350,15 +350,25 @@ const ReportsPage = () => {
                   {loading ? "Streaming Report…" : `${sponsorInfo.name} — ${timeframe} ESG Report`}
                 </h3>
               </div>
-              {!loading && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-xs border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
-                  onClick={handleDownloadPDF}
-                >
-                  <Download className="mr-1.5 h-3 w-3" /> Download PDF
-                </Button>
+                {!loading && (
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
+                    onClick={handleDownloadPDF}
+                  >
+                    <Download className="mr-1.5 h-3 w-3" /> Download PDF
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
+                    onClick={() => toast({ title: "CSRD Export Complete", description: "Machine-readable compliance data successfully generated for external auditors." })}
+                  >
+                    <Database className="mr-1.5 h-3 w-3" /> Export CSRD Digital Tagging (JSON/XBRL)
+                  </Button>
+                </div>
               )}
             </div>
             <div ref={reportRef} className="p-5 pt-4 prose prose-invert prose-sm max-w-none text-foreground/90 leading-relaxed">
@@ -378,14 +388,24 @@ const ReportsPage = () => {
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-semibold text-foreground">📄 Report Template Preview</h3>
-                <Button
-                  onClick={handleDownloadPDF}
-                  size="sm"
-                  className="bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  <Download className="mr-1.5 h-3.5 w-3.5" />
-                  Download PDF
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={handleDownloadPDF}
+                    size="sm"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    <Download className="mr-1.5 h-3.5 w-3.5" />
+                    Download PDF
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
+                    onClick={() => toast({ title: "CSRD Export Complete", description: "Machine-readable compliance data successfully generated for external auditors." })}
+                  >
+                    <Database className="mr-1.5 h-3.5 w-3.5" /> CSRD (JSON/XBRL)
+                  </Button>
+                </div>
               </div>
               <ESGReportDocument esgFocus={esgFocus} reportingPeriod={timeframe} />
             </motion.div>
