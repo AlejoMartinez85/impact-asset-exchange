@@ -85,6 +85,11 @@ const DynamicESGKPICards = ({ focus, kpis }: DynamicESGKPICardsProps) => {
                     {kpi.trendUp ? "↑" : "↓"} {kpi.trend}
                   </span>
                 </div>
+                {EU_TAXONOMY_BADGES[focus]?.[i] && (
+                  <Badge variant="outline" className="mt-3 w-fit text-[9px] font-medium tracking-wide border-primary/20 bg-primary/5 text-primary font-sans">
+                    {EU_TAXONOMY_BADGES[focus][i]}
+                  </Badge>
+                )}
               </div>
             </motion.div>
           );

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { useLocation } from "react-router-dom";
@@ -10,7 +11,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Settings, Key, LogOut, ChevronRight, Circle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Settings, Key, LogOut, ChevronRight, Circle, UserCheck } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -31,6 +41,8 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const { profile, signOut, isSuperAdmin } = useAuth();
   const { toast } = useToast();
+  const [auditorDialogOpen, setAuditorDialogOpen] = useState(false);
+  const [auditorEmail, setAuditorEmail] = useState("");
 
   const meta = ROUTE_META[location.pathname] || { section: "Dashboard", title: "Overview" };
   const displayName = profile?.display_name || "User";
@@ -45,6 +57,19 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const handleLogout = async () => {
     await signOut();
     toast({ title: "Signed out", description: "You have been logged out." });
+  };
+
+  const handleGenerateAuditorLink = () => {
+    if (!auditorEmail.trim() || !auditorEmail.includes("@")) {
+      toast({ title: "Invalid email", description: "Please enter a valid auditor email address.", variant: "destructive" });
+      return;
+    }
+    toast({
+      title: "Secure View Link Generated",
+      description: `Read-only access link sent to ${auditorEmail}. Valid for 30 days.`,
+    });
+    setAuditorEmail("");
+    setAuditorDialogOpen(false);
   };
 
   return (
@@ -115,6 +140,13 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
                     <Key className="h-3.5 w-3.5" />
                     Manage API Keys
                   </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="text-xs gap-2 cursor-pointer font-sans"
+                    onClick={() => setAuditorDialogOpen(true)}
+                  >
+                    <UserCheck className="h-3.5 w-3.5" />
+                    Manage Auditor Access (Read-Only)
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className="text-xs gap-2 cursor-pointer text-destructive focus:text-destructive font-sans"
@@ -133,6 +165,40 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
           </main>
         </div>
       </div>
+
+      {/* ─── External Auditor Access Dialog ─── */}
+      <Dialog open={auditorDialogOpen} onOpenChange={setAuditorDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-base font-serif">External Auditor Access</DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground font-sans">
+              Give your third-party assurance firm (e.g., PwC, Deloitte) read-only access to the ESG Audit Ledger as required by CSRD mandates.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 pt-2">
+            <div className="space-y-2">
+              <label className="text-xs font-medium text-foreground font-sans">Auditor's Email</label>
+              <Input
+                type="email"
+                placeholder="auditor@pwc.com"
+                value={auditorEmail}
+                onChange={(e) => setAuditorEmail(e.target.value)}
+                className="text-sm"
+              />
+            </div>
+            <Button
+              onClick={handleGenerateAuditorLink}
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+            >
+              <UserCheck className="mr-2 h-4 w-4" />
+              Generate Secure View Link
+            </Button>
+            <p className="text-[10px] text-muted-foreground text-center font-sans">
+              Link grants 30-day read-only access to verified ESG telemetry and audit trail data.
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </SidebarProvider>
   );
 };

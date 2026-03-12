@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from "react";
-import { Zap, Leaf, Clock, Users } from "lucide-react";
+import { Zap, Leaf, Clock, Users, Shield } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import KPICard from "@/components/KPICard";
 import DynamicESGKPICards from "@/components/DynamicESGKPICards";
 import GovernanceTrustBanner from "@/components/GovernanceTrustBanner";

@@ -404,7 +404,8 @@ const ReportsPage = () => {
                     onClick={() => toast({ title: "CSRD Export Complete", description: "Machine-readable compliance data successfully generated for external auditors." })}
                   >
                     <Database className="mr-1.5 h-3.5 w-3.5" /> CSRD (JSON/XBRL)
-                </Button>
+                  </Button>
+                </div>
               </div>
               <ESGReportDocument esgFocus={esgFocus} reportingPeriod={timeframe} />
             </motion.div>
