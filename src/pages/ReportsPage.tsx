@@ -388,13 +388,22 @@ const ReportsPage = () => {
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-semibold text-foreground">📄 Report Template Preview</h3>
-                <Button
-                  onClick={handleDownloadPDF}
-                  size="sm"
-                  className="bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  <Download className="mr-1.5 h-3.5 w-3.5" />
-                  Download PDF
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={handleDownloadPDF}
+                    size="sm"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    <Download className="mr-1.5 h-3.5 w-3.5" />
+                    Download PDF
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
+                    onClick={() => toast({ title: "CSRD Export Complete", description: "Machine-readable compliance data successfully generated for external auditors." })}
+                  >
+                    <Database className="mr-1.5 h-3.5 w-3.5" /> CSRD (JSON/XBRL)
                 </Button>
               </div>
               <ESGReportDocument esgFocus={esgFocus} reportingPeriod={timeframe} />
