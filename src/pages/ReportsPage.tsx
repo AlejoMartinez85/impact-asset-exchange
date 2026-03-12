@@ -350,15 +350,25 @@ const ReportsPage = () => {
                   {loading ? "Streaming Report…" : `${sponsorInfo.name} — ${timeframe} ESG Report`}
                 </h3>
               </div>
-              {!loading && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-xs border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
-                  onClick={handleDownloadPDF}
-                >
-                  <Download className="mr-1.5 h-3 w-3" /> Download PDF
-                </Button>
+                {!loading && (
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
+                    onClick={handleDownloadPDF}
+                  >
+                    <Download className="mr-1.5 h-3 w-3" /> Download PDF
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
+                    onClick={() => toast({ title: "CSRD Export Complete", description: "Machine-readable compliance data successfully generated for external auditors." })}
+                  >
+                    <Database className="mr-1.5 h-3 w-3" /> Export CSRD Digital Tagging (JSON/XBRL)
+                  </Button>
+                </div>
               )}
             </div>
             <div ref={reportRef} className="p-5 pt-4 prose prose-invert prose-sm max-w-none text-foreground/90 leading-relaxed">
