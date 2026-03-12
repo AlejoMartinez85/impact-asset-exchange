@@ -35,6 +35,12 @@ const ICON_COLORS: Record<ESGFocus, string[]> = {
   community_safety: ["text-ods-orange", "text-ods-yellow", "text-ods-red"],
 };
 
+const EU_TAXONOMY_BADGES: Record<ESGFocus, (string | null)[]> = {
+  carbon_climate: ["EU Taxonomy: Climate Mitigation", "GHG Protocol Scope 3", "GRI 306"],
+  digital_inclusion: ["SASB TC-TL", "EU Taxonomy: Transition", "GRI 413"],
+  community_safety: ["GRI 416", "EU Taxonomy: Social", "GRI 203"],
+};
+
 interface DynamicESGKPICardsProps {
   focus: ESGFocus;
   kpis: FocusKPI[];
