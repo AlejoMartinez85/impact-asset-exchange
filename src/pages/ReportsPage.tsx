@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Download, Loader2, Sparkles, AlertCircle, Calendar, Brain, Eye, Focus } from "lucide-react";
+import { FileText, Download, Loader2, Sparkles, AlertCircle, Calendar, Brain, Eye, Focus, Database } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
