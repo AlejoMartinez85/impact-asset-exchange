@@ -79,9 +79,9 @@ const LandingPage = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 lg:py-32">
           <div className="max-w-3xl mx-auto text-center lg:text-left lg:mx-0">
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
-              <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-ods-orange bg-[hsl(28,85%,55%)]/10 border border-[hsl(28,85%,55%)]/20 rounded-full px-4 py-1.5 mb-8">
-                <span className="w-1.5 h-1.5 rounded-full bg-ods-orange animate-pulse" />
-                The Self-Funding Solar Revolution
+              <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-primary bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 mb-8 shadow-[0_0_15px_hsl(var(--primary)/0.15)]">
+                <Satellite className="h-3.5 w-3.5" />
+                Powered by DePIN & IoT Telemetry
               </span>
             </motion.div>
 
@@ -89,17 +89,17 @@ const LandingPage = () => {
               initial="hidden" animate="visible" variants={fadeUp} custom={1}
               className="text-4xl sm:text-5xl lg:text-[3.75rem] xl:text-7xl font-extrabold leading-[1.05] tracking-tight mb-7 font-serif"
             >
-              Sunlight as a{" "}
-              <span className="text-gradient-gold">Financial Asset.</span>
+              The World's First{" "}
+              <span className="text-gradient-gold">Impact Intelligence</span>{" "}
+              Platform for the Last Mile.
             </motion.h1>
 
             <motion.p
               initial="hidden" animate="visible" variants={fadeUp} custom={2}
               className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-10 leading-[1.8] mx-auto lg:mx-0 font-sans"
             >
-              While others sell solar panels, we trade sunlight on an impact exchange.
-              We turn last-mile electrification into measurable ESG impact—enabling your brand to capture
-              verified Scope 3 CO₂ reductions and real-time community outcomes where the grid doesn't reach.
+              We transform rugged solar infrastructure and satellite connectivity into immutable, AI-audited ESG data.
+              No estimations. Just cryptographic <span className="font-semibold text-foreground">Proof of Physical Work</span>.
             </motion.p>
 
             <motion.div
@@ -108,10 +108,10 @@ const LandingPage = () => {
             >
               <Button
                 size="lg"
-                className="gap-2 text-sm px-8 font-semibold bg-gradient-to-r from-primary to-[hsl(178,65%,42%)] hover:from-primary/90 hover:to-[hsl(178,65%,42%)]/90 text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all"
+                className="gap-2 text-sm px-8 font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all"
                 onClick={() => navigate("/dashboard")}
               >
-                Enter Impact Exchange <ArrowRight className="h-4 w-4" />
+                Deploy a Corporate Cluster <ArrowRight className="h-4 w-4" />
               </Button>
               <Button
                 size="lg"
@@ -119,7 +119,7 @@ const LandingPage = () => {
                 className="gap-2 text-sm px-8 border-border hover:border-primary/40 hover:bg-primary/5 transition-all"
                 onClick={() => navigate("/dashboard")}
               >
-                <BarChart3 className="h-4 w-4" /> View ESG Live Telemetry
+                Read the $LITRO Tokenomics <ExternalLink className="h-4 w-4" />
               </Button>
             </motion.div>
 
@@ -127,6 +127,17 @@ const LandingPage = () => {
               initial="hidden" animate="visible" variants={fadeUp} custom={4}
               className="mt-14 pt-8 border-t border-border/30"
             >
+              <div className="flex flex-wrap items-center gap-3 justify-center lg:justify-start mb-5">
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
+                  <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+                  Auditable metrics aligned with
+                </span>
+                {["CSRD", "GRI", "GHG Protocol"].map((std) => (
+                  <span key={std} className="text-[10px] font-mono font-semibold text-primary/80 border border-primary/20 rounded-full px-3 py-1 bg-primary/5">
+                    {std}
+                  </span>
+                ))}
+              </div>
               <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-5 font-sans">
                 Trusted by global leaders to illuminate the last mile
               </p>
@@ -136,9 +147,6 @@ const LandingPage = () => {
                     {name}
                   </span>
                 ))}
-                <span className="text-[10px] font-mono text-primary/70 border border-primary/20 rounded-full px-3 py-1 bg-primary/5">
-                  7,000+ ELISA Assets Deployed
-                </span>
               </div>
             </motion.div>
           </div>
