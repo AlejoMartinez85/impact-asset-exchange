@@ -117,7 +117,7 @@ const LandingPage = () => {
                 size="lg"
                 variant="outline"
                 className="gap-2 text-sm px-8 border-border hover:border-primary/40 hover:bg-primary/5 transition-all"
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/whitepaper")}
               >
                 Read the $LITRO Tokenomics <ExternalLink className="h-4 w-4" />
               </Button>
