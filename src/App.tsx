@@ -19,6 +19,7 @@ import SuccessPage from "./pages/SuccessPage";
 import AdminOpsPage from "./pages/AdminOpsPage";
 import SponsorManagementPage from "./pages/SponsorManagementPage";
 import NotFound from "./pages/NotFound";
+import WhitepaperPage from "./pages/WhitepaperPage";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/success" element={<SuccessPage />} />
+          <Route path="/whitepaper" element={<WhitepaperPage />} />
           <Route
             path="/dashboard/*"
             element={
