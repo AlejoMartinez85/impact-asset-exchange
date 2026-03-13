@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type Easing } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Download, ShieldCheck, Cpu, Satellite, Users, MapPin, Radio, ClipboardCheck, FileText, Flame, Warehouse, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,18 +7,20 @@ import { Separator } from "@/components/ui/separator";
 import "katex/dist/katex.min.css";
 import { BlockMath, InlineMath } from "react-katex";
 
+const ease: Easing = [0.25, 0.1, 0.25, 1];
+
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.08, duration: 0.5, ease: "easeOut" },
+    transition: { delay: i * 0.08, duration: 0.5, ease },
   }),
 };
 
 const sectionFade = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
 };
 
 const poPWItems = [
