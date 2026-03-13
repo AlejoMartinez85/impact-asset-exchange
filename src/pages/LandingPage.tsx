@@ -212,6 +212,77 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* ─── HOW IT WORKS ─── */}
+      <section className="py-24 border-t border-border/30 bg-ods-gradient">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-16">
+            <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-primary bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 mb-6">
+              How It Works
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 font-serif">
+              From Field to <span className="text-gradient-primary">Financial Instrument</span> in 4 Steps
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-sm font-sans">
+              Our end-to-end pipeline transforms physical solar infrastructure into auditable, tradeable ESG assets.
+            </p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto relative">
+            {/* Connector line (desktop) */}
+            <div className="hidden lg:block absolute top-16 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20" />
+
+            {[
+              {
+                step: "01",
+                icon: MapPin,
+                title: "Deploy",
+                subtitle: "Physical Installation",
+                text: "We deploy ruggedized ELISA solar poles with IoT sensors and Starlink connectivity in last-mile communities across your supply chain.",
+              },
+              {
+                step: "02",
+                icon: Cpu,
+                title: "Mine",
+                subtitle: "Continuous Data Collection",
+                text: "Each pole autonomously mines environmental and social data — kWh generated, CO₂ avoided, WiFi sessions, light-hours — 24/7/365.",
+              },
+              {
+                step: "03",
+                icon: Shield,
+                title: "Audit",
+                subtitle: "AI-Powered Verification",
+                text: "Our AI engine cross-references telemetry against GRI, CSRD, and GHG frameworks, producing cryptographic Proof of Physical Work.",
+              },
+              {
+                step: "04",
+                icon: BarChart3,
+                title: "Report",
+                subtitle: "Compliance-Ready Output",
+                text: "Export immutable ESG reports, XBRL digital tags, and carbon credit documentation ready for third-party assurance firms.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.step}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i}
+                className="relative text-center group"
+              >
+                <div className="relative z-10 mx-auto w-14 h-14 rounded-full bg-card border-2 border-primary/30 flex items-center justify-center mb-5 group-hover:border-primary group-hover:shadow-[0_0_20px_hsl(var(--primary)/0.2)] transition-all duration-300">
+                  <item.icon className="h-6 w-6 text-primary" />
+                </div>
+                <span className="text-[10px] font-mono text-primary/60 uppercase tracking-widest mb-1 block">Step {item.step}</span>
+                <h3 className="text-lg font-bold text-foreground mb-1 font-serif">{item.title}</h3>
+                <p className="text-[11px] font-medium text-primary/70 mb-3 font-sans">{item.subtitle}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed font-sans">{item.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ─── TRACTION BAR ─── */}
       <section id="impact" className="relative border-y border-border/50 bg-ods-gradient">
         <div className="max-w-7xl mx-auto px-6 py-14">
