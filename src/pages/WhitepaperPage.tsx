@@ -326,12 +326,16 @@ function Section({ title, children, index }: { title: string; children: React.Re
   );
 }
 
-function MathBlock({ children }: { children: React.ReactNode }) {
+function MathBlock({ math }: { math: string }) {
   return (
     <Card className="my-6 border-border bg-muted/40">
       <CardContent className="flex items-center justify-center p-6 overflow-x-auto">
-        {children}
+        <span dangerouslySetInnerHTML={{ __html: katex.renderToString(math, { displayMode: true, throwOnError: false }) }} />
       </CardContent>
     </Card>
   );
+}
+
+function KatexInline({ math }: { math: string }) {
+  return <span dangerouslySetInnerHTML={{ __html: katex.renderToString(math, { displayMode: false, throwOnError: false }) }} />;
 }
