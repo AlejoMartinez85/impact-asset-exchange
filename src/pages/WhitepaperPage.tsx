@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import "katex/dist/katex.min.css";
-import { BlockMath, InlineMath } from "react-katex";
+import katex from "katex";
 
 const ease: Easing = [0.25, 0.1, 0.25, 1];
 
@@ -214,39 +214,31 @@ export default function WhitepaperPage() {
             We define the minting of 1 $LITRO as the equivalent of <strong>1 Month of Audited Operation</strong> for a single ELISA Node. The underlying value is calculated through continuous IoT telemetry:
           </p>
 
-          <MathBlock>
-            <BlockMath math="1 \text{ LITRO} = E_{\text{mitigation}} + C_{\text{connectivity}} + S_{\text{social}}" />
-          </MathBlock>
+          <MathBlock math="1 \text{ LITRO} = E_{\text{mitigation}} + C_{\text{connectivity}} + S_{\text{social}}" />
 
           <h3 className="font-serif text-xl font-semibold text-foreground mt-10 mb-3">
-            A. Renewable Energy &amp; Scope 3 Mitigation (<InlineMath math="E_{\text{mitigation}}" />)
+            A. Renewable Energy &amp; Scope 3 Mitigation (<KatexInline math="E_{\text{mitigation}}" />)
           </h3>
           <p className="mb-4 text-muted-foreground leading-relaxed">
-            Calculated by integrating the power generated over time, multiplied by the UNFCCC standardized Emission Factor (<InlineMath math="FE" />) for displaced off-grid kerosene/diesel.
+            Calculated by integrating the power generated over time, multiplied by the UNFCCC standardized Emission Factor (<KatexInline math="FE" />) for displaced off-grid kerosene/diesel.
           </p>
-          <MathBlock>
-            <BlockMath math="E_{\text{mitigation}} = \left( \sum_{t=1}^{n} \frac{V_t \times I_t \times \Delta t}{1000} \right) \times FE" />
-          </MathBlock>
+          <MathBlock math="E_{\text{mitigation}} = \left( \sum_{t=1}^{n} \frac{V_t \times I_t \times \Delta t}{1000} \right) \times FE" />
 
           <h3 className="font-serif text-xl font-semibold text-foreground mt-10 mb-3">
-            B. Digital Inclusion (<InlineMath math="C_{\text{connectivity}}" />)
+            B. Digital Inclusion (<KatexInline math="C_{\text{connectivity}}" />)
           </h3>
           <p className="mb-4 text-muted-foreground leading-relaxed">
             The aggregate bandwidth distributed to off-grid users via the Starlink router, aligned with SASB TC-TL-230a.1 standards.
           </p>
-          <MathBlock>
-            <BlockMath math="C_{\text{connectivity}} = \sum (D_{\text{download}} + D_{\text{upload}}) \text{ in Gigabytes}" />
-          </MathBlock>
+          <MathBlock math="C_{\text{connectivity}} = \sum (D_{\text{download}} + D_{\text{upload}}) \text{ in Gigabytes}" />
 
           <h3 className="font-serif text-xl font-semibold text-foreground mt-10 mb-3">
-            C. Verified Social Impact (<InlineMath math="S_{\text{social}}" />)
+            C. Verified Social Impact (<KatexInline math="S_{\text{social}}" />)
           </h3>
           <p className="mb-4 text-muted-foreground leading-relaxed">
-            Active hours of nighttime illumination multiplied by the localized census density (<InlineMath math="D_c" />), strictly tied to the hardware's operational uptime.
+            Active hours of nighttime illumination multiplied by the localized census density (<KatexInline math="D_c" />), strictly tied to the hardware's operational uptime.
           </p>
-          <MathBlock>
-            <BlockMath math="S_{\text{social}} = (P_{\text{active}} \times \text{Hours}_{\text{operational}}) \times D_c" />
-          </MathBlock>
+          <MathBlock math="S_{\text{social}} = (P_{\text{active}} \times \text{Hours}_{\text{operational}}) \times D_c" />
 
           <Card className="mt-8 border-primary/20 bg-primary/5">
             <CardContent className="p-5">
@@ -334,12 +326,16 @@ function Section({ title, children, index }: { title: string; children: React.Re
   );
 }
 
-function MathBlock({ children }: { children: React.ReactNode }) {
+function MathBlock({ math }: { math: string }) {
   return (
     <Card className="my-6 border-border bg-muted/40">
       <CardContent className="flex items-center justify-center p-6 overflow-x-auto">
-        {children}
+        <span dangerouslySetInnerHTML={{ __html: katex.renderToString(math, { displayMode: true, throwOnError: false }) }} />
       </CardContent>
     </Card>
   );
+}
+
+function KatexInline({ math }: { math: string }) {
+  return <span dangerouslySetInnerHTML={{ __html: katex.renderToString(math, { displayMode: false, throwOnError: false }) }} />;
 }
