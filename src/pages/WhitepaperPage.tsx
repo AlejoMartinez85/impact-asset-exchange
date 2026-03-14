@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import "katex/dist/katex.min.css";
-import { BlockMath, InlineMath } from "react-katex";
+import katex from "katex";
 
 const ease: Easing = [0.25, 0.1, 0.25, 1];
 
