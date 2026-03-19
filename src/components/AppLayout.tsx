@@ -21,6 +21,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Settings, Key, LogOut, ChevronRight, Circle, UserCheck } from "lucide-react";
+import ViewModeToggle from "@/components/ViewModeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 

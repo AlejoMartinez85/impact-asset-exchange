@@ -18,6 +18,7 @@ import AdminUsersPage from "./pages/AdminUsersPage";
 import SuccessPage from "./pages/SuccessPage";
 import AdminOpsPage from "./pages/AdminOpsPage";
 import SponsorManagementPage from "./pages/SponsorManagementPage";
+import SponsorDashboardMain from "./pages/SponsorDashboardMain";
 import NotFound from "./pages/NotFound";
 import WhitepaperPage from "./pages/WhitepaperPage";
 
@@ -35,8 +36,27 @@ const App = () => (
           <Route path="/login" element={<LoginPage />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/whitepaper" element={<WhitepaperPage />} />
+          {/* Sponsor View */}
           <Route
             path="/dashboard/*"
+            element={
+              <AppLayout>
+                <Routes>
+                  <Route path="/" element={<SponsorDashboardMain />} />
+                  <Route path="/map" element={<MapPage />} />
+                  <Route path="/reports" element={<ReportsPage />} />
+                  <Route path="/hardware" element={<HardwarePage />} />
+                  <Route path="/telemetry" element={<TelemetryPage />} />
+                  <Route path="/developer" element={<DeveloperPage />} />
+                  <Route path="/billing" element={<BillingPage />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AppLayout>
+            }
+          />
+          {/* Admin View */}
+          <Route
+            path="/admin/*"
             element={
               <AppLayout>
                 <Routes>
@@ -47,9 +67,9 @@ const App = () => (
                   <Route path="/telemetry" element={<TelemetryPage />} />
                   <Route path="/developer" element={<DeveloperPage />} />
                   <Route path="/billing" element={<BillingPage />} />
-                  <Route path="/admin/users" element={<AdminUsersPage />} />
-                  <Route path="/admin/ops" element={<AdminOpsPage />} />
-                  <Route path="/admin/sponsors" element={<SponsorManagementPage />} />
+                  <Route path="/users" element={<AdminUsersPage />} />
+                  <Route path="/ops" element={<AdminOpsPage />} />
+                  <Route path="/sponsors" element={<SponsorManagementPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </AppLayout>
