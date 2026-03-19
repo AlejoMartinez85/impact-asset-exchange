@@ -26,16 +26,23 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
 const ROUTE_META: Record<string, { section: string; title: string }> = {
-  "/dashboard": { section: "Overview", title: "Live Telemetry" },
+  "/dashboard": { section: "Sponsor", title: "Regenerative Dashboard" },
   "/dashboard/map": { section: "Monitoring", title: "Live Map" },
   "/dashboard/reports": { section: "Intelligence", title: "AI Certifications" },
   "/dashboard/hardware": { section: "Operations", title: "Hardware Health" },
   "/dashboard/telemetry": { section: "Monitoring", title: "Real-Time Telemetry" },
   "/dashboard/billing": { section: "Account", title: "Billing & Plan" },
   "/dashboard/developer": { section: "Account", title: "Developer API" },
-  "/dashboard/admin/users": { section: "Admin", title: "User Management" },
-  "/dashboard/admin/ops": { section: "Admin", title: "Operations Console" },
-  "/dashboard/admin/sponsors": { section: "Admin", title: "Sponsors Directory" },
+  "/admin": { section: "Admin", title: "Global Control Room" },
+  "/admin/map": { section: "Monitoring", title: "Live Map" },
+  "/admin/reports": { section: "Intelligence", title: "AI Certifications" },
+  "/admin/hardware": { section: "Operations", title: "Hardware Health" },
+  "/admin/telemetry": { section: "Monitoring", title: "Real-Time Telemetry" },
+  "/admin/billing": { section: "Account", title: "Billing & Plan" },
+  "/admin/developer": { section: "Account", title: "Developer API" },
+  "/admin/users": { section: "Admin", title: "User Management" },
+  "/admin/ops": { section: "Admin", title: "Operations Console" },
+  "/admin/sponsors": { section: "Admin", title: "Sponsors Directory" },
 };
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
