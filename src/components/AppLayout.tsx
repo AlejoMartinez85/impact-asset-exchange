@@ -99,9 +99,11 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
 
             <div className="flex items-center gap-3">
+              <ViewModeToggle />
+
               <Badge
                 variant="outline"
-                className="hidden sm:flex items-center gap-1.5 h-7 px-2.5 text-[10px] font-medium border-ods-teal/20 bg-ods-teal/5 text-ods-teal tracking-wide font-sans"
+                className="hidden sm:flex items-center gap-1.5 h-7 px-2.5 text-[10px] font-medium border-[hsl(var(--ods-teal))]/20 bg-[hsl(var(--ods-teal))]/5 text-[hsl(var(--ods-teal))] tracking-wide font-sans"
               >
                 <Circle className="h-1.5 w-1.5 fill-current animate-pulse" />
                 Cluster Status: Online
