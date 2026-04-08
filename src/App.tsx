@@ -44,6 +44,7 @@ const App = () => (
               <AppLayout>
                 <Routes>
                   <Route path="/" element={<SponsorDashboardMain />} />
+                  <Route path="/loreal" element={<LorealMRVDashboard />} />
                   <Route path="/map" element={<MapPage />} />
                   <Route path="/reports" element={<ReportsPage />} />
                   <Route path="/hardware" element={<HardwarePage />} />
