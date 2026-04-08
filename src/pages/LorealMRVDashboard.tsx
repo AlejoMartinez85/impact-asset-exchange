@@ -1,12 +1,18 @@
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Leaf, AudioLines, Users, ShieldCheck, FileCheck, Lock, ArrowUpRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine,
+  TooltipProps,
+} from "recharts";
 import LiveMap from "@/components/LiveMap";
+import AnimatedCounter from "@/components/AnimatedCounter";
 
-/* ─── Premium gold/earth tokens (inline, scoped to this dashboard) ─── */
+/* ─── Premium gold/earth tokens ─── */
 const gold = {
   accent: "45 80% 48%",
   accentMuted: "38 40% 72%",
@@ -14,30 +20,25 @@ const gold = {
   warmGray: "30 8% 56%",
 };
 
-/* ─── MRV KPI Data ─── */
-const mrvKPIs = [
-  {
-    title: "Ecosystem MRV Tracker",
-    value: "Active",
-    subtitle: "Continuous telemetry on soil moisture & carbon across Shea/Argan cooperatives",
-    icon: Leaf,
-    trend: "24/7 Streaming",
-  },
-  {
-    title: "Biodiversity Acoustic Score",
-    value: "88/100",
-    subtitle: "AI-verified ecosystem health (Flora & Fauna return)",
-    icon: AudioLines,
-    trend: "+14 pts YoY",
-  },
-  {
-    title: "Women's Cooperative Inclusion",
-    value: "1,200 Hours",
-    subtitle: "Of Starlink connectivity and public lighting provided to harvesters",
-    icon: Users,
-    trend: "+320 hrs vs Q3",
-  },
-];
+/* ─── 24-Hour Mock Telemetry (bio-acoustics peak at dawn/dusk, insects at night) ─── */
+const generate24hData = () => {
+  const hours: { hour: string; bioAcoustics: number; dataTransfer: number }[] = [];
+  for (let h = 0; h < 24; h++) {
+    const label = `${h.toString().padStart(2, "0")}:00`;
+    // Dawn peak ~5-7, Dusk peak ~18-20, night plateau
+    let bio: number;
+    if (h >= 5 && h <= 7) bio = 70 + Math.sin((h - 5) * Math.PI / 2) * 25 + Math.random() * 5;
+    else if (h >= 18 && h <= 20) bio = 65 + Math.sin((h - 18) * Math.PI / 2) * 20 + Math.random() * 5;
+    else if (h >= 22 || h <= 3) bio = 30 + Math.random() * 8; // insect plateau
+    else bio = 35 + Math.random() * 15;
+
+    const data = 120 + Math.sin(h / 24 * Math.PI * 2) * 40 + Math.random() * 20;
+    hours.push({ hour: label, bioAcoustics: Math.round(bio), dataTransfer: Math.round(data) });
+  }
+  return hours;
+};
+
+const telemetryData = generate24hData();
 
 /* ─── Ingredient tags ─── */
 const ingredientTags = [
@@ -71,7 +72,82 @@ const commitments = [
   },
 ];
 
+/* ─── Custom Tooltip ─── */
+const ChartTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="rounded-lg border border-border bg-card/95 backdrop-blur-xl p-3 shadow-lg text-xs space-y-1.5">
+      <p className="font-semibold text-foreground font-sans">{label}</p>
+      {payload.map((p) => (
+        <div key={p.dataKey} className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
+          <span className="text-muted-foreground font-sans">{p.name}:</span>
+          <span className="font-mono font-semibold text-foreground">{p.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const LorealMRVDashboard = () => {
+  /* ─── Live KPI fluctuation state ─── */
+  const [soilMoisture, setSoilMoisture] = useState(42.1);
+  const [acousticScore, setAcousticScore] = useState(88);
+  const [coopHours, setCoopHours] = useState(1200);
+
+  /* ─── Scanning line for the chart ─── */
+  const [scanHour, setScanHour] = useState(() => new Date().getHours());
+
+  const fluctuate = useCallback(() => {
+    setSoilMoisture(+(41.8 + Math.random() * 0.8).toFixed(1));
+    setAcousticScore(Math.floor(86 + Math.random() * 4));
+    setCoopHours(Math.floor(1180 + Math.random() * 40));
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(fluctuate, 3500);
+    return () => clearInterval(id);
+  }, [fluctuate]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setScanHour((h) => (h + 1) % 24);
+    }, 2000);
+    return () => clearInterval(id);
+  }, []);
+
+  const mrvKPIs = [
+    {
+      title: "Ecosystem MRV Tracker",
+      numericValue: soilMoisture,
+      displaySuffix: "% Soil Moisture",
+      subtitle: "Continuous telemetry on soil moisture & carbon across Shea/Argan cooperatives",
+      icon: Leaf,
+      trend: "24/7 Streaming",
+      prefix: "",
+    },
+    {
+      title: "Biodiversity Acoustic Score",
+      numericValue: acousticScore,
+      displaySuffix: "/100",
+      subtitle: "AI-verified ecosystem health (Flora & Fauna return)",
+      icon: AudioLines,
+      trend: "+14 pts YoY",
+      prefix: "",
+    },
+    {
+      title: "Women's Cooperative Inclusion",
+      numericValue: coopHours,
+      displaySuffix: " Hours",
+      subtitle: "Of Starlink connectivity and public lighting provided to harvesters",
+      icon: Users,
+      trend: "+320 hrs vs Q3",
+      prefix: "",
+    },
+  ];
+
+  const scanLabel = `${scanHour.toString().padStart(2, "0")}:00`;
+
   return (
     <div className="space-y-8">
       {/* ─── Client Identity Header ─── */}
@@ -113,7 +189,7 @@ const LorealMRVDashboard = () => {
         </div>
       </div>
 
-      {/* ─── Row 1: MRV & Social Impact KPI Cards ─── */}
+      {/* ─── Row 1: MRV & Social Impact KPI Cards (Live) ─── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {mrvKPIs.map((kpi, i) => (
           <motion.div
@@ -135,19 +211,27 @@ const LorealMRVDashboard = () => {
                     {kpi.title}
                   </span>
                   <div
-                    className="p-2 rounded-lg"
+                    className="p-2 rounded-lg relative"
                     style={{
                       backgroundColor: `hsla(${gold.accent}, 0.08)`,
                       boxShadow: `inset 0 0 0 1px hsla(${gold.accent}, 0.2)`,
                     }}
                   >
                     <kpi.icon className="h-4 w-4" style={{ color: `hsl(${gold.accent})` }} />
+                    {/* Live pulse dot */}
+                    <span
+                      className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full animate-pulse"
+                      style={{ backgroundColor: "hsl(var(--ods-teal))", boxShadow: "0 0 6px hsl(var(--ods-teal) / 0.6)" }}
+                    />
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="pt-0">
                 <p className="text-3xl font-bold text-foreground font-mono tracking-tight">
-                  {kpi.value}
+                  <AnimatedCounter value={kpi.numericValue} duration={0.4} />
+                  <span className="text-lg text-muted-foreground font-sans font-medium ml-1">
+                    {kpi.displaySuffix}
+                  </span>
                 </p>
                 <p className="text-xs text-muted-foreground mt-1 font-sans">{kpi.subtitle}</p>
                 <div className="flex items-center gap-1 mt-2">
@@ -164,6 +248,107 @@ const LorealMRVDashboard = () => {
           </motion.div>
         ))}
       </div>
+
+      {/* ─── Row 1.5: 24-Hour Ecosystem Telemetry Chart ─── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
+        <Card className="border-border overflow-hidden">
+          <div
+            className="h-1 w-full"
+            style={{
+              background: `linear-gradient(90deg, hsl(var(--ods-green)), hsl(var(--ods-teal)), hsl(${gold.accent}))`,
+            }}
+          />
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <CardTitle className="text-base">
+                  24-Hour Ecosystem Activity
+                </CardTitle>
+                <CardDescription className="text-xs font-sans">
+                  Bio-Acoustics & Data Transfer — live scanning
+                </CardDescription>
+              </div>
+              <div className="flex gap-4 text-[10px] font-sans">
+                <span className="flex items-center gap-1.5 text-muted-foreground">
+                  <span className="w-3 h-[3px] rounded-full" style={{ backgroundColor: "hsl(var(--ods-green))" }} /> Bio-Acoustic Index
+                </span>
+                <span className="flex items-center gap-1.5 text-muted-foreground">
+                  <span className="w-3 h-[3px] rounded-full" style={{ backgroundColor: `hsl(${gold.accent})` }} /> Data Transfer (MB)
+                </span>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-0 pb-4">
+            <ResponsiveContainer width="100%" height={280}>
+              <AreaChart data={telemetryData} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="gradBio" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(152, 60%, 42%)" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="hsl(152, 60%, 42%)" stopOpacity={0.02} />
+                  </linearGradient>
+                  <linearGradient id="gradData" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor={`hsl(${gold.accent})`} stopOpacity={0.25} />
+                    <stop offset="100%" stopColor={`hsl(${gold.accent})`} stopOpacity={0.02} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(210, 20%, 92%)" vertical={false} />
+                <XAxis
+                  dataKey="hour"
+                  tick={{ fill: "hsl(215, 14%, 52%)", fontSize: 9, fontFamily: "JetBrains Mono" }}
+                  axisLine={false}
+                  tickLine={false}
+                  interval={2}
+                />
+                <YAxis
+                  tick={{ fill: "hsl(215, 14%, 52%)", fontSize: 9, fontFamily: "JetBrains Mono" }}
+                  axisLine={false}
+                  tickLine={false}
+                  width={36}
+                />
+                <Tooltip content={<ChartTooltip />} />
+                <ReferenceLine
+                  x={scanLabel}
+                  stroke="hsl(var(--ods-teal))"
+                  strokeWidth={1.5}
+                  strokeDasharray="4 3"
+                  label={{
+                    value: "NOW",
+                    position: "top",
+                    fill: "hsl(178, 65%, 42%)",
+                    fontSize: 9,
+                    fontWeight: 700,
+                    fontFamily: "JetBrains Mono",
+                  }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="bioAcoustics"
+                  name="Bio-Acoustics"
+                  stroke="hsl(152, 60%, 42%)"
+                  strokeWidth={2}
+                  fill="url(#gradBio)"
+                  dot={false}
+                  activeDot={{ r: 4, fill: "hsl(152, 60%, 42%)", stroke: "hsl(var(--card))", strokeWidth: 2 }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="dataTransfer"
+                  name="Data Transfer"
+                  stroke={`hsl(${gold.accent})`}
+                  strokeWidth={1.5}
+                  fill="url(#gradData)"
+                  dot={false}
+                  activeDot={{ r: 4, fill: `hsl(${gold.accent})`, stroke: "hsl(var(--card))", strokeWidth: 2 }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </motion.div>
 
       {/* ─── Row 2: Supply Chain Traceability Map ─── */}
       <motion.div
