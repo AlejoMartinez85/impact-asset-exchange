@@ -135,10 +135,10 @@ const LorealMRVDashboard = () => {
                     {kpi.title}
                   </span>
                   <div
-                    className="p-2 rounded-lg ring-1"
+                    className="p-2 rounded-lg"
                     style={{
                       backgroundColor: `hsla(${gold.accent}, 0.08)`,
-                      ringColor: `hsla(${gold.accent}, 0.2)`,
+                      boxShadow: `inset 0 0 0 1px hsla(${gold.accent}, 0.2)`,
                     }}
                   >
                     <kpi.icon className="h-4 w-4" style={{ color: `hsl(${gold.accent})` }} />
@@ -250,10 +250,10 @@ const LorealMRVDashboard = () => {
                 >
                   <div className="flex items-center gap-2.5">
                     <div
-                      className="p-2 rounded-lg ring-1"
+                      className="p-2 rounded-lg"
                       style={{
                         backgroundColor: `hsla(${gold.accent}, 0.08)`,
-                        ringColor: `hsla(${gold.accent}, 0.2)`,
+                        boxShadow: `inset 0 0 0 1px hsla(${gold.accent}, 0.2)`,
                       }}
                     >
                       <c.icon className="h-4 w-4" style={{ color: `hsl(${gold.accent})` }} />
