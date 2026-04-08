@@ -21,6 +21,7 @@ import SponsorManagementPage from "./pages/SponsorManagementPage";
 import SponsorDashboardMain from "./pages/SponsorDashboardMain";
 import NotFound from "./pages/NotFound";
 import WhitepaperPage from "./pages/WhitepaperPage";
+import LorealMRVDashboard from "./pages/LorealMRVDashboard";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
               <AppLayout>
                 <Routes>
                   <Route path="/" element={<SponsorDashboardMain />} />
+                  <Route path="/loreal" element={<LorealMRVDashboard />} />
                   <Route path="/map" element={<MapPage />} />
                   <Route path="/reports" element={<ReportsPage />} />
                   <Route path="/hardware" element={<HardwarePage />} />
