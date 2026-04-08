@@ -21,6 +21,7 @@ import SponsorManagementPage from "./pages/SponsorManagementPage";
 import SponsorDashboardMain from "./pages/SponsorDashboardMain";
 import NotFound from "./pages/NotFound";
 import WhitepaperPage from "./pages/WhitepaperPage";
+import LorealMRVDashboard from "./pages/LorealMRVDashboard";
 
 const queryClient = new QueryClient();
 
