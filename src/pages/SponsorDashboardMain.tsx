@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import LiveMap from "@/components/LiveMap";
+import RegenerativeROISimulator from "@/components/RegenerativeROISimulator";
 
 /* ─── Regenerative KPI Data ─── */
 const regenKPIs = [
