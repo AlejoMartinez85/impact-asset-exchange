@@ -174,7 +174,10 @@ const SponsorDashboardMain = () => {
         </Card>
       </motion.div>
 
-      {/* ─── Row 3: Supply Chain Map ─── */}
+      {/* ─── Row 3: ROI Simulator ─── */}
+      <RegenerativeROISimulator />
+
+      {/* ─── Row 4: Supply Chain Map ─── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
