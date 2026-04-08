@@ -1,4 +1,4 @@
-import { Eye, Shield, ChevronDown } from "lucide-react";
+import { Eye, Shield, ChevronDown, Sparkles } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,11 +8,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 
+const views = [
+  { path: "/admin", label: "Admin Control Room", icon: Shield, colorClass: "text-primary" },
+  { path: "/dashboard", label: "Nestlé: Regenerative Ag", icon: Eye, colorClass: "text-[hsl(var(--ods-green))]" },
+  { path: "/loreal", label: "L'Oréal: Ethical Sourcing", icon: Sparkles, colorClass: "text-amber-500" },
+] as const;
+
 const ViewModeToggle = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isAdminView = location.pathname.startsWith("/admin");
+  const current = views.find((v) => location.pathname.startsWith(v.path)) ?? views[0];
 
   return (
     <DropdownMenu>
@@ -22,35 +28,22 @@ const ViewModeToggle = () => {
           size="sm"
           className="h-7 gap-1.5 text-[10px] font-semibold tracking-wide border-border bg-secondary/40 hover:bg-secondary/60 font-sans"
         >
-          {isAdminView ? (
-            <>
-              <Shield className="h-3 w-3 text-primary" />
-              Admin View
-            </>
-          ) : (
-            <>
-              <Eye className="h-3 w-3 text-[hsl(var(--ods-green))]" />
-              Sponsor View
-            </>
-          )}
+          <current.icon className={`h-3 w-3 ${current.colorClass}`} />
+          {current.label}
           <ChevronDown className="h-3 w-3 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-44">
-        <DropdownMenuItem
-          className="text-xs gap-2 cursor-pointer font-sans"
-          onClick={() => navigate("/admin")}
-        >
-          <Shield className="h-3.5 w-3.5 text-primary" />
-          Admin View
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="text-xs gap-2 cursor-pointer font-sans"
-          onClick={() => navigate("/dashboard")}
-        >
-          <Eye className="h-3.5 w-3.5 text-[hsl(var(--ods-green))]" />
-          Sponsor View
-        </DropdownMenuItem>
+      <DropdownMenuContent align="end" className="w-52">
+        {views.map((v) => (
+          <DropdownMenuItem
+            key={v.path}
+            className="text-xs gap-2 cursor-pointer font-sans"
+            onClick={() => navigate(v.path)}
+          >
+            <v.icon className={`h-3.5 w-3.5 ${v.colorClass}`} />
+            {v.label}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
