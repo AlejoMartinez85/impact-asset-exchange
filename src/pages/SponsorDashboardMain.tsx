@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import LiveMap from "@/components/LiveMap";
+import RegenerativeROISimulator from "@/components/RegenerativeROISimulator";
 
 /* ─── Regenerative KPI Data ─── */
 const regenKPIs = [
@@ -173,7 +174,10 @@ const SponsorDashboardMain = () => {
         </Card>
       </motion.div>
 
-      {/* ─── Row 3: Supply Chain Map ─── */}
+      {/* ─── Row 3: ROI Simulator ─── */}
+      <RegenerativeROISimulator />
+
+      {/* ─── Row 4: Supply Chain Map ─── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
