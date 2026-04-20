@@ -358,20 +358,6 @@ const AdminOpsPage = () => {
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Super Admin Toggle */}
-      <div className="flex items-center justify-center gap-2 pt-6 pb-2">
-        <div className="flex items-center gap-2 p-3 rounded-lg border border-dashed border-border bg-muted/30">
-          <Label htmlFor="admin-toggle-bottom" className="text-[11px] text-muted-foreground">
-            View as Super Admin
-          </Label>
-          <Switch
-            id="admin-toggle-bottom"
-            checked={isSuperAdmin}
-            onCheckedChange={setIsSuperAdmin}
-          />
-        </div>
-      </div>
     </div>
   );
 };
