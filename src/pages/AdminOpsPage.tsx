@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Package,
   Warehouse,
@@ -17,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -45,7 +45,7 @@ const COUNTRIES = ["Colombia", "Mexico", "Peru", "Philippines", "Kenya", "India"
 
 const AdminOpsPage = () => {
   const { toast } = useToast();
-  const [isSuperAdmin, setIsSuperAdmin] = useState(true);
+  const { isSuperAdmin } = useAuth();
   const [provisioning, setProvisioning] = useState(false);
   const [selectedSponsor, setSelectedSponsor] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -114,10 +114,6 @@ const AdminOpsPage = () => {
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
         <ShieldCheck className="h-12 w-12 text-muted-foreground/40" />
         <p className="text-sm text-muted-foreground">Access restricted to Super Admin users.</p>
-        <div className="flex items-center gap-2 mt-4 p-3 rounded-lg border border-border bg-card">
-          <Label htmlFor="admin-toggle" className="text-xs text-muted-foreground">View as Super Admin</Label>
-          <Switch id="admin-toggle" checked={isSuperAdmin} onCheckedChange={setIsSuperAdmin} />
-        </div>
       </div>
     );
   }
@@ -362,20 +358,6 @@ const AdminOpsPage = () => {
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Super Admin Toggle */}
-      <div className="flex items-center justify-center gap-2 pt-6 pb-2">
-        <div className="flex items-center gap-2 p-3 rounded-lg border border-dashed border-border bg-muted/30">
-          <Label htmlFor="admin-toggle-bottom" className="text-[11px] text-muted-foreground">
-            View as Super Admin
-          </Label>
-          <Switch
-            id="admin-toggle-bottom"
-            checked={isSuperAdmin}
-            onCheckedChange={setIsSuperAdmin}
-          />
-        </div>
-      </div>
     </div>
   );
 };
