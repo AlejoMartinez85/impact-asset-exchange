@@ -10,6 +10,7 @@ import PaywallGate from "@/components/PaywallGate";
 import ESGReportDocument from "@/components/ESGReportDocument";
 import { useToast } from "@/hooks/use-toast";
 import { ESGFocus, ESG_FOCUS_OPTIONS } from "@/data/esgFocusData";
+import { supabase } from "@/integrations/supabase/client";
 
 const FUNCTION_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-esg-report`;
 
@@ -75,11 +76,19 @@ const ReportsPage = () => {
     };
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast({ title: "Sign in required", description: "Please sign in to generate reports.", variant: "destructive" });
+        setError("Sign in required");
+        setLoading(false);
+        return;
+      }
       const resp = await fetch(FUNCTION_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${session.access_token}`,
+          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
         },
         body: JSON.stringify({ sponsorData }),
         signal: controller.signal,
