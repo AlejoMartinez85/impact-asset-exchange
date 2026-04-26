@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Leaf, AudioLines, Users, ShieldCheck, FileCheck, Lock, ArrowUpRight } from "lucide-react";
+import { Leaf, AudioLines, Users, ShieldCheck, FileCheck, Lock, ArrowUpRight, CheckCircle2, Wifi, FileBadge, Radar, Scale } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine,
   TooltipProps,
@@ -388,6 +390,265 @@ const LorealMRVDashboard = () => {
         </div>
       </motion.div>
 
+      {/* ─── Row 2.1: Trust Moat Integrity KPIs ─── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-5"
+      >
+        {/* Hardware-Verified Data Ratio — radial */}
+        <Card className="border-border overflow-hidden">
+          <div
+            className="h-1 w-full"
+            style={{ background: `linear-gradient(90deg, hsl(${gold.accent}), hsl(var(--ods-teal)))` }}
+          />
+          <CardContent className="p-5 flex items-center gap-5">
+            <div className="relative w-24 h-24 shrink-0">
+              <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                <circle cx="50" cy="50" r="42" fill="none" stroke="hsl(210, 20%, 92%)" strokeWidth="9" />
+                <motion.circle
+                  cx="50" cy="50" r="42" fill="none"
+                  stroke={`hsl(${gold.accent})`}
+                  strokeWidth="9"
+                  strokeLinecap="round"
+                  strokeDasharray={2 * Math.PI * 42}
+                  initial={{ strokeDashoffset: 2 * Math.PI * 42 }}
+                  animate={{ strokeDashoffset: 2 * Math.PI * 42 * (1 - 0.94) }}
+                  transition={{ duration: 1.4, ease: "easeOut" }}
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xl font-bold font-mono text-foreground">94%</span>
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <Radar className="h-3.5 w-3.5" style={{ color: `hsl(${gold.accent})` }} />
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground font-sans">
+                  Trust Moat KPI
+                </span>
+              </div>
+              <h4 className="text-sm font-semibold text-foreground">Hardware-Verified Data Ratio</h4>
+              <p className="text-xs text-muted-foreground font-sans leading-relaxed">
+                IoT Telemetry vs. Manual Reporting — cryptographic proof from edge sensors.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Zero-Vandalism Rate */}
+        <Card className="border-border overflow-hidden">
+          <div
+            className="h-1 w-full"
+            style={{ background: `linear-gradient(90deg, hsl(var(--ods-green)), hsl(var(--ods-teal)))` }}
+          />
+          <CardContent className="p-5 flex items-center gap-5">
+            <div className="relative w-24 h-24 shrink-0">
+              <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                <circle cx="50" cy="50" r="42" fill="none" stroke="hsl(210, 20%, 92%)" strokeWidth="9" />
+                <motion.circle
+                  cx="50" cy="50" r="42" fill="none"
+                  stroke="hsl(152, 60%, 42%)"
+                  strokeWidth="9"
+                  strokeLinecap="round"
+                  strokeDasharray={2 * Math.PI * 42}
+                  initial={{ strokeDashoffset: 2 * Math.PI * 42 }}
+                  animate={{ strokeDashoffset: 0 }}
+                  transition={{ duration: 1.4, ease: "easeOut" }}
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xl font-bold font-mono text-foreground">100%</span>
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-3.5 w-3.5" style={{ color: "hsl(152, 60%, 42%)" }} />
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground font-sans">
+                  Trust Moat KPI
+                </span>
+              </div>
+              <h4 className="text-sm font-semibold text-foreground">Zero-Vandalism Rate</h4>
+              <p className="text-xs text-muted-foreground font-sans leading-relaxed">
+                Secured via Community Ownership Model — local stewardship of every node.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* ─── Row 2.2: SFDR & EU Taxonomy Compliance Matrix ─── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.42 }}
+      >
+        <Card className="border-border overflow-hidden">
+          <div
+            className="h-1 w-full"
+            style={{ background: `linear-gradient(90deg, hsl(217, 91%, 35%), hsl(${gold.accent}))` }}
+          />
+          <CardHeader>
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div>
+                <CardTitle className="text-base">Regulatory Compliance Engine (CSRD & SFDR)</CardTitle>
+                <CardDescription className="text-xs font-sans">
+                  Principal Adverse Impact (PAI) indicators and EU Taxonomy alignment, sourced directly from telemetry.
+                </CardDescription>
+              </div>
+              <Badge
+                variant="outline"
+                className="text-[10px] font-semibold font-sans"
+                style={{ borderColor: `hsla(${gold.accent}, 0.25)`, color: `hsl(${gold.accent})` }}
+              >
+                ESMA · EFRAG Aligned
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* EU Taxonomy progress */}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-semibold text-foreground font-sans">
+                  EU Taxonomy Alignment Rate
+                </span>
+                <span className="text-xs font-mono text-muted-foreground">
+                  92% <span className="opacity-60">(Target &gt; 85%)</span>
+                </span>
+              </div>
+              <Progress value={92} className="h-2 bg-secondary" />
+            </div>
+
+            {/* PAI Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                { code: "PAI 4", title: "Biodiversity-sensitive areas", status: "Active Monitoring" },
+                { code: "PAI 9", title: "Human Rights Due Diligence", status: "Verified" },
+                { code: "PAI 13", title: "Living Wage Gaps", status: "Tracking via Worker Voice" },
+              ].map((pai) => (
+                <div
+                  key={pai.code}
+                  className="p-4 rounded-lg border border-border/60 bg-secondary/30 space-y-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold tracking-widest font-mono text-muted-foreground">
+                      {pai.code}
+                    </span>
+                    <Badge
+                      className="text-[9px] font-semibold tracking-wide font-sans border"
+                      style={{
+                        backgroundColor: "hsla(152, 60%, 42%, 0.1)",
+                        color: "hsl(152, 60%, 32%)",
+                        borderColor: "hsla(152, 60%, 42%, 0.3)",
+                      }}
+                    >
+                      <CheckCircle2 className="h-2.5 w-2.5 mr-1" />
+                      Compliant / Active
+                    </Badge>
+                  </div>
+                  <h5 className="text-sm font-semibold text-foreground leading-snug">{pai.title}</h5>
+                  <p className="text-[11px] text-muted-foreground font-sans">{pai.status}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* ─── Row 2.3: Local Worker Voice & Digital Inclusion ─── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.45 }}
+      >
+        <Card className="border-border overflow-hidden">
+          <div
+            className="h-1 w-full"
+            style={{ background: `linear-gradient(90deg, hsl(var(--ods-teal)), hsl(${gold.accent}))` }}
+          />
+          <CardHeader>
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-3">
+                <div
+                  className="p-2 rounded-lg"
+                  style={{
+                    backgroundColor: `hsla(${gold.accent}, 0.08)`,
+                    boxShadow: `inset 0 0 0 1px hsla(${gold.accent}, 0.2)`,
+                  }}
+                >
+                  <Wifi className="h-4 w-4" style={{ color: `hsl(${gold.accent})` }} />
+                </div>
+                <div>
+                  <CardTitle className="text-base">Local Worker Voice & Digital Inclusion</CardTitle>
+                  <CardDescription className="text-xs font-sans">
+                    Anonymous inputs collected via ELISA node Wi-Fi captive portals across the supply chain.
+                  </CardDescription>
+                </div>
+              </div>
+              <Badge
+                variant="outline"
+                className="text-[10px] font-semibold font-sans"
+                style={{ borderColor: "hsla(178, 65%, 42%, 0.3)", color: "hsl(178, 65%, 32%)" }}
+              >
+                <span className="inline-block w-1.5 h-1.5 rounded-full mr-1.5 animate-pulse" style={{ backgroundColor: "hsl(178, 65%, 42%)" }} />
+                Live Captive Portal Feed
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-[10px] uppercase tracking-widest">Location</TableHead>
+                  <TableHead className="text-[10px] uppercase tracking-widest">Metric</TableHead>
+                  <TableHead className="text-[10px] uppercase tracking-widest text-right">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {[
+                  {
+                    loc: "Burkina Faso (Shea Coop)",
+                    icon: Scale,
+                    metric: "Living Wage Survey",
+                    status: "100% Above Poverty Line",
+                  },
+                  {
+                    loc: "Indonesia (Palm)",
+                    icon: ShieldCheck,
+                    metric: "Grievance Mechanism",
+                    status: "0 Reports (Zero Risk)",
+                  },
+                ].map((row) => (
+                  <TableRow key={row.loc}>
+                    <TableCell className="font-sans text-sm font-medium">{row.loc}</TableCell>
+                    <TableCell className="font-sans text-sm text-muted-foreground">
+                      <span className="inline-flex items-center gap-2">
+                        <row.icon className="h-3.5 w-3.5" style={{ color: `hsl(${gold.accent})` }} />
+                        {row.metric}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Badge
+                        className="text-[10px] font-semibold font-sans border"
+                        style={{
+                          backgroundColor: "hsla(152, 60%, 42%, 0.1)",
+                          color: "hsl(152, 60%, 32%)",
+                          borderColor: "hsla(152, 60%, 42%, 0.3)",
+                        }}
+                      >
+                        <CheckCircle2 className="h-2.5 w-2.5 mr-1" />
+                        {row.status}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </motion.div>
+
       {/* ─── Row 3: L'Oréal 2030 Commitments Tracker ─── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -465,6 +726,61 @@ const LorealMRVDashboard = () => {
                 </motion.div>
               ))}
             </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* ─── Row 4: Digital Product Passport CTA ─── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+      >
+        <Card
+          className="border-border overflow-hidden relative"
+          style={{
+            background: `linear-gradient(135deg, hsla(${gold.charcoal}, 1) 0%, hsla(220, 14%, 12%, 1) 100%)`,
+          }}
+        >
+          <div
+            className="absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, hsl(${gold.accent}) 1px, transparent 0)`,
+              backgroundSize: "18px 18px",
+            }}
+          />
+          <CardContent className="relative p-6 flex items-center justify-between flex-wrap gap-5">
+            <div className="flex items-center gap-4">
+              <div
+                className="p-3 rounded-xl"
+                style={{
+                  backgroundColor: `hsla(${gold.accent}, 0.12)`,
+                  boxShadow: `inset 0 0 0 1px hsla(${gold.accent}, 0.3)`,
+                }}
+              >
+                <FileBadge className="h-5 w-5" style={{ color: `hsl(${gold.accent})` }} />
+              </div>
+              <div>
+                <h4 className="text-base font-semibold text-white">
+                  Digital Product Passport (DPP) Integration
+                </h4>
+                <p className="text-xs font-sans mt-0.5" style={{ color: "hsl(220, 8%, 70%)" }}>
+                  EU Green Claims Directive Ready · Cryptographic provenance from sensor to SKU
+                </p>
+              </div>
+            </div>
+            <Button
+              className="font-sans font-semibold tracking-wide border"
+              style={{
+                backgroundColor: `hsl(${gold.accent})`,
+                color: `hsl(${gold.charcoal})`,
+                borderColor: `hsla(${gold.accent}, 0.6)`,
+                boxShadow: `0 0 24px hsla(${gold.accent}, 0.35)`,
+              }}
+            >
+              <FileBadge className="h-4 w-4 mr-1" />
+              Export Data to Digital Product Passport
+            </Button>
           </CardContent>
         </Card>
       </motion.div>
