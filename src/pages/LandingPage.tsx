@@ -270,6 +270,85 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* ─── ELISA® NODE ACRONYM SPEC ─── */}
+      <section className="relative py-20 border-t border-border/40 bg-[hsl(210,35%,97%)] overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none opacity-[0.04] [background-image:linear-gradient(hsl(var(--primary))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--primary))_1px,transparent_1px)] [background-size:48px_48px]" />
+        <div className="relative max-w-7xl mx-auto px-6">
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} custom={0}
+            className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12"
+          >
+            <div>
+              <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.25em] text-primary/80 border border-primary/20 rounded-full px-3 py-1 bg-primary/5 mb-4">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                Hardware Specification
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight font-serif">
+                Powered by <span className="text-gradient-primary">ELISA® Nodes</span>
+              </h2>
+              <p className="text-sm text-muted-foreground mt-3 max-w-xl font-sans">
+                Our proprietary Decentralized Physical Infrastructure Network (DePIN) — purpose-built for verifiable, last-mile sustainability telemetry.
+              </p>
+            </div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
+              <span className="h-px w-8 bg-border" />
+              Spec Sheet · Rev. 4.2
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} custom={1}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-border/60 border border-border/60 rounded-xl overflow-hidden shadow-sm"
+          >
+            {[
+              { letter: "E", title: "Edge Verified", desc: "Process data locally at the source, preventing manipulation." },
+              { letter: "L", title: "Ledgered", desc: "Tied to an immutable blockchain record." },
+              { letter: "I", title: "Inclusive Infrastructure", desc: "Providing light & internet to marginalized communities." },
+              { letter: "S", title: "Supply Chain Scope", desc: "Built specifically to monitor Tier 2/3 remote origins." },
+              { letter: "A", title: "Auditable & Autonomous", desc: "Self-sustaining energy, generating zero-touch reporting." },
+            ].map((item, i) => (
+              <motion.div
+                key={item.letter}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 + i * 0.08, duration: 0.5 }}
+                className="group relative bg-card p-6 flex flex-col hover:bg-[hsl(210,40%,98%)] transition-colors"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="font-serif text-6xl leading-none text-gradient-primary font-bold">
+                    {item.letter}
+                  </span>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground/60">
+                    0{i + 1}
+                  </span>
+                </div>
+                <div className="h-px w-8 bg-primary/40 mb-3 group-hover:w-12 transition-all" />
+                <h3 className="text-sm font-semibold text-foreground mb-1.5 font-sans tracking-tight">
+                  {item.title}
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed font-sans">
+                  {item.desc}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}
+            className="mt-6 flex flex-wrap items-center justify-center lg:justify-between gap-4 text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground"
+          >
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+              <span>ISO 27001 · GDPR · SOC 2 aligned firmware</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span>Solar-powered · LoRaWAN + 4G fallback · Tamper-evident enclosure</span>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ─── COMPETITIVE ADVANTAGE ─── */}
       <section className="py-24 border-t border-border/30">
         <div className="max-w-7xl mx-auto px-6">
