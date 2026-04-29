@@ -44,6 +44,82 @@ const fadeUp = {
   }),
 };
 
+type TelemetryMetric = {
+  title: string;
+  baseValue: number;
+  unit: string;
+  subtext: string;
+  format: (n: number) => string;
+  jitter: number;
+  min?: number;
+  max?: number;
+};
+
+function LiveTelemetryCard({ metric, seed }: { metric: TelemetryMetric; seed: number }) {
+  const [value, setValue] = useState(metric.baseValue);
+  const [packets, setPackets] = useState(1240 + seed * 137);
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const delta = (Math.random() - 0.5) * 2 * metric.jitter;
+      let next = metric.baseValue + delta;
+      if (metric.min !== undefined) next = Math.max(metric.min, next);
+      if (metric.max !== undefined) next = Math.min(metric.max, next);
+      setValue(next);
+      setPackets((p) => p + Math.floor(Math.random() * 4) + 1);
+      setTick((t) => t + 1);
+    }, 1800 + seed * 200);
+    return () => clearInterval(interval);
+  }, [metric.baseValue, metric.jitter, metric.min, metric.max, seed]);
+
+  return (
+    <Card className="relative overflow-hidden p-5 bg-card/60 backdrop-blur-md border border-border/60 shadow-sm hover:shadow-md hover:border-primary/30 transition-all">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-[hsl(142,70%,45%)] opacity-75 animate-ping" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[hsl(142,70%,45%)] shadow-[0_0_8px_hsl(142,70%,45%)]" />
+          </span>
+          <h4 className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+            {metric.title}
+          </h4>
+        </div>
+        <span className="text-[9px] font-mono text-muted-foreground/70 tabular-nums">
+          {packets.toLocaleString()} pkts
+        </span>
+      </div>
+
+      <div className="flex items-baseline gap-1.5 mb-2 font-serif">
+        <motion.span
+          key={tick}
+          initial={{ opacity: 0.4, y: -2 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="text-3xl lg:text-4xl font-bold text-foreground tracking-tight tabular-nums"
+        >
+          {metric.format(value)}
+        </motion.span>
+        <span className="text-xs text-muted-foreground font-sans font-medium">
+          {metric.unit}
+        </span>
+      </div>
+
+      <p className="text-[11px] leading-relaxed text-muted-foreground font-sans mb-3">
+        {metric.subtext}
+      </p>
+
+      <div className="relative h-0.5 w-full overflow-hidden rounded-full bg-border/40">
+        <motion.div
+          className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-[hsl(142,70%,45%)] to-transparent"
+          animate={{ x: ["-100%", "300%"] }}
+          transition={{ duration: 2.4 + seed * 0.3, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
+    </Card>
+  );
+}
+
 const LandingPage = () => {
   const navigate = useNavigate();
 
