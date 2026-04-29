@@ -7,6 +7,8 @@ import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Info } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine,
   TooltipProps,
@@ -422,12 +424,40 @@ const LorealMRVDashboard = () => {
                 <span className="text-xl font-bold font-mono text-foreground">94%</span>
               </div>
             </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <Radar className="h-3.5 w-3.5" style={{ color: `hsl(${gold.accent})` }} />
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground font-sans">
-                  Trust Moat KPI
-                </span>
+            <div className="space-y-1 flex-1">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Radar className="h-3.5 w-3.5" style={{ color: `hsl(${gold.accent})` }} />
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground font-sans">
+                    Trust Moat KPI
+                  </span>
+                </div>
+                <HoverCard openDelay={100} closeDelay={80}>
+                  <HoverCardTrigger asChild>
+                    <button
+                      type="button"
+                      aria-label="How is this calculated?"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <Info className="h-3.5 w-3.5" />
+                    </button>
+                  </HoverCardTrigger>
+                  <HoverCardContent side="left" align="start" className="w-80 text-xs space-y-2.5">
+                    <div>
+                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Calculation Inputs</p>
+                      <p className="font-semibold text-foreground mt-0.5">Hardware-Verified Data Ratio</p>
+                    </div>
+                    <div className="font-mono text-[11px] bg-secondary/60 border border-border rounded p-2 leading-relaxed">
+                      ratio = telemetry_events / (telemetry_events + manual_entries)
+                    </div>
+                    <ul className="space-y-1.5 text-muted-foreground leading-relaxed">
+                      <li><span className="text-foreground font-semibold">Telemetry source:</span> ELISA edge sensors (solar yield, battery, Wi-Fi, GPS) signed on-device.</li>
+                      <li><span className="text-foreground font-semibold">Verification method:</span> Ed25519 cryptographic signatures verified at ingest; SHA-256 hash anchored to immutable ledger.</li>
+                      <li><span className="text-foreground font-semibold">Ownership model:</span> Hardware secret held by community steward — sponsor cannot mint or alter readings.</li>
+                      <li><span className="text-foreground font-semibold">Manual portion (6%):</span> Worker Voice surveys + auditor field notes, flagged as off-chain.</li>
+                    </ul>
+                  </HoverCardContent>
+                </HoverCard>
               </div>
               <h4 className="text-sm font-semibold text-foreground">Hardware-Verified Data Ratio</h4>
               <p className="text-xs text-muted-foreground font-sans leading-relaxed">
@@ -462,12 +492,40 @@ const LorealMRVDashboard = () => {
                 <span className="text-xl font-bold font-mono text-foreground">100%</span>
               </div>
             </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="h-3.5 w-3.5" style={{ color: "hsl(152, 60%, 42%)" }} />
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground font-sans">
-                  Trust Moat KPI
-                </span>
+            <div className="space-y-1 flex-1">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="h-3.5 w-3.5" style={{ color: "hsl(152, 60%, 42%)" }} />
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground font-sans">
+                    Trust Moat KPI
+                  </span>
+                </div>
+                <HoverCard openDelay={100} closeDelay={80}>
+                  <HoverCardTrigger asChild>
+                    <button
+                      type="button"
+                      aria-label="How is this calculated?"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <Info className="h-3.5 w-3.5" />
+                    </button>
+                  </HoverCardTrigger>
+                  <HoverCardContent side="left" align="start" className="w-80 text-xs space-y-2.5">
+                    <div>
+                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Calculation Inputs</p>
+                      <p className="font-semibold text-foreground mt-0.5">Zero-Vandalism Rate</p>
+                    </div>
+                    <div className="font-mono text-[11px] bg-secondary/60 border border-border rounded p-2 leading-relaxed">
+                      rate = 1 − (tamper_events / deployed_nodes) over rolling 90d
+                    </div>
+                    <ul className="space-y-1.5 text-muted-foreground leading-relaxed">
+                      <li><span className="text-foreground font-semibold">Telemetry source:</span> Accelerometer + enclosure-breach reed switch + GPS displacement &gt; 5m on each ELISA pole.</li>
+                      <li><span className="text-foreground font-semibold">Verification method:</span> Multi-sensor consensus (2-of-3) auto-files an incident; cross-checked against community steward sign-off.</li>
+                      <li><span className="text-foreground font-semibold">Ownership model:</span> Community Stewardship — each node is co-owned by the local cooperative, who receives $LITRO yield for uptime, aligning incentives against tampering.</li>
+                      <li><span className="text-foreground font-semibold">Scope:</span> 100% of deployed nodes across Brazil (Açaí), Indonesia (Palm) and West Africa (Shea) supply sheds.</li>
+                    </ul>
+                  </HoverCardContent>
+                </HoverCard>
               </div>
               <h4 className="text-sm font-semibold text-foreground">Zero-Vandalism Rate</h4>
               <p className="text-xs text-muted-foreground font-sans leading-relaxed">
