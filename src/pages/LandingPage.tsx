@@ -62,7 +62,7 @@ const LandingPage = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <Button size="sm" className="text-xs gap-1 bg-gradient-to-r from-primary to-[hsl(178,65%,42%)] hover:from-primary/90 hover:to-[hsl(178,65%,42%)]/90 text-primary-foreground" onClick={() => navigate("/dashboard")}>
+            <Button size="sm" className="text-xs gap-1 bg-gradient-to-r from-primary to-[hsl(178,65%,42%)] hover:from-primary/90 hover:to-[hsl(178,65%,42%)]/90 text-primary-foreground" onClick={() => navigate("/loreal")}>
               Enter Impact Exchange <ArrowRight className="h-3 w-3" />
             </Button>
           </div>
@@ -109,7 +109,7 @@ const LandingPage = () => {
               <Button
                 size="lg"
                 className="gap-2 text-sm px-8 font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all"
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/loreal")}
               >
                 Deploy a Corporate Cluster <ArrowRight className="h-4 w-4" />
               </Button>
@@ -389,7 +389,7 @@ const LandingPage = () => {
               Join the world's leading brands using the Impact Exchange to transform ESG compliance into measurable social infrastructure.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Button size="lg" className="gap-2 text-sm px-8 bg-gradient-to-r from-primary to-[hsl(178,65%,42%)] hover:from-primary/90 hover:to-[hsl(178,65%,42%)]/90 text-primary-foreground" onClick={() => navigate("/dashboard")}>
+              <Button size="lg" className="gap-2 text-sm px-8 bg-gradient-to-r from-primary to-[hsl(178,65%,42%)] hover:from-primary/90 hover:to-[hsl(178,65%,42%)]/90 text-primary-foreground" onClick={() => navigate("/loreal")}>
                 View Live Demo <ArrowRight className="h-4 w-4" />
               </Button>
               <Button size="lg" variant="outline" className="gap-2 text-sm px-8 border-border" onClick={() => document.getElementById("exchange")?.scrollIntoView({ behavior: "smooth" })}>
