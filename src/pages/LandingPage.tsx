@@ -69,7 +69,7 @@ function LiveTelemetryCard({ metric, seed }: { metric: TelemetryMetric; seed: nu
       setValue(next);
       setPackets((p) => p + Math.floor(Math.random() * 4) + 1);
       setTick((t) => t + 1);
-    }, 1800 + seed * 200);
+    }, 10000 + seed * 400);
     return () => clearInterval(interval);
   }, [metric.baseValue, metric.jitter, metric.min, metric.max, seed]);
 
