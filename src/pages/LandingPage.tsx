@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { ArrowRight, Zap, Wifi, Globe, BarChart3, Shield, Users, ChevronRight, X, Cpu, MapPin, ShieldCheck, FileText, ExternalLink, Satellite } from "lucide-react";
 import logoHorizontal from "@/assets/logo-horizontal.png";
 
@@ -121,6 +122,58 @@ const LandingPage = () => {
               >
                 Read the $LITRO Tokenomics <ExternalLink className="h-4 w-4" />
               </Button>
+            </motion.div>
+
+            <motion.div
+              initial="hidden" animate="visible" variants={fadeUp} custom={3.5}
+              className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4"
+            >
+              {[
+                {
+                  title: "Live Biodiversity Score",
+                  value: "88",
+                  unit: "/ 100",
+                  subtext: "AI-acoustic fauna monitoring in Shea & Argan ecosystems.",
+                },
+                {
+                  title: "Ethical Sourcing Hubs",
+                  value: "100%",
+                  unit: "Verified",
+                  subtext: "Women's cooperatives connected with Local Worker Voice telemetry.",
+                },
+                {
+                  title: "DePIN Network Status",
+                  value: "0%",
+                  unit: "Vandalism",
+                  subtext: "Secured via community ownership. 94% hardware-verified data.",
+                },
+              ].map((m) => (
+                <Card
+                  key={m.title}
+                  className="relative p-5 bg-card/60 backdrop-blur-md border border-border/60 shadow-sm hover:shadow-md hover:border-primary/30 transition-all"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-[hsl(142,70%,45%)] opacity-75 animate-ping" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-[hsl(142,70%,45%)] shadow-[0_0_8px_hsl(142,70%,45%)]" />
+                    </span>
+                    <h4 className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+                      {m.title}
+                    </h4>
+                  </div>
+                  <div className="flex items-baseline gap-1.5 mb-2 font-serif">
+                    <span className="text-3xl lg:text-4xl font-bold text-foreground tracking-tight">
+                      {m.value}
+                    </span>
+                    <span className="text-xs text-muted-foreground font-sans font-medium">
+                      {m.unit}
+                    </span>
+                  </div>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground font-sans">
+                    {m.subtext}
+                  </p>
+                </Card>
+              ))}
             </motion.div>
 
             <motion.div
