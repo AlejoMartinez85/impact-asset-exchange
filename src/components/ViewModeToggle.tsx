@@ -1,4 +1,4 @@
-import { Eye, Shield, ChevronDown, Sparkles } from "lucide-react";
+import { Eye, Shield, ChevronDown, Sparkles, Satellite } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +12,7 @@ const views = [
   { path: "/admin", label: "Admin Control Room", icon: Shield, colorClass: "text-primary" },
   { path: "/dashboard", label: "Nestlé: Regenerative Ag", icon: Eye, colorClass: "text-[hsl(var(--ods-green))]" },
   { path: "/loreal", label: "L'Oréal: Ethical Sourcing", icon: Sparkles, colorClass: "text-amber-500" },
+  { path: "/landscape", label: "L'Oréal: Satellite & Forestry Intelligence", icon: Satellite, colorClass: "text-emerald-500" },
 ] as const;
 
 const ViewModeToggle = () => {
