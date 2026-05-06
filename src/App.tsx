@@ -40,6 +40,7 @@ const App = () => (
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/whitepaper" element={<WhitepaperPage />} />
           <Route path="/forestry" element={<LandscapeForestryModule />} />
+          <Route path="/landscape" element={<LandscapeForestryModule />} />
           {/* Sponsor View */}
           <Route
             path="/dashboard/*"
