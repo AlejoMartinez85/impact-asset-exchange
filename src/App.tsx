@@ -22,6 +22,7 @@ import SponsorDashboardMain from "./pages/SponsorDashboardMain";
 import NotFound from "./pages/NotFound";
 import WhitepaperPage from "./pages/WhitepaperPage";
 import LorealMRVDashboard from "./pages/LorealMRVDashboard";
+import LandscapeForestryModule from "./components/LandscapeForestryModule";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/login" element={<LoginPage />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/whitepaper" element={<WhitepaperPage />} />
+          <Route path="/forestry" element={<LandscapeForestryModule />} />
           {/* Sponsor View */}
           <Route
             path="/dashboard/*"
@@ -64,6 +66,7 @@ const App = () => (
               <AppLayout>
                 <Routes>
                   <Route path="/" element={<LorealMRVDashboard />} />
+                  <Route path="/forestry" element={<LandscapeForestryModule />} />
                   <Route path="/map" element={<MapPage />} />
                   <Route path="/reports" element={<ReportsPage />} />
                   <Route path="/hardware" element={<HardwarePage />} />
