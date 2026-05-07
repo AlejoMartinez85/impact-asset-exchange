@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
-import { MapContainer, TileLayer, CircleMarker, Tooltip as LTooltip, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, CircleMarker, Tooltip as LTooltip, useMap, Rectangle, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { RadioTower, Lock, TrendingUp, TrendingDown, Flame, Leaf, Satellite, AlertTriangle, Sparkles } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -153,22 +153,44 @@ const LandscapeForestryModule = () => {
                     </CircleMarker>
                   );
                 })}
+                {layer === "deforestation" &&
+                  forestryNodes.map((n) => {
+                    const d = n.forest_change_detected ? 1.6 : 0.7;
+                    const bounds: [[number, number], [number, number]] = [
+                      [n.coordinates.lat - d, n.coordinates.lng - d],
+                      [n.coordinates.lat + d, n.coordinates.lng + d],
+                    ];
+                    const severe = n.forest_change_detected || n.ndvi_score < 0.65;
+                    return (
+                      <Rectangle
+                        key={`def-${n.id}`}
+                        bounds={bounds}
+                        pathOptions={{
+                          color: severe ? "#ff2d2d" : "#f59e0b",
+                          fillColor: severe ? "#ff0000" : "#fb923c",
+                          fillOpacity: 0.4,
+                          weight: 1,
+                        }}
+                      />
+                    );
+                  })}
+                {layer === "wildfire" &&
+                  forestryNodes.flatMap((n) => {
+                    const count = n.fire_potential === "Critical" ? 6 : n.fire_potential === "High" ? 4 : n.fire_potential === "Medium" ? 2 : 1;
+                    return Array.from({ length: count }).map((_, i) => {
+                      const jLat = Math.sin(i * 9.13 + n.coordinates.lat) * 0.6;
+                      const jLng = Math.cos(i * 7.31 + n.coordinates.lng) * 0.6;
+                      return (
+                        <Circle
+                          key={`fire-${n.id}-${i}`}
+                          center={[n.coordinates.lat + jLat, n.coordinates.lng + jLng]}
+                          radius={40000 + ((i * 137) % 40000)}
+                          pathOptions={{ color: "orange", fillColor: "#ff4500", fillOpacity: 0.7, weight: 0 }}
+                        />
+                      );
+                    });
+                  })}
               </MapContainer>
-
-              {/* Pixelated overlay layers */}
-              {layer !== "satellite" && (
-                <motion.div
-                  key={layer}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4 }}
-                  className="absolute inset-0 pointer-events-none"
-                  style={{ ...overlayMask }}
-                />
-              )}
-              {layer !== "satellite" && (
-                <div className="absolute inset-0 pointer-events-none opacity-60" style={{ backgroundImage: pixelMask }} />
-              )}
 
               {/* Glassmorphic legend */}
               <div className="absolute bottom-3 left-3 bg-slate-950/70 border border-slate-800/80 rounded-md px-3 py-2 backdrop-blur-md z-[400]">
