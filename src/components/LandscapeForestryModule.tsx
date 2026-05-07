@@ -294,36 +294,39 @@ const NodeDetail = ({ node }: { node: ForestryNode }) => {
   );
 };
 
-const BeforeAfterSlider = ({ hueBefore, hueAfter }: { hueBefore: number; hueAfter: number }) => {
+const BEFORE_IMG = "https://images.unsplash.com/photo-1614028674026-a65e31bfd27c?auto=format&fit=crop&w=800&q=80";
+const AFTER_IMG = "https://images.unsplash.com/photo-1596328639209-41d3fc14e511?auto=format&fit=crop&w=800&q=80";
+
+const BeforeAfterSlider = (_props: { hueBefore?: number; hueAfter?: number }) => {
   const [pos, setPos] = useState(50);
   const ref = useRef<HTMLDivElement>(null);
-
-  const tile = (hue: number, dim?: boolean) =>
-    `radial-gradient(circle at 30% 30%, hsla(${hue},65%,${dim ? 32 : 48}%,0.95), hsla(${hue},55%,12%,0.95)), repeating-linear-gradient(45deg, hsla(${hue},45%,${dim ? 22 : 32}%,0.5) 0 4px, transparent 4px 8px)`;
-
   return (
-    <div ref={ref} className="relative w-full aspect-[16/10] rounded-md overflow-hidden border border-slate-800 select-none">
-      {/* After (full) */}
-      <div className="absolute inset-0" style={{ backgroundImage: tile(hueAfter) }} />
+    <div ref={ref} className="relative w-full aspect-[16/10] rounded-md overflow-hidden border border-slate-800 select-none bg-slate-900">
+      <img src={AFTER_IMG} alt="Current satellite 2024" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
       <div className="absolute bottom-1.5 right-2 text-[9px] font-mono text-slate-100 px-1.5 py-0.5 rounded bg-slate-950/70 border border-slate-800 z-20">
         Current Satellite · 2024
       </div>
-      {/* Before (clipped) */}
-      <div
-        className="absolute inset-0"
-        style={{ backgroundImage: tile(hueBefore, true), clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+      <img
+        src={BEFORE_IMG}
+        alt="2016 baseline"
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ clipPath: `polygon(0 0, ${pos}% 0, ${pos}% 100%, 0 100%)` }}
+        draggable={false}
       />
-      <div className="absolute bottom-1.5 left-2 text-[9px] font-mono text-slate-100 px-1.5 py-0.5 rounded bg-slate-950/70 border border-slate-800 z-20" style={{ opacity: pos > 10 ? 1 : 0 }}>
+      <div
+        className="absolute bottom-1.5 left-2 text-[9px] font-mono text-slate-100 px-1.5 py-0.5 rounded bg-slate-950/70 border border-slate-800 z-20"
+        style={{ opacity: pos > 10 ? 1 : 0 }}
+      >
         2016 Baseline
       </div>
-
-      {/* Divider */}
-      <div className="absolute top-0 bottom-0 w-px bg-emerald-300 shadow-[0_0_10px_rgba(52,211,153,0.8)] z-10 pointer-events-none" style={{ left: `${pos}%` }}>
-        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-7 w-7 rounded-full bg-slate-950 border-2 border-emerald-300 flex items-center justify-center">
-          <span className="text-emerald-300 text-[10px] font-mono">⇆</span>
+      <div
+        className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(255,255,255,0.9)] z-10 pointer-events-none"
+        style={{ left: `${pos}%` }}
+      >
+        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-7 w-7 rounded-full bg-slate-950 border-2 border-white flex items-center justify-center">
+          <span className="text-white text-[10px] font-mono">⇆</span>
         </div>
       </div>
-
       <input
         type="range"
         min={0}
