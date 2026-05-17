@@ -104,6 +104,7 @@ const FitBounds = () => {
 const UnicefClimateHealthDashboard = () => {
   const [layer, setLayer] = useState<LayerMode>("base");
   const [selected, setSelected] = useState<HealthNode | null>(null);
+  const iot = useIoTDataStream();
 
   const overlay = useMemo(() => {
     if (layer === "heat") {
