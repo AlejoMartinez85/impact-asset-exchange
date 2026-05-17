@@ -26,6 +26,10 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
+import { useIoTDataStream } from "@/hooks/useIoTDataStream";
+
+/* Live telemetry CSS transition */
+import "./iot-telemetry.css";
 
 type LayerMode = "base" | "heat" | "vector";
 
