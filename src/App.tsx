@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import WhitepaperPage from "./pages/WhitepaperPage";
 import LorealMRVDashboard from "./pages/LorealMRVDashboard";
 import LandscapeForestryModule from "./components/LandscapeForestryModule";
+import UnicefClimateHealthDashboard from "./components/UnicefClimateHealthDashboard";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/whitepaper" element={<WhitepaperPage />} />
           <Route path="/forestry" element={<LandscapeForestryModule />} />
           <Route path="/landscape" element={<LandscapeForestryModule />} />
+          <Route path="/unicef" element={<UnicefClimateHealthDashboard />} />
           {/* Sponsor View */}
           <Route
             path="/dashboard/*"
