@@ -278,21 +278,27 @@ const UnicefClimateHealthDashboard = () => {
 
               {/* Climate Telemetry */}
               <div className="mt-6">
-                <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400 mb-2">Climate Telemetry · Live</div>
+                <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-slate-400 mb-2">
+                  Climate Telemetry · Live
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-rose-500" />
+                  </span>
+                </div>
                 <div className="grid grid-cols-3 gap-2">
                   <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
                     <Thermometer className="h-3.5 w-3.5 text-rose-500 mb-1" />
-                    <div className="text-lg font-mono text-slate-900">{selected.temperatureC}°C</div>
+                    <div className="text-lg font-mono text-slate-900 iot-telemetry-value">{iot.temperature.toFixed(1)}°C</div>
                     <div className="text-[10px] text-slate-500">Temperature</div>
                   </div>
                   <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
                     <Droplets className="h-3.5 w-3.5 text-cyan-500 mb-1" />
-                    <div className="text-lg font-mono text-slate-900">{selected.humidity}%</div>
+                    <div className="text-lg font-mono text-slate-900 iot-telemetry-value">{iot.humidity.toFixed(1)}%</div>
                     <div className="text-[10px] text-slate-500">Humidity</div>
                   </div>
                   <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
                     <Wind className="h-3.5 w-3.5 text-amber-500 mb-1" />
-                    <div className="text-lg font-mono text-slate-900">{selected.pm25}</div>
+                    <div className="text-lg font-mono text-slate-900 iot-telemetry-value">{iot.pm25.toFixed(1)}</div>
                     <div className="text-[10px] text-slate-500">PM2.5 µg/m³</div>
                   </div>
                 </div>
