@@ -1,4 +1,4 @@
-import { Eye, Shield, ChevronDown, Sparkles, Satellite } from "lucide-react";
+import { Eye, Shield, ChevronDown, Sparkles, Satellite, HeartPulse } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +13,7 @@ const views = [
   { path: "/dashboard", label: "Nestlé: Regenerative Ag", icon: Eye, colorClass: "text-[hsl(var(--ods-green))]" },
   { path: "/loreal", label: "L'Oréal: Ethical Sourcing", icon: Sparkles, colorClass: "text-amber-500" },
   { path: "/landscape", label: "L'Oréal: Satellite & Forestry Intelligence", icon: Satellite, colorClass: "text-emerald-500" },
+  { path: "/unicef", label: "UNICEF: Climate × Health Resilience", icon: HeartPulse, colorClass: "text-cyan-500" },
 ] as const;
 
 const ViewModeToggle = () => {
