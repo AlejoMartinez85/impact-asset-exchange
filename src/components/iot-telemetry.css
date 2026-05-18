@@ -5,3 +5,10 @@
 .iot-telemetry-value:hover {
   transform: scale(1.02);
 }
+
+/* Keep Leaflet map below Shadcn overlays (Sheet/Dialog use z-50) */
+.leaflet-container { z-index: 0 !important; }
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom { z-index: 1 !important; }
+.leaflet-control { z-index: 2 !important; }

@@ -302,12 +302,12 @@ const UnicefClimateHealthDashboard = () => {
             </ToggleGroup>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="relative h-[520px] w-full">
+            <div className="relative h-[520px] w-full z-0">
               <MapContainer
                 center={[0, 0]}
                 zoom={2}
                 scrollWheelZoom
-                className="h-full w-full"
+                className="h-full w-full z-0"
                 style={{ background: "#e2e8f0" }}
               >
                 <TileLayer
