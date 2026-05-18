@@ -1,7 +1,9 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { MapContainer, TileLayer, CircleMarker, Tooltip as LTooltip, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip as LTooltip, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import { renderToStaticMarkup } from "react-dom/server";
 import {
   AlertTriangle,
   HeartPulse,
@@ -13,6 +15,16 @@ import {
   Stethoscope,
   FileText,
   ShieldCheck,
+  GraduationCap,
+  Cross,
+  Satellite,
+  Radio,
+  Signal,
+  Sun,
+  Flame,
+  Activity,
+  Lock,
+  ShieldAlert,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -32,11 +44,13 @@ import { useIoTDataStream } from "@/hooks/useIoTDataStream";
 import "./iot-telemetry.css";
 
 type LayerMode = "base" | "heat" | "vector";
+type NodeKind = "school" | "clinic";
 
 interface HealthNode {
   id: string;
   community: string;
   country: string;
+  kind: NodeKind;
   coordinates: { lat: number; lng: number };
   temperatureC: number;
   humidity: number;
@@ -47,13 +61,40 @@ interface HealthNode {
 }
 
 const HEALTH_NODES: HealthNode[] = [
-  { id: "ELISA-KEN-014", community: "Turkana North", country: "Kenya", coordinates: { lat: 3.12, lng: 35.6 }, temperatureC: 41.2, humidity: 22, pm25: 58, lastTelehealth: "2 hours ago", feverReports: 4, vulnerability: "Critical" },
-  { id: "ELISA-GHA-021", community: "Bolgatanga", country: "Ghana", coordinates: { lat: 10.78, lng: -0.85 }, temperatureC: 38.4, humidity: 64, pm25: 47, lastTelehealth: "11 hours ago", feverReports: 3, vulnerability: "High" },
-  { id: "ELISA-COL-009", community: "Leticia Amazonas", country: "Colombia", coordinates: { lat: -4.21, lng: -69.94 }, temperatureC: 32.1, humidity: 88, pm25: 22, lastTelehealth: "1 day ago", feverReports: 2, vulnerability: "High" },
-  { id: "ELISA-PER-031", community: "Madre de Dios", country: "Peru", coordinates: { lat: -12.59, lng: -69.18 }, temperatureC: 31.4, humidity: 84, pm25: 35, lastTelehealth: "3 hours ago", feverReports: 1, vulnerability: "Medium" },
-  { id: "ELISA-MDG-007", community: "Mananjary", country: "Madagascar", coordinates: { lat: -21.23, lng: 48.34 }, temperatureC: 30.8, humidity: 79, pm25: 18, lastTelehealth: "6 hours ago", feverReports: 2, vulnerability: "Medium" },
-  { id: "ELISA-MEX-018", community: "Chiapas Highlands", country: "Mexico", coordinates: { lat: 16.75, lng: -92.64 }, temperatureC: 28.6, humidity: 71, pm25: 26, lastTelehealth: "5 hours ago", feverReports: 0, vulnerability: "Low" },
+  { id: "ELISA-KEN-014", community: "Turkana North Rural School", country: "Kenya", kind: "school", coordinates: { lat: 3.12, lng: 35.6 }, temperatureC: 41.2, humidity: 22, pm25: 58, lastTelehealth: "2 hours ago", feverReports: 4, vulnerability: "Critical" },
+  { id: "ELISA-GHA-021", community: "Bolgatanga Health Post", country: "Ghana", kind: "clinic", coordinates: { lat: 10.78, lng: -0.85 }, temperatureC: 38.4, humidity: 64, pm25: 47, lastTelehealth: "11 hours ago", feverReports: 3, vulnerability: "High" },
+  { id: "ELISA-COL-009", community: "Leticia Amazonas School", country: "Colombia", kind: "school", coordinates: { lat: -4.21, lng: -69.94 }, temperatureC: 32.1, humidity: 88, pm25: 22, lastTelehealth: "1 day ago", feverReports: 2, vulnerability: "High" },
+  { id: "ELISA-PER-031", community: "Madre de Dios Clinic", country: "Peru", kind: "clinic", coordinates: { lat: -12.59, lng: -69.18 }, temperatureC: 31.4, humidity: 84, pm25: 35, lastTelehealth: "3 hours ago", feverReports: 1, vulnerability: "Medium" },
+  { id: "ELISA-MDG-007", community: "Mananjary Primary School", country: "Madagascar", kind: "school", coordinates: { lat: -21.23, lng: 48.34 }, temperatureC: 30.8, humidity: 79, pm25: 18, lastTelehealth: "6 hours ago", feverReports: 2, vulnerability: "Medium" },
+  { id: "ELISA-MEX-018", community: "Chiapas Highlands Clinic", country: "Mexico", kind: "clinic", coordinates: { lat: 16.75, lng: -92.64 }, temperatureC: 28.6, humidity: 71, pm25: 26, lastTelehealth: "5 hours ago", feverReports: 0, vulnerability: "Low" },
 ];
+
+const ANOMALY_FEED = [
+  { time: "10:42 AM", tone: "rose", icon: "🔴", title: "Epidemiological Anomaly", body: "15 'Fever' responses clustered at Node ELISA-KEN-014 (Rural School). Encrypted alert dispatched to Frontline Health Worker via SMS." },
+  { time: "09:15 AM", tone: "amber", icon: "🟠", title: "Heat-Stress Alert", body: "Temperature/Humidity threshold exceeded at Bolgatanga Health Post. Telemedicine bandwidth prioritized over Starlink uplink." },
+  { time: "08:03 AM", tone: "cyan", icon: "🔵", title: "Air Quality Drift", body: "PM2.5 baseline at Leticia Amazonas drifted +18%. Cross-checked with MODIS aerosol; caregiver SMS queued." },
+  { time: "07:21 AM", tone: "violet", icon: "🟣", title: "Vector-Borne Risk Model", body: "Humidity × LST signature consistent with Aedes proliferation window at Chiapas Highlands. Surveillance escalated." },
+] as const;
+
+const toneMap: Record<string, string> = {
+  rose: "border-rose-200 bg-rose-50/80 text-rose-900",
+  amber: "border-amber-200 bg-amber-50/80 text-amber-900",
+  cyan: "border-cyan-200 bg-cyan-50/80 text-cyan-900",
+  violet: "border-violet-200 bg-violet-50/80 text-violet-900",
+};
+
+const makeDivIcon = (kind: NodeKind) => {
+  const Icon = kind === "school" ? GraduationCap : Cross;
+  const ring = kind === "school" ? "ring-sky-300" : "ring-cyan-300";
+  const bg = kind === "school" ? "bg-sky-500" : "bg-cyan-500";
+  const svg = renderToStaticMarkup(<Icon size={14} color="white" strokeWidth={2.5} />);
+  return L.divIcon({
+    className: "unicef-marker",
+    html: `<div class="relative flex items-center justify-center h-7 w-7 rounded-full ${bg} ring-4 ${ring} ring-opacity-60 shadow-md">${svg}</div>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+  });
+};
 
 const KPI_CARDS = [
   {
@@ -105,6 +146,9 @@ const UnicefClimateHealthDashboard = () => {
   const [layer, setLayer] = useState<LayerMode>("base");
   const [selected, setSelected] = useState<HealthNode | null>(null);
   const iot = useIoTDataStream();
+
+  const schoolIcon = useMemo(() => makeDivIcon("school"), []);
+  const clinicIcon = useMemo(() => makeDivIcon("clinic"), []);
 
   const overlay = useMemo(() => {
     if (layer === "heat") {
@@ -169,6 +213,69 @@ const UnicefClimateHealthDashboard = () => {
         ))}
       </div>
 
+      {/* AI ANOMALY DETECTION FEED */}
+      <div className="max-w-7xl mx-auto mb-6">
+        <Card className="relative overflow-hidden bg-slate-950 text-slate-100 border-cyan-500/20 shadow-lg">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-30"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(34,211,238,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.08) 1px, transparent 1px)",
+              backgroundSize: "24px 24px",
+            }}
+          />
+          <CardHeader className="relative flex-row items-center justify-between space-y-0 border-b border-cyan-500/20 pb-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-md bg-cyan-500/10 ring-1 ring-cyan-400/30">
+                <Activity className="h-4 w-4 text-cyan-300" />
+              </div>
+              <div>
+                <CardTitle className="text-sm font-mono uppercase tracking-[0.18em] text-cyan-200">
+                  Live AI-Driven Anomalies · $LITRO Protocol
+                </CardTitle>
+                <p className="text-[10px] text-slate-400 mt-1 font-mono">
+                  Encrypted epidemiological command channel · zk-signed receipts
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-400/30 text-[10px] uppercase tracking-wider font-mono">
+                <span className="relative flex h-1.5 w-1.5 mr-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+                </span>
+                Channel Secure
+              </Badge>
+              <Badge variant="outline" className="border-cyan-400/30 text-cyan-300 text-[10px] uppercase tracking-wider font-mono">
+                <Lock className="h-3 w-3 mr-1" /> AES-256
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="relative p-0">
+            <div className="divide-y divide-cyan-500/10">
+              {ANOMALY_FEED.map((a, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.08 }}
+                  className="grid grid-cols-[auto_auto_1fr] gap-3 items-start px-4 py-3 hover:bg-cyan-500/5 transition-colors"
+                >
+                  <span className="text-[10px] font-mono text-slate-500 mt-0.5 tabular-nums">[{a.time}]</span>
+                  <span className="text-sm leading-none mt-0.5">{a.icon}</span>
+                  <div>
+                    <div className="text-xs font-semibold text-slate-100 font-mono tracking-wide">
+                      {a.title}
+                    </div>
+                    <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{a.body}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* MAP */}
       <div className="max-w-7xl mx-auto">
         <Card className="bg-white border-slate-200 shadow-sm overflow-hidden">
@@ -209,20 +316,16 @@ const UnicefClimateHealthDashboard = () => {
                 />
                 <FitBounds />
                 {HEALTH_NODES.map((n) => (
-                  <CircleMarker
+                  <Marker
                     key={n.id}
-                    center={[n.coordinates.lat, n.coordinates.lng]}
-                    radius={9}
-                    pathOptions={{
-                      color: "#06b6d4",
-                      fillColor: "#22d3ee",
-                      fillOpacity: 0.85,
-                      weight: 2,
-                    }}
+                    position={[n.coordinates.lat, n.coordinates.lng]}
+                    icon={n.kind === "school" ? schoolIcon : clinicIcon}
                     eventHandlers={{ click: () => setSelected(n) }}
                   >
-                    <LTooltip>{n.community} · {n.country}</LTooltip>
-                  </CircleMarker>
+                    <LTooltip>
+                      {n.kind === "school" ? "🎓 School" : "✚ Clinic"} · {n.community} · {n.country}
+                    </LTooltip>
+                  </Marker>
                 ))}
               </MapContainer>
 
@@ -242,11 +345,19 @@ const UnicefClimateHealthDashboard = () => {
               `}</style>
 
               {/* Legend */}
-              <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-lg px-3 py-2 shadow-sm">
-                <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-1.5">Active Layer</div>
+              <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-lg px-3 py-2 shadow-sm space-y-1.5">
+                <div className="text-[10px] uppercase tracking-wider text-slate-500">Node Types</div>
                 <div className="flex items-center gap-2 text-xs text-slate-700">
-                  <span className="h-2.5 w-2.5 rounded-full bg-cyan-400 ring-2 ring-cyan-200" />
-                  ELISA® Climate-Health Nodes ({HEALTH_NODES.length})
+                  <span className="flex items-center justify-center h-4 w-4 rounded-full bg-sky-500 ring-2 ring-sky-200">
+                    <GraduationCap className="h-2.5 w-2.5 text-white" />
+                  </span>
+                  Schools ({HEALTH_NODES.filter((n) => n.kind === "school").length})
+                </div>
+                <div className="flex items-center gap-2 text-xs text-slate-700">
+                  <span className="flex items-center justify-center h-4 w-4 rounded-full bg-cyan-500 ring-2 ring-cyan-200">
+                    <Cross className="h-2.5 w-2.5 text-white" />
+                  </span>
+                  Rural Clinics ({HEALTH_NODES.filter((n) => n.kind === "clinic").length})
                 </div>
               </div>
             </div>
@@ -279,7 +390,7 @@ const UnicefClimateHealthDashboard = () => {
               {/* Climate Telemetry */}
               <div className="mt-6">
                 <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-slate-400 mb-2">
-                  Climate Telemetry · Live
+                  Multi-Sensor Array · Live
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75" />
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-rose-500" />
@@ -300,6 +411,68 @@ const UnicefClimateHealthDashboard = () => {
                     <Wind className="h-3.5 w-3.5 text-amber-500 mb-1" />
                     <div className="text-lg font-mono text-slate-900 iot-telemetry-value">{iot.pm25.toFixed(1)}</div>
                     <div className="text-[10px] text-slate-500">PM2.5 µg/m³</div>
+                  </div>
+                  <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+                    <Activity className="h-3.5 w-3.5 text-slate-500 mb-1" />
+                    <div className="text-lg font-mono text-slate-900">410 <span className="text-xs text-slate-500">ppm</span></div>
+                    <div className="text-[10px] text-slate-500">CO₂</div>
+                  </div>
+                  <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+                    <ShieldCheck className="h-3.5 w-3.5 text-emerald-500 mb-1" />
+                    <div className="text-lg font-mono text-emerald-700">Normal</div>
+                    <div className="text-[10px] text-slate-500">VOCs</div>
+                  </div>
+                  <div className="rounded-md border border-amber-200 bg-amber-50 p-3">
+                    <Sun className="h-3.5 w-3.5 text-amber-600 mb-1" />
+                    <div className="text-lg font-mono text-amber-700">8 <span className="text-xs text-amber-600">High</span></div>
+                    <div className="text-[10px] text-amber-700">UV Index</div>
+                  </div>
+                  <div className="col-span-3 rounded-md border border-rose-200 bg-rose-50 p-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Flame className="h-3.5 w-3.5 text-rose-600" />
+                        <div className="text-[10px] uppercase tracking-wider text-rose-700">Heat Stress Index</div>
+                      </div>
+                      <Badge className="bg-rose-500 text-white border-0 text-[10px] uppercase tracking-wider">Warning</Badge>
+                    </div>
+                    <div className="text-2xl font-mono text-rose-700 mt-1">38°C</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Multi-mode Connectivity */}
+              <div className="mt-6">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400 mb-2">Multi-mode Connectivity</div>
+                <div className="rounded-md border border-cyan-200 bg-gradient-to-br from-cyan-50 to-sky-50 p-3 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Satellite className="h-4 w-4 text-cyan-600" />
+                      <span className="text-sm font-medium text-slate-900">Starlink</span>
+                      <Badge className="bg-emerald-500 text-white border-0 text-[10px] uppercase tracking-wider">
+                        <span className="relative flex h-1.5 w-1.5 mr-1">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white" />
+                        </span>
+                        Active
+                      </Badge>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-500">Primary</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Radio className="h-4 w-4 text-slate-500" />
+                      <span className="text-sm text-slate-700">LoRaWAN</span>
+                      <Badge variant="outline" className="text-slate-600 border-slate-300 text-[10px] uppercase tracking-wider">Standby</Badge>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-500">Fallback</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Signal className="h-4 w-4 text-slate-500" />
+                      <span className="text-sm text-slate-700">LTE-M</span>
+                      <Badge variant="outline" className="text-slate-600 border-slate-300 text-[10px] uppercase tracking-wider">Standby</Badge>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-500">Fallback</span>
                   </div>
                 </div>
               </div>
