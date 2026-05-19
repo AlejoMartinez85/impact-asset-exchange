@@ -6,7 +6,14 @@ import L from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   AlertTriangle,
+  ArrowRight,
+  Baby,
+  BarChart3,
+  Bug,
+  Clock,
+  CloudRain,
   HeartPulse,
+  MessageSquare,
   Users,
   Thermometer,
   Droplets,
