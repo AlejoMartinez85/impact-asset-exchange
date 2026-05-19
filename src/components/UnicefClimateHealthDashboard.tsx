@@ -6,7 +6,14 @@ import L from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   AlertTriangle,
+  ArrowRight,
+  Baby,
+  BarChart3,
+  Bug,
+  Clock,
+  CloudRain,
   HeartPulse,
+  MessageSquare,
   Users,
   Thermometer,
   Droplets,
@@ -363,6 +370,360 @@ const UnicefClimateHealthDashboard = () => {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* ========== SECTION 1: 6-MODULE IMPACT ARCHITECTURE GRID ========== */}
+      <div className="max-w-7xl mx-auto mt-10">
+        <div className="mb-5">
+          <h2 className="text-xl md:text-2xl font-serif text-slate-900">Impact Architecture · 6-Module System</h2>
+          <p className="text-sm text-slate-500 mt-1">
+            Comprehensive climate-health intelligence stack powering last-mile communities
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* --- Module 1: Environmental Sentinels (Cyan) --- */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
+            <Card className="bg-white border-slate-200 shadow-sm border-t-4 border-t-cyan-500 h-full">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-cyan-50 ring-1 ring-cyan-200">
+                    <Wind className="h-5 w-5 text-cyan-600" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-sm font-sans font-semibold text-slate-900">Real-Time Environmental Sentinels</CardTitle>
+                    <p className="text-[11px] text-cyan-600 uppercase tracking-wider font-medium">Continuous multi-sensor telemetry</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-start gap-2.5">
+                  <Activity className="h-3.5 w-3.5 text-cyan-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">PM2.5 / PM10</div>
+                    <div className="text-[11px] text-slate-500">Real-time particulate monitoring · laser scattering method</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <CloudRain className="h-3.5 w-3.5 text-cyan-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">CO2 / VOCs</div>
+                    <div className="text-[11px] text-slate-500">Indoor air quality sentinel · NDIR + MOS sensors</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Thermometer className="h-3.5 w-3.5 text-cyan-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Temperature / Humidity / UV</div>
+                    <div className="text-[11px] text-slate-500">Multi-sensor ambient tracking · SHT40 + VEML6075</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Flame className="h-3.5 w-3.5 text-cyan-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Heat Stress Index (Derived)</div>
+                    <div className="text-[11px] text-slate-500">Wet-bulb globe temperature proxy · population-adjusted</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* --- Module 2: Predictive Risk (Violet) --- */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <Card className="bg-white border-slate-200 shadow-sm border-t-4 border-t-violet-500 h-full">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-violet-50 ring-1 ring-violet-200">
+                    <BarChart3 className="h-5 w-5 text-violet-600" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-sm font-sans font-semibold text-slate-900">Predictive Climate-Health Risk</CardTitle>
+                    <p className="text-[11px] text-violet-600 uppercase tracking-wider font-medium">AI-driven epidemiological forecasting</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-start gap-2.5">
+                  <Bug className="h-3.5 w-3.5 text-violet-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Malaria / Dengue Breeding Score</div>
+                    <div className="text-[11px] text-slate-500">Rainfall + humidity vector proliferation model</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Sun className="h-3.5 w-3.5 text-violet-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Heat-Illness Risk Band</div>
+                    <div className="text-[11px] text-slate-500">Population vulnerability stratification by age</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Wind className="h-3.5 w-3.5 text-violet-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Respiratory Emergency Risk</div>
+                    <div className="text-[11px] text-slate-500">PM2.5 exacerbation forecast · 48-hr horizon</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <ShieldAlert className="h-3.5 w-3.5 text-violet-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Environmental Anomaly Flag</div>
+                    <div className="text-[11px] text-slate-500">AI deviation detection from 30-day rolling baseline</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* --- Module 3: Telemedicine (Emerald) --- */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+            <Card className="bg-white border-slate-200 shadow-sm border-t-4 border-t-emerald-500 h-full">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-emerald-50 ring-1 ring-emerald-200">
+                    <Stethoscope className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-sm font-sans font-semibold text-slate-900">Telemedicine & Point-of-Care</CardTitle>
+                    <p className="text-[11px] text-emerald-600 uppercase tracking-wider font-medium">Starlink-connected rural health delivery</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-start gap-2.5">
+                  <HeartPulse className="h-3.5 w-3.5 text-emerald-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Active Telemedicine Consultations</div>
+                    <div className="text-[11px] text-slate-500">Target: 675 sessions · live Starlink-connected</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Activity className="h-3.5 w-3.5 text-emerald-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Monthly Consultation Rate</div>
+                    <div className="text-[11px] text-slate-500">67% increase vs. pre-ELISA baseline</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Users className="h-3.5 w-3.5 text-emerald-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Triage-First-Response Rate</div>
+                    <div className="text-[11px] text-slate-500">Nurse-led protocol compliance · 94% adherence</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Wifi className="h-3.5 w-3.5 text-emerald-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Clinic Connectivity Uptime</div>
+                    <div className="text-[11px] text-slate-500">&gt;95% · multi-mode fallback active (LoRa + LTE-M)</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* --- Module 4: Community Voice (Amber) --- */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+            <Card className="bg-white border-slate-200 shadow-sm border-t-4 border-t-amber-500 h-full">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-amber-50 ring-1 ring-amber-200">
+                    <MessageSquare className="h-5 w-5 text-amber-600" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-sm font-sans font-semibold text-slate-900">Community Voice & Epidemiology</CardTitle>
+                    <p className="text-[11px] text-amber-600 uppercase tracking-wider font-medium">Participatory disease surveillance</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-start gap-2.5">
+                  <Wifi className="h-3.5 w-3.5 text-amber-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Household Symptom Reporting</div>
+                    <div className="text-[11px] text-slate-500">Free Wi-Fi captive portal · symptom check-in</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Thermometer className="h-3.5 w-3.5 text-amber-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Fever Cluster Detection</div>
+                    <div className="text-[11px] text-slate-500">Spatial-temporal anomaly mapping · 5 km radius</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Droplets className="h-3.5 w-3.5 text-amber-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Diarrheal Disease Tracking</div>
+                    <div className="text-[11px] text-slate-500">WASH + climate correlation · rainfall trigger</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <BarChart3 className="h-3.5 w-3.5 text-amber-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Symptom-to-Environment Correlation</div>
+                    <div className="text-[11px] text-slate-500">Real-time regression pipeline · R² &gt; 0.82</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* --- Module 5: Infrastructure Resilience (Pink) --- */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+            <Card className="bg-white border-slate-200 shadow-sm border-t-4 border-t-pink-500 h-full">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-pink-50 ring-1 ring-pink-200">
+                    <ShieldCheck className="h-5 w-5 text-pink-600" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-sm font-sans font-semibold text-slate-900">Infrastructure Resilience</CardTitle>
+                    <p className="text-[11px] text-pink-600 uppercase tracking-wider font-medium">Hardware durability & community stewardship</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-start gap-2.5">
+                  <Activity className="h-3.5 w-3.5 text-pink-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Node Uptime</div>
+                    <div className="text-[11px] text-slate-500">&gt;94% · 6-sensor array redundancy per node</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Lock className="h-3.5 w-3.5 text-pink-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Zero-Vandalism Rate</div>
+                    <div className="text-[11px] text-slate-500">100% · community stewardship + co-ownership model</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Users className="h-3.5 w-3.5 text-pink-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Community Steward Active Status</div>
+                    <div className="text-[11px] text-slate-500">12 local stewards certified · weekly check-in</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Sun className="h-3.5 w-3.5 text-pink-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Energy Generation per Node</div>
+                    <div className="text-[11px] text-slate-500">18W solar panel + 40Ah LiFePO₄ battery</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* --- Module 6: Child-Centered Outcomes (Rose) --- */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+            <Card className="bg-white border-slate-200 shadow-sm border-t-4 border-t-rose-500 h-full">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-rose-50 ring-1 ring-rose-200">
+                    <Baby className="h-5 w-5 text-rose-600" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-sm font-sans font-semibold text-slate-900">Child-Centered Impact Outcomes</CardTitle>
+                    <p className="text-[11px] text-rose-600 uppercase tracking-wider font-medium">Pediatric health & climate safety metrics</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-start gap-2.5">
+                  <Users className="h-3.5 w-3.5 text-rose-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Children Under 5 in Catchment</div>
+                    <div className="text-[11px] text-slate-500">13,500 total population · 2,700 U5 children (20%)</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <GraduationCap className="h-3.5 w-3.5 text-rose-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">School Climate-Safety Protocols</div>
+                    <div className="text-[11px] text-slate-500">Heat-dismissal protocols active · WBGT &gt; 32°C trigger</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Clock className="h-3.5 w-3.5 text-rose-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Alert-to-Action Response Time</div>
+                    <div className="text-[11px] text-slate-500">&lt;2 hrs · frontline worker SMS dispatch verified</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <HeartPulse className="h-3.5 w-3.5 text-rose-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800">Pediatric Emergency Admissions</div>
+                    <div className="text-[11px] text-slate-500">Referral pathway to district hospital · GPS tagged</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* ========== SECTION 2: DATA FLOW PIPELINE ========== */}
+      <div className="max-w-7xl mx-auto mt-10 mb-12">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader className="border-b border-slate-100 pb-4">
+              <CardTitle className="text-base font-serif text-slate-900">Data Flow Pipeline</CardTitle>
+              <p className="text-xs text-slate-500 mt-1">
+                Hardware-Verified Telemetry → Cryptographic Proof → Predictive Intelligence → Health System Action
+              </p>
+            </CardHeader>
+            <CardContent className="py-8 px-4 md:px-6">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                {/* Block 1 */}
+                <div className="flex-1 w-full rounded-xl border border-slate-200 bg-slate-50 p-5 text-center relative">
+                  <div className="text-[10px] uppercase tracking-[0.15em] text-slate-400 mb-2 font-medium">Layer 1 · Edge</div>
+                  <div className="text-sm font-sans font-bold text-slate-900">ELISA® SENSORS</div>
+                  <div className="text-[11px] text-slate-500 mt-1.5 leading-relaxed">IoT multi-sensor arrays<br/>6-in-1 environmental telemetry</div>
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:hidden">
+                    <ArrowRight className="h-4 w-4 text-slate-300 rotate-90" />
+                  </div>
+                </div>
+
+                <ArrowRight className="h-5 w-5 text-slate-300 shrink-0 hidden md:block" />
+
+                {/* Block 2 */}
+                <div className="flex-1 w-full rounded-xl border border-cyan-200 bg-gradient-to-br from-cyan-50 to-sky-50 p-5 text-center relative">
+                  <div className="text-[10px] uppercase tracking-[0.15em] text-cyan-500 mb-2 font-medium">Layer 2 · Protocol</div>
+                  <div className="text-sm font-sans font-bold text-cyan-900">$LITRO PROTOCOL</div>
+                  <div className="text-[11px] text-cyan-700 mt-1.5 leading-relaxed">Cryptographic proof-of-work<br/>zk-signed data receipts</div>
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:hidden">
+                    <ArrowRight className="h-4 w-4 text-slate-300 rotate-90" />
+                  </div>
+                </div>
+
+                <ArrowRight className="h-5 w-5 text-slate-300 shrink-0 hidden md:block" />
+
+                {/* Block 3 */}
+                <div className="flex-1 w-full rounded-xl border border-violet-200 bg-gradient-to-br from-violet-50 to-purple-50 p-5 text-center relative">
+                  <div className="text-[10px] uppercase tracking-[0.15em] text-violet-500 mb-2 font-medium">Layer 3 · Intelligence</div>
+                  <div className="text-sm font-sans font-bold text-violet-900">AI RISK ENGINE</div>
+                  <div className="text-[11px] text-violet-700 mt-1.5 leading-relaxed">Predictive health intelligence<br/>Anomaly + vector-borne models</div>
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:hidden">
+                    <ArrowRight className="h-4 w-4 text-slate-300 rotate-90" />
+                  </div>
+                </div>
+
+                <ArrowRight className="h-5 w-5 text-slate-300 shrink-0 hidden md:block" />
+
+                {/* Block 4 */}
+                <div className="flex-1 w-full rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-5 text-center">
+                  <div className="text-[10px] uppercase tracking-[0.15em] text-emerald-500 mb-2 font-medium">Layer 4 · Action</div>
+                  <div className="text-sm font-sans font-bold text-emerald-900">DHIS2 / UNICEF</div>
+                  <div className="text-[11px] text-emerald-700 mt-1.5 leading-relaxed">Health system action<br/>District + national dashboards</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
 
       {/* NODE DETAIL SHEET */}
