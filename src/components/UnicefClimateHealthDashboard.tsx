@@ -327,59 +327,59 @@ const UnicefClimateHealthDashboard = () => {
 
       {/* AI ANOMALY DETECTION FEED */}
       <div className="max-w-7xl mx-auto mb-6">
-        <Card className="relative overflow-hidden bg-slate-950 text-slate-100 border-cyan-500/20 shadow-lg">
+        <Card className="relative overflow-hidden bg-cyan-50/40 text-slate-800 border border-cyan-100 shadow-sm">
           <div
-            className="pointer-events-none absolute inset-0 opacity-30"
+            className="pointer-events-none absolute inset-0 opacity-40"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(34,211,238,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.08) 1px, transparent 1px)",
+                "linear-gradient(rgba(8,145,178,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(8,145,178,0.05) 1px, transparent 1px)",
               backgroundSize: "24px 24px",
             }}
           />
-          <CardHeader className="relative flex-row items-center justify-between space-y-0 border-b border-cyan-500/20 pb-3">
+          <CardHeader className="relative flex-row items-center justify-between space-y-0 border-b border-cyan-100 pb-3">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-md bg-cyan-500/10 ring-1 ring-cyan-400/30">
-                <Activity className="h-4 w-4 text-cyan-300" />
+              <div className="p-2 rounded-md bg-cyan-100 ring-1 ring-cyan-200">
+                <Activity className="h-4 w-4 text-cyan-600" />
               </div>
               <div>
-                <CardTitle className="text-sm font-mono uppercase tracking-[0.18em] text-cyan-200">
+                <CardTitle className="text-sm font-mono uppercase tracking-[0.18em] text-cyan-700">
                   Live AI-Driven Anomalies · $LITRO Protocol
                 </CardTitle>
-                <p className="text-[10px] text-slate-400 mt-1 font-mono">
+                <p className="text-[10px] text-slate-500 mt-1 font-mono">
                   Encrypted epidemiological command channel · zk-signed receipts
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-400/30 text-[10px] uppercase tracking-wider font-mono">
+              <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] uppercase tracking-wider font-mono">
                 <span className="relative flex h-1.5 w-1.5 mr-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
                 </span>
                 Channel Secure
               </Badge>
-              <Badge variant="outline" className="border-cyan-400/30 text-cyan-300 text-[10px] uppercase tracking-wider font-mono">
+              <Badge variant="outline" className="border-cyan-200 text-cyan-700 bg-white text-[10px] uppercase tracking-wider font-mono">
                 <Lock className="h-3 w-3 mr-1" /> AES-256
               </Badge>
             </div>
           </CardHeader>
           <CardContent className="relative p-0">
-            <div className="divide-y divide-cyan-500/10">
+            <div className="divide-y divide-cyan-100">
               {ANOMALY_FEED.map((a, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.08 }}
-                  className="grid grid-cols-[auto_auto_1fr] gap-3 items-start px-4 py-3 hover:bg-cyan-500/5 transition-colors"
+                  className="grid grid-cols-[auto_auto_1fr] gap-3 items-start px-4 py-3 hover:bg-cyan-50/70 transition-colors"
                 >
                   <span className="text-[10px] font-mono text-slate-500 mt-0.5 tabular-nums">[{a.time}]</span>
                   <span className="text-sm leading-none mt-0.5">{a.icon}</span>
                   <div>
-                    <div className="text-xs font-semibold text-slate-100 font-mono tracking-wide">
+                    <div className="text-xs font-semibold text-slate-900 font-mono tracking-wide">
                       {a.title}
                     </div>
-                    <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{a.body}</p>
+                    <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{a.body}</p>
                   </div>
                 </motion.div>
               ))}
