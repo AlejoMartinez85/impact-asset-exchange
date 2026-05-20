@@ -46,7 +46,6 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { useIoTDataStream } from "@/hooks/useIoTDataStream";
-import { Progress } from "@/components/ui/progress";
 
 /* Live telemetry CSS transition */
 import "./iot-telemetry.css";
