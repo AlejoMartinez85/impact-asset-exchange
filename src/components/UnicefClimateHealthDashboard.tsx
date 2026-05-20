@@ -811,50 +811,47 @@ const UnicefClimateHealthDashboard = () => {
               </p>
             </CardHeader>
             <CardContent className="py-8 px-4 md:px-6">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                {/* Block 1 */}
-                <div className="flex-1 w-full rounded-xl border border-slate-200 bg-slate-50 p-5 text-center relative">
-                  <div className="text-[10px] uppercase tracking-[0.15em] text-slate-400 mb-2 font-medium">Layer 1 · Edge</div>
-                  <div className="text-sm font-sans font-bold text-slate-900">ELISA® SENSORS</div>
-                  <div className="text-[11px] text-slate-500 mt-1.5 leading-relaxed">IoT multi-sensor arrays<br/>6-in-1 environmental telemetry</div>
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:hidden">
-                    <ArrowRight className="h-4 w-4 text-slate-300 rotate-90" />
+              {(() => {
+                const blocks = [
+                  { layer: "Layer 1 · Edge", title: "ELISA® SENSORS", body: "IoT multi-sensor arrays\n6-in-1 environmental telemetry", border: "border-slate-200", bg: "bg-slate-50", titleColor: "text-slate-900", layerColor: "text-slate-400", bodyColor: "text-slate-500", glow: "56,189,248" },
+                  { layer: "Layer 2 · Protocol", title: "$LITRO PROTOCOL", body: "Cryptographic proof-of-work\nzk-signed data receipts", border: "border-cyan-200", bg: "bg-gradient-to-br from-cyan-50 to-sky-50", titleColor: "text-cyan-900", layerColor: "text-cyan-500", bodyColor: "text-cyan-700", glow: "34,211,238" },
+                  { layer: "Layer 3 · Intelligence", title: "AI RISK ENGINE", body: "Predictive health intelligence\nAnomaly + vector-borne models", border: "border-violet-200", bg: "bg-gradient-to-br from-violet-50 to-purple-50", titleColor: "text-violet-900", layerColor: "text-violet-500", bodyColor: "text-violet-700", glow: "139,92,246" },
+                  { layer: "Layer 4 · Action", title: "DHIS2 / UNICEF", body: "Health system action\nDistrict + national dashboards", border: "border-emerald-200", bg: "bg-gradient-to-br from-emerald-50 to-teal-50", titleColor: "text-emerald-900", layerColor: "text-emerald-500", bodyColor: "text-emerald-700", glow: "16,185,129" },
+                ];
+                return (
+                  <div className="flex flex-col md:flex-row items-stretch justify-between gap-4">
+                    {blocks.map((b, i) => (
+                      <div key={b.title} className="flex flex-col md:flex-row items-center flex-1 w-full">
+                        <motion.div
+                          className={`flex-1 w-full rounded-xl border ${b.border} ${b.bg} p-5 text-center relative transition-colors`}
+                          animate={{
+                            boxShadow:
+                              activeBlock === i
+                                ? `0 0 0 1px rgba(${b.glow},0.55), 0 8px 28px -8px rgba(${b.glow},0.45)`
+                                : `0 0 0 0 rgba(${b.glow},0), 0 1px 2px rgba(15,23,42,0.04)`,
+                          }}
+                          transition={{ duration: 0.9, ease: "easeOut" }}
+                        >
+                          <div className={`text-[10px] uppercase tracking-[0.15em] ${b.layerColor} mb-2 font-medium`}>{b.layer}</div>
+                          <div className={`text-sm font-sans font-bold ${b.titleColor}`}>{b.title}</div>
+                          <div className={`text-[11px] ${b.bodyColor} mt-1.5 leading-relaxed whitespace-pre-line`}>{b.body}</div>
+                        </motion.div>
+                        {i < blocks.length - 1 && (
+                          <motion.div
+                            className="shrink-0 px-2 py-2 md:py-0"
+                            animate={{ x: [0, 4, 0], opacity: [0.5, 1, 0.5] }}
+                            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.25 }}
+                          >
+                            <ArrowRight
+                              className={`h-5 w-5 ${activeBlock === i ? "text-cyan-500" : "text-slate-300"} transition-colors md:rotate-0 rotate-90`}
+                            />
+                          </motion.div>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                </div>
-
-                <ArrowRight className="h-5 w-5 text-slate-300 shrink-0 hidden md:block" />
-
-                {/* Block 2 */}
-                <div className="flex-1 w-full rounded-xl border border-cyan-200 bg-gradient-to-br from-cyan-50 to-sky-50 p-5 text-center relative">
-                  <div className="text-[10px] uppercase tracking-[0.15em] text-cyan-500 mb-2 font-medium">Layer 2 · Protocol</div>
-                  <div className="text-sm font-sans font-bold text-cyan-900">$LITRO PROTOCOL</div>
-                  <div className="text-[11px] text-cyan-700 mt-1.5 leading-relaxed">Cryptographic proof-of-work<br/>zk-signed data receipts</div>
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:hidden">
-                    <ArrowRight className="h-4 w-4 text-slate-300 rotate-90" />
-                  </div>
-                </div>
-
-                <ArrowRight className="h-5 w-5 text-slate-300 shrink-0 hidden md:block" />
-
-                {/* Block 3 */}
-                <div className="flex-1 w-full rounded-xl border border-violet-200 bg-gradient-to-br from-violet-50 to-purple-50 p-5 text-center relative">
-                  <div className="text-[10px] uppercase tracking-[0.15em] text-violet-500 mb-2 font-medium">Layer 3 · Intelligence</div>
-                  <div className="text-sm font-sans font-bold text-violet-900">AI RISK ENGINE</div>
-                  <div className="text-[11px] text-violet-700 mt-1.5 leading-relaxed">Predictive health intelligence<br/>Anomaly + vector-borne models</div>
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:hidden">
-                    <ArrowRight className="h-4 w-4 text-slate-300 rotate-90" />
-                  </div>
-                </div>
-
-                <ArrowRight className="h-5 w-5 text-slate-300 shrink-0 hidden md:block" />
-
-                {/* Block 4 */}
-                <div className="flex-1 w-full rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-5 text-center">
-                  <div className="text-[10px] uppercase tracking-[0.15em] text-emerald-500 mb-2 font-medium">Layer 4 · Action</div>
-                  <div className="text-sm font-sans font-bold text-emerald-900">DHIS2 / UNICEF</div>
-                  <div className="text-[11px] text-emerald-700 mt-1.5 leading-relaxed">Health system action<br/>District + national dashboards</div>
-                </div>
-              </div>
+                );
+              })()}
             </CardContent>
           </Card>
         </motion.div>
