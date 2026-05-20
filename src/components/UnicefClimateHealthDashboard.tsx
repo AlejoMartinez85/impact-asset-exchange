@@ -857,6 +857,9 @@ const UnicefClimateHealthDashboard = () => {
         </motion.div>
       </div>
 
+      {/* ========== SECTION 3: UNICEF SCORING CRITERIA ALIGNMENT ========== */}
+      <UnicefScoringSection />
+
       {/* NODE DETAIL SHEET */}
       <Sheet open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
         <SheetContent className="bg-white text-slate-900 border-l border-slate-200 w-full sm:max-w-md overflow-y-auto">
