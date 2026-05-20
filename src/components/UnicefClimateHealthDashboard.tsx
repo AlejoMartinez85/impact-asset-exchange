@@ -150,10 +150,115 @@ const FitBounds = () => {
   return null;
 };
 
+/* ============= LIVE / ANIMATION HELPERS ============= */
+
+const LiveBadge = () => (
+  <Badge className="bg-emerald-500/10 text-emerald-700 border border-emerald-300 text-[9px] uppercase tracking-[0.18em] font-mono px-1.5 py-0 h-4">
+    <span className="relative flex h-1.5 w-1.5 mr-1">
+      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+    </span>
+    Live
+  </Badge>
+);
+
+/** Smoothly animates a number using a spring; rounds to integer */
+const AnimatedPercent = ({ value, run }: { value: number; run: boolean }) => {
+  const mv = useMotionValue(0);
+  const spring = useSpring(mv, { stiffness: 60, damping: 18 });
+  const rounded = useTransform(spring, (v) => `${Math.round(v)}%`);
+  useEffect(() => {
+    mv.set(run ? value : 0);
+  }, [run, value, mv]);
+  return <motion.span>{rounded}</motion.span>;
+};
+
+/* ============= UNICEF SCORING CRITERIA ============= */
+
+const SCORING_CRITERIA = [
+  { label: "Climate Resilience Impact", value: 30, color: "bg-cyan-500", text: "text-cyan-700" },
+  { label: "Health System Strengthening", value: 30, color: "bg-emerald-500", text: "text-emerald-700" },
+  { label: "Technical & Open-Source Excellence", value: 20, color: "bg-violet-500", text: "text-violet-700" },
+  { label: "Scalability & Venture Readiness", value: 20, color: "bg-amber-500", text: "text-amber-700" },
+] as const;
+
+const UnicefScoringSection = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.35 });
+  return (
+    <div ref={ref} className="max-w-7xl mx-auto mt-10 mb-12">
+      <Card className="bg-white border-slate-200 shadow-sm">
+        <CardHeader className="border-b border-slate-100 pb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-base font-serif text-slate-900">UNICEF Scoring Criteria Alignment</CardTitle>
+              <p className="text-xs text-slate-500 mt-1">
+                Self-assessment against the Climate × Health Venture Programme rubric
+              </p>
+            </div>
+            <Badge variant="outline" className="text-[10px] uppercase tracking-wider text-slate-600 border-slate-200">
+              Total weighting · 100%
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
+          {SCORING_CRITERIA.map((c, i) => (
+            <motion.div
+              key={c.label}
+              initial={{ opacity: 0, y: 8 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.1, duration: 0.4 }}
+            >
+              <div className="flex items-baseline justify-between mb-2">
+                <span className="text-sm font-medium text-slate-800">{c.label}</span>
+                <span className={`text-lg font-mono font-semibold tabular-nums ${c.text}`}>
+                  <AnimatedPercent value={c.value} run={inView} />
+                </span>
+              </div>
+              <div className="relative h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+                <motion.div
+                  className={`h-full rounded-full ${c.color}`}
+                  initial={{ width: 0 }}
+                  animate={inView ? { width: `${c.value}%` } : { width: 0 }}
+                  transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 }}
+                />
+              </div>
+            </motion.div>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
 const UnicefClimateHealthDashboard = () => {
   const [layer, setLayer] = useState<LayerMode>("base");
   const [selected, setSelected] = useState<HealthNode | null>(null);
   const iot = useIoTDataStream();
+
+  /* --- Live mock telemetry for the 6-Module Grid --- */
+  const [pm25Live, setPm25Live] = useState(36);
+  const [consultations, setConsultations] = useState(450);
+  useEffect(() => {
+    const pmId = setInterval(() => {
+      setPm25Live(() => +(35 + Math.random() * 2).toFixed(1));
+    }, 3500);
+    const consultId = setInterval(() => {
+      // Occasionally tick upward (~60% of ticks)
+      setConsultations((prev) => (Math.random() > 0.4 ? prev + 1 : prev));
+    }, 4500);
+    return () => {
+      clearInterval(pmId);
+      clearInterval(consultId);
+    };
+  }, []);
+
+  /* --- Sequential pipeline glow (0 → 1 → 2 → 3, repeat) --- */
+  const [activeBlock, setActiveBlock] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setActiveBlock((p) => (p + 1) % 4), 1200);
+    return () => clearInterval(id);
+  }, []);
 
   const schoolIcon = useMemo(() => makeDivIcon("school"), []);
   const clinicIcon = useMemo(() => makeDivIcon("clinic"), []);
