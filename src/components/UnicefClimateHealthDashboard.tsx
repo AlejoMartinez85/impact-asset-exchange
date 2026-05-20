@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { MapContainer, TileLayer, Marker, Tooltip as LTooltip, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -46,6 +46,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { useIoTDataStream } from "@/hooks/useIoTDataStream";
+import { Progress } from "@/components/ui/progress";
 
 /* Live telemetry CSS transition */
 import "./iot-telemetry.css";
