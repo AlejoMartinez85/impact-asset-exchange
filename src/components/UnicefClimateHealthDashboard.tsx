@@ -662,8 +662,11 @@ const UnicefClimateHealthDashboard = () => {
                   <div className="p-2 rounded-lg bg-amber-50 ring-1 ring-amber-200">
                     <MessageSquare className="h-5 w-5 text-amber-600" />
                   </div>
-                  <div>
-                    <CardTitle className="text-sm font-sans font-semibold text-slate-900">Community Voice & Epidemiology</CardTitle>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <CardTitle className="text-sm font-sans font-semibold text-slate-900">Community Voice & Epidemiology</CardTitle>
+                      <LiveBadge />
+                    </div>
                     <p className="text-[11px] text-amber-600 uppercase tracking-wider font-medium">Participatory disease surveillance</p>
                   </div>
                 </div>
