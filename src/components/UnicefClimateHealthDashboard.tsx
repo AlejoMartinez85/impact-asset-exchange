@@ -496,8 +496,11 @@ const UnicefClimateHealthDashboard = () => {
                   <div className="p-2 rounded-lg bg-cyan-50 ring-1 ring-cyan-200">
                     <Wind className="h-5 w-5 text-cyan-600" />
                   </div>
-                  <div>
-                    <CardTitle className="text-sm font-sans font-semibold text-slate-900">Real-Time Environmental Sentinels</CardTitle>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <CardTitle className="text-sm font-sans font-semibold text-slate-900">Real-Time Environmental Sentinels</CardTitle>
+                      <LiveBadge />
+                    </div>
                     <p className="text-[11px] text-cyan-600 uppercase tracking-wider font-medium">Continuous multi-sensor telemetry</p>
                   </div>
                 </div>
@@ -506,7 +509,18 @@ const UnicefClimateHealthDashboard = () => {
                 <div className="flex items-start gap-2.5">
                   <Activity className="h-3.5 w-3.5 text-cyan-500 mt-0.5 shrink-0" />
                   <div>
-                    <div className="text-sm font-medium text-slate-800">PM2.5 / PM10</div>
+                    <div className="text-sm font-medium text-slate-800 flex items-baseline gap-2">
+                      PM2.5 / PM10
+                      <motion.span
+                        key={pm25Live}
+                        initial={{ opacity: 0.4 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.6 }}
+                        className="font-mono text-xs text-cyan-700 tabular-nums"
+                      >
+                        {pm25Live.toFixed(1)} µg/m³
+                      </motion.span>
+                    </div>
                     <div className="text-[11px] text-slate-500">Real-time particulate monitoring · laser scattering method</div>
                   </div>
                 </div>
