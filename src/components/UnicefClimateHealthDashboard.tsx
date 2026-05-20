@@ -614,7 +614,18 @@ const UnicefClimateHealthDashboard = () => {
                 <div className="flex items-start gap-2.5">
                   <HeartPulse className="h-3.5 w-3.5 text-emerald-500 mt-0.5 shrink-0" />
                   <div>
-                    <div className="text-sm font-medium text-slate-800">Active Telemedicine Consultations</div>
+                    <div className="text-sm font-medium text-slate-800 flex items-baseline gap-2">
+                      Active Telemedicine Consultations
+                      <motion.span
+                        key={consultations}
+                        initial={{ opacity: 0.4, y: -2 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="font-mono text-xs text-emerald-700 tabular-nums"
+                      >
+                        {consultations}
+                      </motion.span>
+                    </div>
                     <div className="text-[11px] text-slate-500">Target: 675 sessions · live Starlink-connected</div>
                   </div>
                 </div>
