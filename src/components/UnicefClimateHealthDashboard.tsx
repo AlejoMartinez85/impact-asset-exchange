@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { MapContainer, TileLayer, Marker, Tooltip as LTooltip, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -149,10 +149,115 @@ const FitBounds = () => {
   return null;
 };
 
+/* ============= LIVE / ANIMATION HELPERS ============= */
+
+const LiveBadge = () => (
+  <Badge className="bg-emerald-500/10 text-emerald-700 border border-emerald-300 text-[9px] uppercase tracking-[0.18em] font-mono px-1.5 py-0 h-4">
+    <span className="relative flex h-1.5 w-1.5 mr-1">
+      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+    </span>
+    Live
+  </Badge>
+);
+
+/** Smoothly animates a number using a spring; rounds to integer */
+const AnimatedPercent = ({ value, run }: { value: number; run: boolean }) => {
+  const mv = useMotionValue(0);
+  const spring = useSpring(mv, { stiffness: 60, damping: 18 });
+  const rounded = useTransform(spring, (v) => `${Math.round(v)}%`);
+  useEffect(() => {
+    mv.set(run ? value : 0);
+  }, [run, value, mv]);
+  return <motion.span>{rounded}</motion.span>;
+};
+
+/* ============= UNICEF SCORING CRITERIA ============= */
+
+const SCORING_CRITERIA = [
+  { label: "Climate Resilience Impact", value: 30, color: "bg-cyan-500", text: "text-cyan-700" },
+  { label: "Health System Strengthening", value: 30, color: "bg-emerald-500", text: "text-emerald-700" },
+  { label: "Technical & Open-Source Excellence", value: 20, color: "bg-violet-500", text: "text-violet-700" },
+  { label: "Scalability & Venture Readiness", value: 20, color: "bg-amber-500", text: "text-amber-700" },
+] as const;
+
+const UnicefScoringSection = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.35 });
+  return (
+    <div ref={ref} className="max-w-7xl mx-auto mt-10 mb-12">
+      <Card className="bg-white border-slate-200 shadow-sm">
+        <CardHeader className="border-b border-slate-100 pb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-base font-serif text-slate-900">UNICEF Scoring Criteria Alignment</CardTitle>
+              <p className="text-xs text-slate-500 mt-1">
+                Self-assessment against the Climate × Health Venture Programme rubric
+              </p>
+            </div>
+            <Badge variant="outline" className="text-[10px] uppercase tracking-wider text-slate-600 border-slate-200">
+              Total weighting · 100%
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
+          {SCORING_CRITERIA.map((c, i) => (
+            <motion.div
+              key={c.label}
+              initial={{ opacity: 0, y: 8 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.1, duration: 0.4 }}
+            >
+              <div className="flex items-baseline justify-between mb-2">
+                <span className="text-sm font-medium text-slate-800">{c.label}</span>
+                <span className={`text-lg font-mono font-semibold tabular-nums ${c.text}`}>
+                  <AnimatedPercent value={c.value} run={inView} />
+                </span>
+              </div>
+              <div className="relative h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+                <motion.div
+                  className={`h-full rounded-full ${c.color}`}
+                  initial={{ width: 0 }}
+                  animate={inView ? { width: `${c.value}%` } : { width: 0 }}
+                  transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 }}
+                />
+              </div>
+            </motion.div>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
 const UnicefClimateHealthDashboard = () => {
   const [layer, setLayer] = useState<LayerMode>("base");
   const [selected, setSelected] = useState<HealthNode | null>(null);
   const iot = useIoTDataStream();
+
+  /* --- Live mock telemetry for the 6-Module Grid --- */
+  const [pm25Live, setPm25Live] = useState(36);
+  const [consultations, setConsultations] = useState(450);
+  useEffect(() => {
+    const pmId = setInterval(() => {
+      setPm25Live(() => +(35 + Math.random() * 2).toFixed(1));
+    }, 3500);
+    const consultId = setInterval(() => {
+      // Occasionally tick upward (~60% of ticks)
+      setConsultations((prev) => (Math.random() > 0.4 ? prev + 1 : prev));
+    }, 4500);
+    return () => {
+      clearInterval(pmId);
+      clearInterval(consultId);
+    };
+  }, []);
+
+  /* --- Sequential pipeline glow (0 → 1 → 2 → 3, repeat) --- */
+  const [activeBlock, setActiveBlock] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setActiveBlock((p) => (p + 1) % 4), 1200);
+    return () => clearInterval(id);
+  }, []);
 
   const schoolIcon = useMemo(() => makeDivIcon("school"), []);
   const clinicIcon = useMemo(() => makeDivIcon("clinic"), []);
@@ -390,8 +495,11 @@ const UnicefClimateHealthDashboard = () => {
                   <div className="p-2 rounded-lg bg-cyan-50 ring-1 ring-cyan-200">
                     <Wind className="h-5 w-5 text-cyan-600" />
                   </div>
-                  <div>
-                    <CardTitle className="text-sm font-sans font-semibold text-slate-900">Real-Time Environmental Sentinels</CardTitle>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <CardTitle className="text-sm font-sans font-semibold text-slate-900">Real-Time Environmental Sentinels</CardTitle>
+                      <LiveBadge />
+                    </div>
                     <p className="text-[11px] text-cyan-600 uppercase tracking-wider font-medium">Continuous multi-sensor telemetry</p>
                   </div>
                 </div>
@@ -400,7 +508,18 @@ const UnicefClimateHealthDashboard = () => {
                 <div className="flex items-start gap-2.5">
                   <Activity className="h-3.5 w-3.5 text-cyan-500 mt-0.5 shrink-0" />
                   <div>
-                    <div className="text-sm font-medium text-slate-800">PM2.5 / PM10</div>
+                    <div className="text-sm font-medium text-slate-800 flex items-baseline gap-2">
+                      PM2.5 / PM10
+                      <motion.span
+                        key={pm25Live}
+                        initial={{ opacity: 0.4 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.6 }}
+                        className="font-mono text-xs text-cyan-700 tabular-nums"
+                      >
+                        {pm25Live.toFixed(1)} µg/m³
+                      </motion.span>
+                    </div>
                     <div className="text-[11px] text-slate-500">Real-time particulate monitoring · laser scattering method</div>
                   </div>
                 </div>
@@ -494,7 +613,18 @@ const UnicefClimateHealthDashboard = () => {
                 <div className="flex items-start gap-2.5">
                   <HeartPulse className="h-3.5 w-3.5 text-emerald-500 mt-0.5 shrink-0" />
                   <div>
-                    <div className="text-sm font-medium text-slate-800">Active Telemedicine Consultations</div>
+                    <div className="text-sm font-medium text-slate-800 flex items-baseline gap-2">
+                      Active Telemedicine Consultations
+                      <motion.span
+                        key={consultations}
+                        initial={{ opacity: 0.4, y: -2 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="font-mono text-xs text-emerald-700 tabular-nums"
+                      >
+                        {consultations}
+                      </motion.span>
+                    </div>
                     <div className="text-[11px] text-slate-500">Target: 675 sessions · live Starlink-connected</div>
                   </div>
                 </div>
@@ -531,8 +661,11 @@ const UnicefClimateHealthDashboard = () => {
                   <div className="p-2 rounded-lg bg-amber-50 ring-1 ring-amber-200">
                     <MessageSquare className="h-5 w-5 text-amber-600" />
                   </div>
-                  <div>
-                    <CardTitle className="text-sm font-sans font-semibold text-slate-900">Community Voice & Epidemiology</CardTitle>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <CardTitle className="text-sm font-sans font-semibold text-slate-900">Community Voice & Epidemiology</CardTitle>
+                      <LiveBadge />
+                    </div>
                     <p className="text-[11px] text-amber-600 uppercase tracking-wider font-medium">Participatory disease surveillance</p>
                   </div>
                 </div>
@@ -677,54 +810,54 @@ const UnicefClimateHealthDashboard = () => {
               </p>
             </CardHeader>
             <CardContent className="py-8 px-4 md:px-6">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                {/* Block 1 */}
-                <div className="flex-1 w-full rounded-xl border border-slate-200 bg-slate-50 p-5 text-center relative">
-                  <div className="text-[10px] uppercase tracking-[0.15em] text-slate-400 mb-2 font-medium">Layer 1 · Edge</div>
-                  <div className="text-sm font-sans font-bold text-slate-900">ELISA® SENSORS</div>
-                  <div className="text-[11px] text-slate-500 mt-1.5 leading-relaxed">IoT multi-sensor arrays<br/>6-in-1 environmental telemetry</div>
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:hidden">
-                    <ArrowRight className="h-4 w-4 text-slate-300 rotate-90" />
+              {(() => {
+                const blocks = [
+                  { layer: "Layer 1 · Edge", title: "ELISA® SENSORS", body: "IoT multi-sensor arrays\n6-in-1 environmental telemetry", border: "border-slate-200", bg: "bg-slate-50", titleColor: "text-slate-900", layerColor: "text-slate-400", bodyColor: "text-slate-500", glow: "56,189,248" },
+                  { layer: "Layer 2 · Protocol", title: "$LITRO PROTOCOL", body: "Cryptographic proof-of-work\nzk-signed data receipts", border: "border-cyan-200", bg: "bg-gradient-to-br from-cyan-50 to-sky-50", titleColor: "text-cyan-900", layerColor: "text-cyan-500", bodyColor: "text-cyan-700", glow: "34,211,238" },
+                  { layer: "Layer 3 · Intelligence", title: "AI RISK ENGINE", body: "Predictive health intelligence\nAnomaly + vector-borne models", border: "border-violet-200", bg: "bg-gradient-to-br from-violet-50 to-purple-50", titleColor: "text-violet-900", layerColor: "text-violet-500", bodyColor: "text-violet-700", glow: "139,92,246" },
+                  { layer: "Layer 4 · Action", title: "DHIS2 / UNICEF", body: "Health system action\nDistrict + national dashboards", border: "border-emerald-200", bg: "bg-gradient-to-br from-emerald-50 to-teal-50", titleColor: "text-emerald-900", layerColor: "text-emerald-500", bodyColor: "text-emerald-700", glow: "16,185,129" },
+                ];
+                return (
+                  <div className="flex flex-col md:flex-row items-stretch justify-between gap-4">
+                    {blocks.map((b, i) => (
+                      <div key={b.title} className="flex flex-col md:flex-row items-center flex-1 w-full">
+                        <motion.div
+                          className={`flex-1 w-full rounded-xl border ${b.border} ${b.bg} p-5 text-center relative transition-colors`}
+                          animate={{
+                            boxShadow:
+                              activeBlock === i
+                                ? `0 0 0 1px rgba(${b.glow},0.55), 0 8px 28px -8px rgba(${b.glow},0.45)`
+                                : `0 0 0 0 rgba(${b.glow},0), 0 1px 2px rgba(15,23,42,0.04)`,
+                          }}
+                          transition={{ duration: 0.9, ease: "easeOut" }}
+                        >
+                          <div className={`text-[10px] uppercase tracking-[0.15em] ${b.layerColor} mb-2 font-medium`}>{b.layer}</div>
+                          <div className={`text-sm font-sans font-bold ${b.titleColor}`}>{b.title}</div>
+                          <div className={`text-[11px] ${b.bodyColor} mt-1.5 leading-relaxed whitespace-pre-line`}>{b.body}</div>
+                        </motion.div>
+                        {i < blocks.length - 1 && (
+                          <motion.div
+                            className="shrink-0 px-2 py-2 md:py-0"
+                            animate={{ x: [0, 4, 0], opacity: [0.5, 1, 0.5] }}
+                            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.25 }}
+                          >
+                            <ArrowRight
+                              className={`h-5 w-5 ${activeBlock === i ? "text-cyan-500" : "text-slate-300"} transition-colors md:rotate-0 rotate-90`}
+                            />
+                          </motion.div>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                </div>
-
-                <ArrowRight className="h-5 w-5 text-slate-300 shrink-0 hidden md:block" />
-
-                {/* Block 2 */}
-                <div className="flex-1 w-full rounded-xl border border-cyan-200 bg-gradient-to-br from-cyan-50 to-sky-50 p-5 text-center relative">
-                  <div className="text-[10px] uppercase tracking-[0.15em] text-cyan-500 mb-2 font-medium">Layer 2 · Protocol</div>
-                  <div className="text-sm font-sans font-bold text-cyan-900">$LITRO PROTOCOL</div>
-                  <div className="text-[11px] text-cyan-700 mt-1.5 leading-relaxed">Cryptographic proof-of-work<br/>zk-signed data receipts</div>
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:hidden">
-                    <ArrowRight className="h-4 w-4 text-slate-300 rotate-90" />
-                  </div>
-                </div>
-
-                <ArrowRight className="h-5 w-5 text-slate-300 shrink-0 hidden md:block" />
-
-                {/* Block 3 */}
-                <div className="flex-1 w-full rounded-xl border border-violet-200 bg-gradient-to-br from-violet-50 to-purple-50 p-5 text-center relative">
-                  <div className="text-[10px] uppercase tracking-[0.15em] text-violet-500 mb-2 font-medium">Layer 3 · Intelligence</div>
-                  <div className="text-sm font-sans font-bold text-violet-900">AI RISK ENGINE</div>
-                  <div className="text-[11px] text-violet-700 mt-1.5 leading-relaxed">Predictive health intelligence<br/>Anomaly + vector-borne models</div>
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:hidden">
-                    <ArrowRight className="h-4 w-4 text-slate-300 rotate-90" />
-                  </div>
-                </div>
-
-                <ArrowRight className="h-5 w-5 text-slate-300 shrink-0 hidden md:block" />
-
-                {/* Block 4 */}
-                <div className="flex-1 w-full rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-5 text-center">
-                  <div className="text-[10px] uppercase tracking-[0.15em] text-emerald-500 mb-2 font-medium">Layer 4 · Action</div>
-                  <div className="text-sm font-sans font-bold text-emerald-900">DHIS2 / UNICEF</div>
-                  <div className="text-[11px] text-emerald-700 mt-1.5 leading-relaxed">Health system action<br/>District + national dashboards</div>
-                </div>
-              </div>
+                );
+              })()}
             </CardContent>
           </Card>
         </motion.div>
       </div>
+
+      {/* ========== SECTION 3: UNICEF SCORING CRITERIA ALIGNMENT ========== */}
+      <UnicefScoringSection />
 
       {/* NODE DETAIL SHEET */}
       <Sheet open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
